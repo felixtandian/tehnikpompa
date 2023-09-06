@@ -40,6 +40,7 @@ dependencies:
   easy_splash_screen: ^1.0.3
   percent_indicator: 4.0.0
   get_cli: ^1.7.1
+  google_fonts: ^4.0.4
 
 
 dev_dependencies:
