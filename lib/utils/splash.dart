@@ -25,7 +25,7 @@ class Splash extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
             showLoader: true,
-            navigator: LoginscreenView(),
+            navigator: '/loginscreen',
             durationInSeconds: 2,
           );
         });

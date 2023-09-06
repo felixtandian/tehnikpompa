@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
+import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import '../controllers/loginscreen_controller.dart';
 
 class LoginscreenView extends GetView<LoginscreenController> {
@@ -66,7 +68,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
                     ),
                     Obx(
                       () => TextFormField(
-                        obscureText: !controller.showPassword.value,
+                        obscureText: controller.showPassword.value,
                         controller: controller.password.value,
                         style: GoogleFonts.montserrat(fontSize: 14),
                         keyboardType: TextInputType.visiblePassword,
@@ -81,8 +83,8 @@ class LoginscreenView extends GetView<LoginscreenController> {
                             },
                             child: Icon(
                               controller.showPassword.value
-                                  ? Icons.visibility
-                                  : Icons.visibility_off,
+                                  ? Icons.visibility_off
+                                  : Icons.visibility,
                               color: Colors.grey,
                             ),
                           ),
@@ -108,6 +110,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
                             return;
                           } else {
                             //goto
+                            Get.to(HomeView(), binding: HomeBinding());
                           }
                         },
                         child: Text(

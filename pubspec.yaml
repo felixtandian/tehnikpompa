@@ -41,6 +41,8 @@ dependencies:
   percent_indicator: 4.0.0
   get_cli: ^1.7.1
   google_fonts: ^4.0.4
+  expansion_card: ^0.1.0
+  folding_cell: ^1.0.2
 
 
 dev_dependencies:
