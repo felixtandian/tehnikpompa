@@ -1,6 +1,10 @@
 import 'package:get/get.dart';
 
 import '../../utils/splash.dart';
+import '../modules/createservice/bindings/createservice_binding.dart';
+import '../modules/createservice/views/createservice_view.dart';
+import '../modules/daftarbarang/bindings/daftarbarang_binding.dart';
+import '../modules/daftarbarang/views/daftarbarang_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/loginscreen/bindings/loginscreen_binding.dart';
@@ -25,6 +29,16 @@ class AppPages {
       name: _Paths.HOME,
       page: () => HomeView(),
       binding: HomeBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTARBARANG,
+      page: () => DaftarbarangView(),
+      binding: DaftarbarangBinding(),
+    ),
+    GetPage(
+      name: _Paths.CREATESERVICE,
+      page: () => CreateserviceView(),
+      binding: CreateserviceBinding(),
     ),
   ];
 }

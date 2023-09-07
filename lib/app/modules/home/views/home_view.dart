@@ -2,10 +2,13 @@ import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tehnikpompa/app/modules/createservice/bindings/createservice_binding.dart';
+import 'package:tehnikpompa/app/modules/createservice/views/createservice_view.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/bindings/daftarbarang_binding.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-  
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -115,14 +118,29 @@ class HomeView extends GetView<HomeController> {
                               child: selectedLayanan(
                                   image: 'assets/iconProduct.png',
                                   name: 'Daftar Barang'),
-                              onTap: () {},
+                              onTap: () {
+                                Get.to(DaftarbarangView(),
+                                    binding: DaftarbarangBinding());
+                              },
                             ),
-                            selectedLayanan(
-                                image: 'assets/iconDocument.png',
-                                name: 'Insert Service'),
-                            selectedLayanan(
-                                image: 'assets/iconDocuments.png',
-                                name: 'Daftar Service'),
+                            GestureDetector(
+                              child: selectedLayanan(
+                                  image: 'assets/iconDocument.png',
+                                  name: 'Insert Service'),
+                              onTap: () {
+                                Get.to(CreateserviceView(),
+                                    binding: CreateserviceBinding());
+                              },
+                            ),
+                            GestureDetector(
+                              child: selectedLayanan(
+                                  image: 'assets/iconDocuments.png',
+                                  name: 'Daftar Service'),
+                              onTap: () {
+                                Get.to(DaftarbarangView(),
+                                    binding: DaftarbarangBinding());
+                              },
+                            ),
                             selectedLayanan(
                                 image: 'assets/iconProduct.png',
                                 name: 'Service Saya'),
@@ -142,7 +160,7 @@ class HomeView extends GetView<HomeController> {
                       //         id: 1,
                       //         name: 'Pendingan Servis',
                       //         onTap: (){
-                                
+
                       //         },
                       //       )
                       //     ],

@@ -43,7 +43,11 @@ dependencies:
   google_fonts: ^4.0.4
   expansion_card: ^0.1.0
   folding_cell: ^1.0.2
-
+  easy_search_bar: ^2.4.2
+  anim_search_bar: ^2.0.3
+  syncfusion_flutter_datagrid: ^20.3.61
+  lazy_load_scrollview: ^1.1.0
+  english_words: ^4.0.0
 
 dev_dependencies:
   flutter_test:
