@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tehnikpompa/app/modules/createservice/widgets/utility.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
@@ -11,27 +14,20 @@ import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/createservice_controller.dart';
 
 class CreateserviceView extends GetView<CreateserviceController> {
-  // Future getImages() async {
-  //   final pickedFile = await controller.picker.pickMultiImage(
-  //       imageQuality: 100, // To set quality of images
-  //       maxHeight: 1000, // To set maxheight of images that you want in your app
-  //       maxWidth: 1000); // To set maxheight of images that you want in your app
-  //   List<XFile> xfilePick = pickedFile;
-
-  //   // if atleast 1 images is selected it will add
-  //   // all images in selectedImages
-  //   // variable so that we can easily show them in UI
-  //   if (xfilePick.isNotEmpty) {
-  //     for (var i = 0; i < xfilePick.length; i++) {
-  //       // controller.selectedImages.add(File(xfilePick[i].path));
-  //     }
-  //     controller.update();
-  //   } else {
-  //     // If no image is selected it will show a
-  //     // snackbar saying nothing is selected
-  //     const SnackBar(content: Text('Nothing is selected'));
-  //   }
-  // }
+  openImages() async {
+    try {
+      var pickedfiles = await controller.imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (pickedfiles != null) {
+        controller.imagefiles!.value = pickedfiles;
+        controller.update();
+      } else {
+        Fluttertoast.showToast(msg: "No image is selected.");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "error while picking file.");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +35,13 @@ class CreateserviceView extends GetView<CreateserviceController> {
       onWillPop: () async {
         if (controller.c.value != 0) {
           controller.c.value -= 1;
+          controller.update();
         }
         if (controller.c.value == 0) {
           controller.clear();
           Get.offAll(() => HomeView());
         }
-        controller.update();
-        return true;
+        return false;
       },
       child: Scaffold(
           resizeToAvoidBottomInset: true,
@@ -123,7 +119,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                   borderRadius:
                       const BorderRadius.vertical(top: Radius.circular(30))),
               child: Container(
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 child: SingleChildScrollView(
                   child: Form(
                       key: controller.globalKey,
@@ -132,99 +128,379 @@ class CreateserviceView extends GetView<CreateserviceController> {
                           const SizedBox(
                             height: 5,
                           ),
-                          Obx(
-                            () => Container(
-                              margin: const EdgeInsets.all(10),
-                              child: controller.c.value == 1
-                                  ? Column(children: <Widget>[
-                                      Container(
-                                        width: Get.width,
-                                        child: DropdownButton(
-                                          value: controller.selectedServis.value,
-                                          style: GoogleFonts.montserrat(
-                                              color: Colors.black,
-                                              fontSize: 14),
-                                          onChanged: (String? newValue) {
-                                            controller.setSelected(newValue!);
-                                            controller.update();
-                                          },
-                                          items: controller.dropdownItems,
-                                        ),
+                          Obx(() => controller.c.value == 1
+                              ? Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: Column(children: <Widget>[
+                                    Container(
+                                      width: Get.width,
+                                      child: DropdownButton(
+                                        value: controller.selectedServis.value,
+                                        style: GoogleFonts.montserrat(
+                                            color: Colors.black, fontSize: 14),
+                                        onChanged: (String? newValue) {
+                                          controller.setSelected(newValue!);
+                                          controller.update();
+                                        },
+                                        items: controller.dropdownItems,
                                       ),
-                                      buildServisWidget(
-                                        hintText: 'Service Pompa A',
-                                        labelText: 'Nama Service',
-                                        textField: controller.namaServis,
-                                        promptText: 'Nama Service Harus Diisi',
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      buildServisWidget(
-                                        nomor: 1,
-                                        textField: controller.nomorTelepon,
-                                        hintText: '085627800080',
-                                        labelText: 'Nomor Telepon',
-                                        promptText: 'Nomor Telepon Wajib Diisi',
-                                        promptText2:
-                                            'Nomor Telepon Wajin Angka',
-                                        promptText3:
-                                            'Nomor Telepon tidak lengkap',
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      buildServisWidget(
-                                        textField: controller.tipePompa,
-                                        hintText: 'Pompa A',
-                                        labelText: 'Tipe Pompa',
-                                        promptText:
-                                            'Tipe Pompa Tidak Boleh Kosong',
-                                      ),
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      buildServisWidget(
-                                        textField: controller.lokasi,
-                                        hintText: 'Semarang',
-                                        labelText: 'Lokasi',
-                                        promptText: 'Lokasi Tidak Boleh Kosong',
-                                      ),
-                                      const SizedBox(
-                                        height: 15,
-                                      ),
-                                      ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            minimumSize:
-                                                const Size(double.infinity, 42),
-                                            primary: const Color.fromRGBO(
-                                                36, 40, 91, 1),
-                                            shadowColor: Colors.black,
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildServisWidget(
+                                      hintText: 'Service Pompa A',
+                                      labelText: 'Nama Service',
+                                      textField: controller.namaServis,
+                                      promptText: 'Nama Service Harus Diisi',
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildServisWidget(
+                                      nomor: 1,
+                                      textField: controller.nomorTelepon,
+                                      hintText: '085627800080',
+                                      labelText: 'Nomor Telepon',
+                                      promptText: 'Nomor Telepon Wajib Diisi',
+                                      promptText2: 'Nomor Telepon Wajib Angka',
+                                      promptText3:
+                                          'Nomor Telepon tidak lengkap',
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildServisWidget(
+                                      textField: controller.tipePompa,
+                                      hintText: 'Pompa A',
+                                      labelText: 'Tipe Pompa',
+                                      promptText:
+                                          'Tipe Pompa Tidak Boleh Kosong',
+                                    ),
+                                    const SizedBox(
+                                      height: 20,
+                                    ),
+                                    buildServisWidget(
+                                      textField: controller.lokasi,
+                                      hintText: 'Semarang',
+                                      labelText: 'Lokasi',
+                                      promptText: 'Lokasi Tidak Boleh Kosong',
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    TextFormField(
+                                      controller: controller.tglKerja.value,
+                                      decoration: InputDecoration(
+                                          label: Text(
+                                            'Input Tanggal Kerja',
+                                            style: Constants.blacktextStyle,
                                           ),
-                                          onPressed: () {
-                                            if (!controller
-                                                .globalKey.currentState!
-                                                .validate()) {
-                                              return;
-                                            } else {
-                                              controller.c.value = 2;
-                                              controller.update();
-                                            }
-                                          },
-                                          child: Text(
-                                            'Lanjut',
-                                            style: Constants.whiteTextStyle,
-                                          ))
-                                    ])
-                                  : controller.c.value == 2
-                                      ? Column(
+                                          labelStyle: Constants.blacktextStyle),
+                                      validator: (value) {},
+                                      onTap: () async {
+                                        FocusScope.of(context)
+                                            .requestFocus(FocusNode());
+                                        controller.selectedDate!.value =
+                                            (await showDatePicker(
+                                                context: context,
+                                                initialDate: DateTime.now(),
+                                                firstDate: DateTime.now(),
+                                                lastDate: DateTime(
+                                                    DateTime.now().year +
+                                                        120)))!;
+                                        String format = DateFormat('yyyy-MM-dd')
+                                            .format(
+                                                controller.selectedDate!.value);
+                                        controller.tglKerja.value.text = format;
+                                        controller.update();
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: 15,
+                                    ),
+                                    ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          minimumSize:
+                                              const Size(double.infinity, 42),
+                                          primary: const Color.fromRGBO(
+                                              36, 40, 91, 1),
+                                          shadowColor: Colors.black,
+                                        ),
+                                        onPressed: () {
+                                          if (!controller
+                                              .globalKey.currentState!
+                                              .validate()) {
+                                            return;
+                                          } else {
+                                            controller.c.value = 2;
+                                            controller.update();
+                                          }
+                                        },
+                                        child: Text(
+                                          'Lanjut',
+                                          style: Constants.whiteTextStyle,
+                                        ))
+                                  ]))
+                              : controller.c.value == 2
+                                  ? Container(
+                                      margin: const EdgeInsets.all(10),
+                                      child: Column(children: <Widget>[
+                                        Column(
                                           children: <Widget>[
-                                            
+                                            const SizedBox(
+                                              height: 5,
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 16, top: 16, right: 16),
+                                              child: controller
+                                                      .imagefiles!.isEmpty
+                                                  ? GestureDetector(
+                                                      onTap: () {
+                                                        openImages();
+                                                      },
+                                                      child: Container(
+                                                        color: Colors.grey[100],
+                                                        height: 200,
+                                                        width: Get.width,
+                                                        child: const Icon(
+                                                          Icons.camera_alt,
+                                                          size: 50,
+                                                        ),
+                                                      ),
+                                                    )
+                                                  : GestureDetector(
+                                                      onTap: () {
+                                                        openImages();
+                                                      },
+                                                      child: ClipRRect(
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(8),
+                                                        child: Wrap(
+                                                          children: controller
+                                                              .imagefiles!
+                                                              .map((imageone) {
+                                                            return Container(
+                                                                child: Card(
+                                                              child: Container(
+                                                                height: 100,
+                                                                width: 100,
+                                                                child: Image.file(
+                                                                    File(imageone
+                                                                        .path)),
+                                                              ),
+                                                            ));
+                                                          }).toList(),
+                                                        ),
+                                                      ),
+                                                    ),
+                                            ),
+                                            const SizedBox(
+                                              height: 30,
+                                              width: 50,
+                                            ),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  minimumSize: const Size(
+                                                      double.infinity, 40),
+                                                  primary: const Color.fromRGBO(
+                                                      36, 40, 91, 1),
+                                                  shadowColor: Colors.black,
+                                                ),
+                                                onPressed: () {
+                                                  if (controller
+                                                      .imagefiles!.isEmpty) {
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                            'Apakah anda yakin tidak mengupload gambar?',
+                                                            style: Constants
+                                                                .blacktextStyle,
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: Text(
+                                                                  "BATAL",
+                                                                  style: Constants
+                                                                      .blacktextStyle),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                            ),
+                                                            TextButton(
+                                                              child: Text(
+                                                                "YA",
+                                                                style: Constants
+                                                                    .blacktextStyle,
+                                                              ),
+                                                              onPressed: () {
+                                                                controller.c
+                                                                    .value += 1;
+                                                                controller
+                                                                    .update();
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
+                                                  } else {
+                                                    controller.c.value += 1;
+                                                    controller.update();
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Lanjut',
+                                                  style:
+                                                      Constants.whiteTextStyle,
+                                                )),
+                                            const SizedBox(
+                                              height: 10,
+                                            ),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  minimumSize: const Size(
+                                                      double.infinity, 40),
+                                                  primary: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  controller.c.value -= 1;
+                                                  controller.update();
+                                                },
+                                                child: Text(
+                                                  'Kembali',
+                                                  style:
+                                                      Constants.blacktextStyle,
+                                                ))
                                           ],
                                         )
-                                      : Container(),
-                            ),
-                          )
+                                      ]),
+                                    )
+                                  : controller.c.value == 3
+                                      ? Container(
+                                          margin: const EdgeInsets.all(10),
+                                          child: Column(children: <Widget>[
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              textField: controller.masalah,
+                                              hintText: 'pompa bocor',
+                                              labelText: 'Masalah Pompa',
+                                              promptText:
+                                                  'Masalah Pompa Tidak Boleh Kosong',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              nomor: 1,
+                                              textField: controller.jmlPompa,
+                                              hintText: '100',
+                                              labelText: 'Jumlah Pompa',
+                                              promptText:
+                                                  'Jumlah Pompa Tidak Boleh Kosong',
+                                              promptText2:
+                                                  'Jumlah Pompa Harus Angka',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              textField: controller.umrPompa,
+                                              hintText: '12 hari/bulan/tahun',
+                                              labelText: 'Umur Pompa',
+                                              promptText:
+                                                  'Umur Pompa Tidak Boleh Kosong',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              textField: controller.cpName,
+                                              hintText: 'Budi',
+                                              labelText: 'Nama Contact Person',
+                                              promptText:
+                                                  'Nama Contact Person Tidak Boleh Kosong',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              nomor: 1,
+                                              textField: controller.cpPhone,
+                                              hintText: '0856277XXXXX',
+                                              labelText:
+                                                  'Nomor Telepon Contact Person',
+                                              promptText:
+                                                  'Nama Telepon Tidak Boleh Kosong',
+                                              promptText2:
+                                                  'Nomor Telepon Wajin Angka',
+                                              promptText3:
+                                                  'Nomor Telepon tidak lengkap',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            buildServisWidget(
+                                              textField:
+                                                  controller.rekomTeknisi,
+                                              hintText: 'Budi',
+                                              labelText: 'Rekomendasi Teknisi',
+                                              promptText:
+                                                  'Rekomendasi Teknisi Harus Diisi',
+                                            ),
+                                            const SizedBox(
+                                              height: 15,
+                                            ),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  minimumSize: const Size(
+                                                      double.infinity, 42),
+                                                  primary: const Color.fromRGBO(
+                                                      36, 40, 91, 1),
+                                                  shadowColor: Colors.black,
+                                                ),
+                                                onPressed: () {
+                                                  if (!controller
+                                                      .globalKey.currentState!
+                                                      .validate()) {
+                                                    return;
+                                                  } else {
+                                                    controller.update();
+                                                  }
+                                                },
+                                                child: Text(
+                                                  'Buat Servis !',
+                                                  style:
+                                                      Constants.whiteTextStyle,
+                                                )),
+                                            const SizedBox(height: 15),
+                                            ElevatedButton(
+                                                style: ElevatedButton.styleFrom(
+                                                  minimumSize: const Size(
+                                                      double.infinity, 40),
+                                                  primary: Colors.white,
+                                                ),
+                                                onPressed: () {
+                                                  controller.c.value -= 1;
+                                                  controller.update();
+                                                },
+                                                child: Text(
+                                                  'Kembali',
+                                                  style:
+                                                      Constants.blacktextStyle,
+                                                ))
+                                          ]))
+                                      : Container())
                         ],
                       )),
                 ),

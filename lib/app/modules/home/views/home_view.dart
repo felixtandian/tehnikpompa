@@ -11,17 +11,7 @@ import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dar
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
-
-  Future<bool> onWillPop() {
-    DateTime now = DateTime.now();
-    if (controller.currentBackPressTime == null || 
-        now.difference(controller.currentBackPressTime) > const Duration(seconds: 2)) {
-      controller.currentBackPressTime = now;
-      Fluttertoast.showToast(msg: 'press back one more to exit');
-      return Future.value(false);
-    }
-    return Future.value(true);
-  }
+  DateTime timeBackPressed = DateTime.now();
 
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
@@ -51,9 +41,20 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: () async{
-        onWillPop();
-        return true;
+      onWillPop: () async {
+        final diff = DateTime.now().difference(timeBackPressed);
+        final isExitWarning = diff >= Duration(seconds: 2);
+
+        timeBackPressed = DateTime.now();
+
+        if (isExitWarning) {
+          final message = 'Press back again to exit';
+          Fluttertoast.showToast(msg: message, fontSize: 14);
+          return false;
+        } else {
+          Fluttertoast.cancel();
+          return true;
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -63,15 +64,11 @@ class HomeView extends GetView<HomeController> {
         ),
         body: Container(
           decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.white,
-                Colors.blueGrey
-              ],
-            )
-          ),
+              gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.bottomLeft,
+            colors: [Colors.white, Colors.blueGrey],
+          )),
           child: Container(
             height: 800,
             width: Get.width,
@@ -88,23 +85,23 @@ class HomeView extends GetView<HomeController> {
                     height: 20,
                   ),
                   Container(
-          width: 100.0,
-          height: 100.0,
-          decoration:
-              const ShapeDecoration(shape: CircleBorder(), color: Colors.white),
-          child: const Padding(
-            padding: EdgeInsets.all(8.0),
-            child: DecoratedBox(
-              decoration: ShapeDecoration(
-                  shape: CircleBorder(),
-                  image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        'https://icons8.com/icon/H5Opo8lXb2Hy/morning',
-                      ))),
-            ),
-          ),
-        ),
+                    width: 100.0,
+                    height: 100.0,
+                    decoration: const ShapeDecoration(
+                        shape: CircleBorder(), color: Colors.white),
+                    child: const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: DecoratedBox(
+                        decoration: ShapeDecoration(
+                            shape: CircleBorder(),
+                            image: DecorationImage(
+                                fit: BoxFit.cover,
+                                image: NetworkImage(
+                                  'https://icons8.com/icon/H5Opo8lXb2Hy/morning',
+                                ))),
+                      ),
+                    ),
+                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 7),
                     child: Text("Content goes over here !",
@@ -141,7 +138,7 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconProduct.png',
                                     name: 'Daftar Barang'),
                                 onTap: () {
-                                  Get.to(DaftarbarangView(),
+                                  Get.to(() => DaftarbarangView(),
                                       binding: DaftarbarangBinding());
                                 },
                               ),
@@ -150,7 +147,7 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconDocument.png',
                                     name: 'Insert Service'),
                                 onTap: () {
-                                  Get.to(CreateserviceView(),
+                                  Get.to(() => CreateserviceView(),
                                       binding: CreateserviceBinding());
                                 },
                               ),
@@ -159,7 +156,7 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconDocuments.png',
                                     name: 'Daftar Service'),
                                 onTap: () {
-                                  Get.to(DaftarbarangView(),
+                                  Get.to(() => DaftarbarangView(),
                                       binding: DaftarbarangBinding());
                                 },
                               ),
@@ -168,7 +165,7 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconProduct.png',
                                     name: 'Service Saya'),
                                 onTap: () {
-                                  Get.to(DaftarservisView(),
+                                  Get.to(() => DaftarservisView(),
                                       binding: DaftarservisBinding());
                                 },
                               ),

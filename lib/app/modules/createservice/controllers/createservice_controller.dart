@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 
 class CreateserviceController extends GetxController {
   //TODO: Implement CreateserviceController
@@ -20,12 +21,15 @@ class CreateserviceController extends GetxController {
   late TextEditingController jmlPompa;
   late TextEditingController rekomTeknisi;
   late Rx<TextEditingController> jenisServis;
-  List<File> selectedImages = []; // List of selected image
-  final picker = ImagePicker(); // Instance of Image picker
+  late Rx<TextEditingController> tglKerja;
+  final ImagePicker imgpicker = ImagePicker();
+  RxList<XFile>? imagefiles = <XFile>[].obs;
+  
   RxInt p = 1.obs;
   RxInt c = 1.obs;
   final count = 0.obs;
   final selectedServis = 'Service'.obs;
+  final Rx<DateTime>? selectedDate = DateTime.now().obs;
 
   List<String> servis = ['Service', 'Suprvision'];
   
@@ -52,6 +56,8 @@ class CreateserviceController extends GetxController {
     rekomTeknisi = TextEditingController();
     jenisServis = TextEditingController().obs;
     jenisServis.value.text = 'Service';
+    tglKerja = TextEditingController().obs;
+    tglKerja.value.text = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
     super.onInit();
   }
 
@@ -67,6 +73,8 @@ class CreateserviceController extends GetxController {
     namaServis.clear();
     umrPompa.clear();
     rekomTeknisi.clear();
+    jenisServis.value.clear();
+    imagefiles!.value = [];
   }
 
   @override

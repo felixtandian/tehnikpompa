@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tehnikpompa/app/modules/createservice/controllers/createservice_controller.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 
@@ -68,4 +69,18 @@ class buildServisWidget extends StatelessWidget {
       },
     );
   }
+}
+
+class widgetGallery extends StatelessWidget{
+
+  final ImagePicker imgpicker = ImagePicker();
+  List<XFile>? imagefiles;
+
+  
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    throw UnimplementedError();
+  }
+  
 }
