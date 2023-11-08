@@ -1,11 +1,9 @@
 import 'package:get/get.dart';
 
-class HomeController extends GetxController {
-  //TODO: Implement HomeController
+class DaftarservisController extends GetxController {
+  //TODO: Implement DaftarservisController
 
   final count = 0.obs;
-  late DateTime currentBackPressTime;
-
   @override
   void onInit() {
     super.onInit();

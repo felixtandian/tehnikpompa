@@ -1,14 +1,28 @@
-import 'package:expansion_card/expansion_card.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/createservice/bindings/createservice_binding.dart';
 import 'package:tehnikpompa/app/modules/createservice/views/createservice_view.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/bindings/daftarbarang_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
+
+  Future<bool> onWillPop() {
+    DateTime now = DateTime.now();
+    if (controller.currentBackPressTime == null || 
+        now.difference(controller.currentBackPressTime) > const Duration(seconds: 2)) {
+      controller.currentBackPressTime = now;
+      Fluttertoast.showToast(msg: 'press back one more to exit');
+      return Future.value(false);
+    }
+    return Future.value(true);
+  }
+
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -22,7 +36,7 @@ class HomeView extends GetView<HomeController> {
             decoration:
                 BoxDecoration(image: DecorationImage(image: AssetImage(image))),
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           Text(
@@ -36,140 +50,155 @@ class HomeView extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('HomePage', style: GoogleFonts.montserrat(fontSize: 18)),
-        backgroundColor: const Color.fromRGBO(36, 40, 91, 1),
-        automaticallyImplyLeading: false,
-      ),
-      body: Container(
-        color: const Color.fromRGBO(36, 40, 91, 1),
-        child: Container(
-          height: 800,
-          width: Get.width,
-          decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30), topRight: Radius.circular(30))),
+    return WillPopScope(
+      onWillPop: () async{
+        onWillPop();
+        return true;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('HomePage', style: GoogleFonts.montserrat(fontSize: 18)),
+          backgroundColor: const Color.fromRGBO(36, 40, 91, 1),
+          automaticallyImplyLeading: false,
+        ),
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.white,
+                Colors.blueGrey
+              ],
+            )
+          ),
           child: Container(
-            margin: EdgeInsets.all(5),
-            child: ListView(
-              children: [
-                SizedBox(
-                  height: 20,
-                ),
-                ExpansionCard(
-                  background: Image.asset('assets/navyblue.jpg'),
-                  borderRadius: 30,
-                  title: Container(
+            height: 800,
+            width: Get.width,
+            decoration: const BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(30),
+                    topRight: Radius.circular(30))),
+            child: Container(
+              margin: const EdgeInsets.all(5),
+              child: ListView(
+                children: [
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+          width: 100.0,
+          height: 100.0,
+          decoration:
+              const ShapeDecoration(shape: CircleBorder(), color: Colors.white),
+          child: const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: DecoratedBox(
+              decoration: ShapeDecoration(
+                  shape: CircleBorder(),
+                  image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        'https://icons8.com/icon/H5Opo8lXb2Hy/morning',
+                      ))),
+            ),
+          ),
+        ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 7),
+                    child: Text("Content goes over here !",
+                        style: GoogleFonts.montserrat(
+                            fontSize: 20, color: Colors.white)),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "Selamat Siang,",
+                          'Layanan',
                           style: GoogleFonts.montserrat(
-                            fontSize: 20,
-                            color: Colors.white,
+                            fontSize: 14,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 280,
+                          child: GridView.count(
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 12,
+                            mainAxisSpacing: 8,
+                            childAspectRatio: 1.30,
+                            children: [
+                              GestureDetector(
+                                child: selectedLayanan(
+                                    image: 'assets/iconProduct.png',
+                                    name: 'Daftar Barang'),
+                                onTap: () {
+                                  Get.to(DaftarbarangView(),
+                                      binding: DaftarbarangBinding());
+                                },
+                              ),
+                              GestureDetector(
+                                child: selectedLayanan(
+                                    image: 'assets/iconDocument.png',
+                                    name: 'Insert Service'),
+                                onTap: () {
+                                  Get.to(CreateserviceView(),
+                                      binding: CreateserviceBinding());
+                                },
+                              ),
+                              GestureDetector(
+                                child: selectedLayanan(
+                                    image: 'assets/iconDocuments.png',
+                                    name: 'Daftar Service'),
+                                onTap: () {
+                                  Get.to(DaftarbarangView(),
+                                      binding: DaftarbarangBinding());
+                                },
+                              ),
+                              GestureDetector(
+                                child: selectedLayanan(
+                                    image: 'assets/iconProduct.png',
+                                    name: 'Service Saya'),
+                                onTap: () {
+                                  Get.to(DaftarservisView(),
+                                      binding: DaftarservisBinding());
+                                },
+                              ),
+                            ],
                           ),
                         ),
                         Text(
-                          "Felix",
+                          'Utility',
                           style: GoogleFonts.montserrat(
-                              fontSize: 14, color: Colors.white),
+                            fontSize: 14,
+                          ),
                         ),
+                        // Container(
+                        //   child: ListView(
+                        //     children: [
+                        //       ItemUtility(
+                        //         id: 1,
+                        //         name: 'Pendingan Servis',
+                        //         onTap: (){
+
+                        //         },
+                        //       )
+                        //     ],
+                        //   ),
+                        // )
                       ],
                     ),
-                  ),
-                  children: <Widget>[
-                    Container(
-                      margin: EdgeInsets.symmetric(horizontal: 7),
-                      child: Text("Content goes over here !",
-                          style: GoogleFonts.montserrat(
-                              fontSize: 20, color: Colors.white)),
-                    )
-                  ],
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        'Layanan',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 14,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        height: 280,
-                        child: GridView.count(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 8,
-                          childAspectRatio: 1.30,
-                          children: [
-                            GestureDetector(
-                              child: selectedLayanan(
-                                  image: 'assets/iconProduct.png',
-                                  name: 'Daftar Barang'),
-                              onTap: () {
-                                Get.to(DaftarbarangView(),
-                                    binding: DaftarbarangBinding());
-                              },
-                            ),
-                            GestureDetector(
-                              child: selectedLayanan(
-                                  image: 'assets/iconDocument.png',
-                                  name: 'Insert Service'),
-                              onTap: () {
-                                Get.to(CreateserviceView(),
-                                    binding: CreateserviceBinding());
-                              },
-                            ),
-                            GestureDetector(
-                              child: selectedLayanan(
-                                  image: 'assets/iconDocuments.png',
-                                  name: 'Daftar Service'),
-                              onTap: () {
-                                Get.to(DaftarbarangView(),
-                                    binding: DaftarbarangBinding());
-                              },
-                            ),
-                            selectedLayanan(
-                                image: 'assets/iconProduct.png',
-                                name: 'Service Saya'),
-                          ],
-                        ),
-                      ),
-                      Text(
-                        'Utility',
-                        style: GoogleFonts.montserrat(
-                          fontSize: 14,
-                        ),
-                      ),
-                      // Container(
-                      //   child: ListView(
-                      //     children: [
-                      //       ItemUtility(
-                      //         id: 1,
-                      //         name: 'Pendingan Servis',
-                      //         onTap: (){
-
-                      //         },
-                      //       )
-                      //     ],
-                      //   ),
-                      // )
-                    ],
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ),

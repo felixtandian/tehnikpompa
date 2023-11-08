@@ -5,6 +5,8 @@ import '../modules/createservice/bindings/createservice_binding.dart';
 import '../modules/createservice/views/createservice_view.dart';
 import '../modules/daftarbarang/bindings/daftarbarang_binding.dart';
 import '../modules/daftarbarang/views/daftarbarang_view.dart';
+import '../modules/daftarservis/bindings/daftarservis_binding.dart';
+import '../modules/daftarservis/views/daftarservis_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/loginscreen/bindings/loginscreen_binding.dart';
@@ -39,6 +41,11 @@ class AppPages {
       name: _Paths.CREATESERVICE,
       page: () => CreateserviceView(),
       binding: CreateserviceBinding(),
+    ),
+    GetPage(
+      name: _Paths.DAFTARSERVIS,
+      page: () => DaftarservisView(),
+      binding: DaftarservisBinding(),
     ),
   ];
 }
