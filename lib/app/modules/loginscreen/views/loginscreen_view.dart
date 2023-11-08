@@ -129,7 +129,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
                               return;
                             } else {
                               //goto
-                              Get.off(()=>HomeView(), binding: HomeBinding());
+                              Get.offAll(()=>HomeView(), binding: HomeBinding());
                             }
                           },
                           child: Text(

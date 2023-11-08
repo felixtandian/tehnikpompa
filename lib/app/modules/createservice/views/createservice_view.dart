@@ -402,7 +402,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                               height: 15,
                                             ),
                                             buildServisWidget(
-                                              nomor: 1,
+                                              nomor: 4,
                                               textField: controller.jmlPompa,
                                               hintText: '100',
                                               labelText: 'Jumlah Pompa',
@@ -410,6 +410,8 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                   'Jumlah Pompa Tidak Boleh Kosong',
                                               promptText2:
                                                   'Jumlah Pompa Harus Angka',
+                                              promptText3:
+                                                  'Jumlah Pompa Harus Lebih Dari 0',
                                             ),
                                             const SizedBox(
                                               height: 15,
@@ -475,7 +477,44 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                       .validate()) {
                                                     return;
                                                   } else {
-                                                    controller.update();
+                                                    showDialog(
+                                                      context: context,
+                                                      builder: (BuildContext
+                                                          context) {
+                                                        return AlertDialog(
+                                                          title: Text(
+                                                            'Pastikan semuanya sudah benar ya?',
+                                                            style: Constants
+                                                                .blacktextStyle,
+                                                          ),
+                                                          actions: [
+                                                            TextButton(
+                                                              child: Text(
+                                                                  "BATAL",
+                                                                  style: Constants
+                                                                      .blacktextStyle),
+                                                              onPressed: () {
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                            ),
+                                                            TextButton(
+                                                              child: Text(
+                                                                "YA",
+                                                                style: Constants
+                                                                    .blacktextStyle,
+                                                              ),
+                                                              onPressed: () {
+                                                                controller
+                                                                    .update();
+                                                                Navigator.pop(
+                                                                    context);
+                                                              },
+                                                            )
+                                                          ],
+                                                        );
+                                                      },
+                                                    );
                                                   }
                                                 },
                                                 child: Text(

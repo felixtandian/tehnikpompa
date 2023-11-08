@@ -7,7 +7,6 @@ import 'package:tehnikpompa/utils/constant.dart';
 CreateserviceController servisC = CreateserviceController();
 
 class buildServisWidget extends StatelessWidget {
-  
   final TextEditingController? textField;
   final String? labelText;
   final String? promptText;
@@ -34,7 +33,7 @@ class buildServisWidget extends StatelessWidget {
       controller: textField,
       keyboardType: nomor == 0
           ? TextInputType.text
-          : nomor == 1
+          : nomor == 1 || nomor == 4
               ? TextInputType.number
               : TextInputType.emailAddress,
       decoration: InputDecoration(
@@ -56,6 +55,14 @@ class buildServisWidget extends StatelessWidget {
           } else if (value.length < 10) {
             return '$promptText3';
           }
+        } else if (nomor == 4) {
+          if (value!.isEmpty) {
+            return '$promptText';
+          } else if (!value.isNum) {
+            return '$promptText2';
+          } else if (int.parse(value) <= 0) {
+            return '$promptText3';
+          }
         } else {
           if (value!.isEmpty) {
             return '$promptText';
@@ -71,16 +78,13 @@ class buildServisWidget extends StatelessWidget {
   }
 }
 
-class widgetGallery extends StatelessWidget{
-
+class widgetGallery extends StatelessWidget {
   final ImagePicker imgpicker = ImagePicker();
   List<XFile>? imagefiles;
 
-  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
     throw UnimplementedError();
   }
-  
 }

@@ -44,9 +44,7 @@ class HomeView extends GetView<HomeController> {
       onWillPop: () async {
         final diff = DateTime.now().difference(timeBackPressed);
         final isExitWarning = diff >= Duration(seconds: 2);
-
         timeBackPressed = DateTime.now();
-
         if (isExitWarning) {
           final message = 'Press back again to exit';
           Fluttertoast.showToast(msg: message, fontSize: 14);
@@ -74,9 +72,7 @@ class HomeView extends GetView<HomeController> {
             width: Get.width,
             decoration: const BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30))),
+               ),
             child: Container(
               margin: const EdgeInsets.all(5),
               child: ListView(
@@ -84,24 +80,24 @@ class HomeView extends GetView<HomeController> {
                   const SizedBox(
                     height: 20,
                   ),
-                  Container(
-                    width: 100.0,
-                    height: 100.0,
-                    decoration: const ShapeDecoration(
-                        shape: CircleBorder(), color: Colors.white),
-                    child: const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: DecoratedBox(
-                        decoration: ShapeDecoration(
-                            shape: CircleBorder(),
-                            image: DecorationImage(
-                                fit: BoxFit.cover,
-                                image: NetworkImage(
-                                  'https://icons8.com/icon/H5Opo8lXb2Hy/morning',
-                                ))),
-                      ),
-                    ),
-                  ),
+                  // Container(
+                  //   width: 100.0,
+                  //   height: 100.0,
+                  //   decoration: const ShapeDecoration(
+                  //       shape: CircleBorder(), color: Colors.white),
+                  //   child: const Padding(
+                  //     padding: EdgeInsets.all(8.0),
+                  //     child: DecoratedBox(
+                  //       decoration: ShapeDecoration(
+                  //           shape: CircleBorder(),
+                  //           image: DecorationImage(
+                  //               fit: BoxFit.cover,
+                  //               image: NetworkImage(
+                  //                 'https://icons8.com/icon/H5Opo8lXb2Hy/morning',
+                  //               ))),
+                  //     ),
+                  //   ),
+                  // ),
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 7),
                     child: Text("Content goes over here !",
