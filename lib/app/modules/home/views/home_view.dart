@@ -8,6 +8,7 @@ import 'package:tehnikpompa/app/modules/daftarbarang/bindings/daftarbarang_bindi
 import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
+import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -79,6 +80,20 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   const SizedBox(
                     height: 20,
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.blue
+                    ),
+                    child: ListTile(
+                      title: Text('Hello, User', style: Constants.whiteTextStyle,),
+                      subtitle: Text('Selamat Siang', style: Constants.whiteTextStyle,),
+                      leading: Icon(Icons.account_circle_rounded, size: 30), 
+                      iconColor: Colors.white,
+                      contentPadding: EdgeInsets.all(20),
+                      dense: true,
+                    ),
                   ),
                   // Container(
                   //   width: 100.0,
@@ -152,8 +167,8 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconDocuments.png',
                                     name: 'Daftar Service'),
                                 onTap: () {
-                                  Get.to(() => DaftarbarangView(),
-                                      binding: DaftarbarangBinding());
+                                  Get.to(() => DaftarservisView(),
+                                      binding: DaftarservisBinding());
                                 },
                               ),
                               GestureDetector(
@@ -168,12 +183,12 @@ class HomeView extends GetView<HomeController> {
                             ],
                           ),
                         ),
-                        Text(
-                          'Utility',
-                          style: GoogleFonts.montserrat(
-                            fontSize: 14,
-                          ),
-                        ),
+                        // Text(
+                        //   'Utility',
+                        //   style: GoogleFonts.montserrat(
+                        //     fontSize: 14,
+                        //   ),
+                        // ),
                         // Container(
                         //   child: ListView(
                         //     children: [

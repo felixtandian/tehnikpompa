@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
+import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/daftarbarang_controller.dart';
 
 DaftarbarangController daftarbarangController =
@@ -34,18 +35,30 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
           child: SingleChildScrollView(
             child: Column(
               children: <Widget>[
-                AnimSearchBar(
-                  color: Colors.white,
-                  helpText: 'Masukkan Nama Barang',
-                  width: Get.width,
-                  textController: controller.searchTextController.value,
-                  onSuffixTap: () {
-                    controller.searchTextController.value.clear();
-                  },
-                  onSubmitted: (String) {},
-                  autoFocus: true,
-                  closeSearchOnSuffixTap: true,
-                  animationDurationInMilli: 2000,
+                Container(
+                  padding: const EdgeInsets.all( 8.0),
+                  child: TextField(
+                    controller: controller.searchTextController.value,
+                    decoration: InputDecoration(
+                      hintText: 'Search...',
+                      hintStyle: Constants.blacktextStyle,
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.clear),
+                        onPressed: () =>
+                            controller.searchTextController.value.clear(),
+                      ),
+                      // Add a search icon or button to the search bar
+                      prefixIcon: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          // Perform the search here
+                        },
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                      ),
+                    ),
+                  ),
                 ),
                 SizedBox(
                   height: 8,
@@ -54,7 +67,7 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
                   height: 500,
                   child: ListView.builder(
                     controller: controller.scrollController,
-                    itemCount: controller.list.length,
+                    itemCount: controller.listsData.length,
                     itemBuilder: (context, index) {
                       return Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -63,11 +76,33 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
                             border: Border.all(color: Colors.grey),
                             borderRadius: BorderRadius.all(Radius.circular(20)),
                           ),
-                          height: 100,
-                          child: Center(
-                            child: Text(
-                              'Barang ' + controller.list[index].name,
-                              style: GoogleFonts.montserrat(fontSize: 14),
+                          height: 150,
+                          child: Container(
+                            padding: EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: <Widget>[
+                                Text(
+                                  controller.listsData[index].first,
+                                  style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'KODE BARANG : ' + controller.listsData[index][1],
+                                  style: GoogleFonts.montserrat(fontSize: 14),
+                                ),
+                                Text(
+                                  'STOK : ' +controller.listsData[index][2],
+                                  style: GoogleFonts.montserrat(fontSize: 14),
+                                ),
+                                Text(
+                                  'BOOKING : ' +controller.listsData[index][3],
+                                  style: GoogleFonts.montserrat(fontSize: 14),
+                                ),
+                                Text(
+                                  'INDEN : ' +controller.listsData[index][4],
+                                  style: GoogleFonts.montserrat(fontSize: 14),
+                                ),
+                              ],
                             ),
                           ),
                         ),

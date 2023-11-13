@@ -16,17 +16,17 @@ class DaftarbarangController extends GetxController {
   RxBool isLoading = true.obs;
   RxBool hasMore = true.obs;
 
-  final List<String> _suggestions = [
-    'IMPELLER',
-    'ISO 65',
-    'ELECTRODE MASSA',
-    'MCB 20',
-    'PFR MINILEC',
-    'WLC P1 MINILEC',
-    'STEPPING RELAY',
-    'CABLE PLUG',
-    'OVERLOAD CHINT',
-    'PUSH BUTTON'
+  List<List<String>> listsData = [
+    ['ELECTRODE MASSA', 'E-MASSA', '201', '0', '0'],
+    ['MCB 20 AMP 1POLE', 'MCB20A', '0', '0', '0'],
+    ['PFR MINILEC', 'PFRMINI', '0', '0', '0'],
+    ['WLC P1 MINILEC', 'WLCP1MINI', '220', '0', '0'],
+    ['STEPPING RELAY + SOCKET', 'STEPPING RELAY', '0', '0', '0'],
+    ['LCP W/ POTENTIOMETER DANFOSS', '0', 'SOLO', '0', '0'],
+    ['CABLE PLUG', 'CP', '0', '0', '0'],
+    ['OVERLOAD CHINT 23-32A', '0', '0', '0', '0'],
+    ['PFR S2VMR', 'PFRS2VMR', '0', '0', '0'],
+    ['MAGNETIC ONTACTOR LC1 D09M7 220V TELEMACANIC', 'MOLDT', '0', '0', '0'],
   ];
 
   Rx<TextEditingController> searchTextController = TextEditingController().obs;

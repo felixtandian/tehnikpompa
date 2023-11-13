@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tehnikpompa/app/modules/createservice/widgets/utility.dart';
+import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/createservice_controller.dart';
@@ -505,10 +506,12 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                     .blacktextStyle,
                                                               ),
                                                               onPressed: () {
-                                                                controller
-                                                                    .update();
                                                                 Navigator.pop(
                                                                     context);
+                                                                Get.offAll(()=>HomeView(), binding: HomeBinding());
+                                                                snackBar('Berhasil', 'Servismu berhasil dibuat');
+                                                                controller
+                                                                    .update();
                                                               },
                                                             )
                                                           ],
@@ -549,3 +552,9 @@ class CreateserviceView extends GetView<CreateserviceController> {
     );
   }
 }
+void snackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.green[600],
+        duration: Duration(seconds: 2));
+  }
