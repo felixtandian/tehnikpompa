@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:english_words/english_words.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/widgets/listItemBarang.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/daftarbarang_controller.dart';
 
@@ -36,7 +37,7 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
             child: Column(
               children: <Widget>[
                 Container(
-                  padding: const EdgeInsets.all( 8.0),
+                  padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: controller.searchTextController.value,
                     decoration: InputDecoration(
@@ -64,52 +65,31 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
                   height: 8,
                 ),
                 Container(
-                  height: 500,
-                  child: ListView.builder(
-                    controller: controller.scrollController,
-                    itemCount: controller.listsData.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
-                            borderRadius: BorderRadius.all(Radius.circular(20)),
+                    height: 500,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Obx(
+                            () => controller.daftarBarangModel.isNotEmpty
+                                ? ListView.builder(
+                                    padding: EdgeInsets.all(10),
+                                    physics: ClampingScrollPhysics(),
+                                    itemCount:
+                                        controller.daftarBarangModel.length,
+                                    shrinkWrap: true,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return ListItemBarang(
+                                        model:
+                                            controller.daftarBarangModel[index],
+                                      );
+                                    })
+                                : Center(child: Text('Barang tidak ditemukan')),
                           ),
-                          height: 150,
-                          child: Container(
-                            padding: EdgeInsets.all(20),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  controller.listsData[index].first,
-                                  style: GoogleFonts.montserrat(fontSize: 14, fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'KODE BARANG : ' + controller.listsData[index][1],
-                                  style: GoogleFonts.montserrat(fontSize: 14),
-                                ),
-                                Text(
-                                  'STOK : ' +controller.listsData[index][2],
-                                  style: GoogleFonts.montserrat(fontSize: 14),
-                                ),
-                                Text(
-                                  'BOOKING : ' +controller.listsData[index][3],
-                                  style: GoogleFonts.montserrat(fontSize: 14),
-                                ),
-                                Text(
-                                  'INDEN : ' +controller.listsData[index][4],
-                                  style: GoogleFonts.montserrat(fontSize: 14),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                ),
+                        ],
+                      ),
+                    )),
               ],
             ),
           ),

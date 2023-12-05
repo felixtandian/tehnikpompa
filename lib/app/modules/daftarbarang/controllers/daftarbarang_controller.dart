@@ -1,7 +1,13 @@
+import 'dart:developer';
+
 import 'package:english_words/english_words.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/models/daftarBarangModel.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/modelbarang.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/service/daftarBarangService.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
 
 class DaftarbarangController extends GetxController {
@@ -15,6 +21,8 @@ class DaftarbarangController extends GetxController {
   final itemFetcher = ItemFetcher();
   RxBool isLoading = true.obs;
   RxBool hasMore = true.obs;
+  RxList daftarBarangModel = <DaftarBarangModel?>[].obs;
+
 
   List<List<String>> listsData = [
     ['ELECTRODE MASSA', 'E-MASSA', '201', '0', '0'],
@@ -80,4 +88,41 @@ class DaftarbarangController extends GetxController {
   @override
   void onClose() {}
   void increment() => count.value++;
+
+  
+  Future getDaftarBarang(int lokasi,String key, String jenis,int page) async {
+    
+    EasyLoading.show(
+        status: "Mencari Barang. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try{
+      DaftarBarangService().getDaftarBarang(lokasi, key, jenis, page).then((value) async{
+        log(value.toString());
+        if(value != []){
+          daftarBarangModel.value = value;
+          log(daftarBarangModel.toString());
+        }
+      });
+    }catch(e){
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+    void snackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.green[600],
+        duration: Duration(seconds: 3));
+  }
+
+  void errorSnackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.red[600],
+        duration: Duration(seconds: 3));
+  }
+  
 }

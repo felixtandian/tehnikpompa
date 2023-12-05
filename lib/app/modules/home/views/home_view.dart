@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/createservice/bindings/createservice_binding.dart';
 import 'package:tehnikpompa/app/modules/createservice/views/createservice_view.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/bindings/daftarbarang_binding.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/controllers/daftarbarang_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
@@ -13,7 +14,7 @@ import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
   DateTime timeBackPressed = DateTime.now();
-
+  DaftarbarangController barangC = Get.put(DaftarbarangController());
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -88,7 +89,7 @@ class HomeView extends GetView<HomeController> {
                     ),
                     child: ListTile(
                       title: Text('Hello, User', style: Constants.whiteTextStyle,),
-                      subtitle: Text('Selamat Siang', style: Constants.whiteTextStyle,),
+                      subtitle: Text('Selamat '+controller.greetings.value, style: Constants.whiteTextStyle,),
                       leading: Icon(Icons.account_circle_rounded, size: 30), 
                       iconColor: Colors.white,
                       contentPadding: EdgeInsets.all(20),
@@ -113,12 +114,6 @@ class HomeView extends GetView<HomeController> {
                   //     ),
                   //   ),
                   // ),
-                  Container(
-                    margin: const EdgeInsets.symmetric(horizontal: 7),
-                    child: Text("Content goes over here !",
-                        style: GoogleFonts.montserrat(
-                            fontSize: 20, color: Colors.white)),
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -148,7 +143,8 @@ class HomeView extends GetView<HomeController> {
                                 child: selectedLayanan(
                                     image: 'assets/iconProduct.png',
                                     name: 'Daftar Barang'),
-                                onTap: () {
+                                onTap: ()  async {
+                                  await barangC.getDaftarBarang(1, '', '', 1);
                                   Get.to(() => DaftarbarangView(),
                                       binding: DaftarbarangBinding());
                                 },
