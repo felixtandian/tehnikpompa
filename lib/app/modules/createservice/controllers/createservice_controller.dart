@@ -31,7 +31,6 @@ class CreateserviceController extends GetxController {
   final selectedServis = 'Service'.obs;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
 
-  List<String> servis = ['Service', 'Suprvision'];
   
   RxList<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [

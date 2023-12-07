@@ -51,6 +51,12 @@ dependencies:
   fluttertoast: ^8.2.2
   intl: ^0.18.1
   flutter_launcher_icons: ^0.11.0
+  http: ^0.13.5
+  dio: ^5.4.0
+  logging: ^1.1.0
+  number_paginator: ^0.4.0
+  number_pagination: ^0.0.3+2
+  dropdown_button2: ^1.4.0
 
 flutter_icons:
   android: "launcher_icon"

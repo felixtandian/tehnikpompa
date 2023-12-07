@@ -1,12 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:tehnikpompa/app/modules/daftarbarang/models/daftarBarangModel.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 
-class ListItemBarang extends StatelessWidget {
-  final DaftarBarangModel? model;
-  const ListItemBarang({
+class DaftarServisWidget extends StatelessWidget {
+  final DaftarServisModel? model;
+  const DaftarServisWidget({
     Key? key,
     required this.model,
   }) : super(key: key);
@@ -26,27 +24,27 @@ class ListItemBarang extends StatelessWidget {
             borderRadius: BorderRadius.all(Radius.circular(10))),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            model!.namaBarang,
+            model!.nama,
             style: Constants.boldBlackTitle,
           ),
           SizedBox(height: 10),
           Text(
-            model!.kodeBarang,
+            model!.createdDate.toString(),
             style: Constants.blacktextStyle,
           ),
           SizedBox(height: 10),
           Text(
-            'Stock Indent : ' + model!.stokIndent.toString(),
+            'Status : ' + model!.status.toString(),
             style: Constants.blacktextStyle,
           ),
           SizedBox(height: 10),
           Text(
-            'Stock Barang : ' + model!.stokBarang.toString(),
+            'Teknisi 1 : ' + model!.teknisi1.toString(),
             style: Constants.blacktextStyle,
           ),
           SizedBox(height: 10),
           Text(
-            'Total Booking : ' + model!.totalBooking.toString(),
+            'Teknisi 2 : ' + model!.teknisi2.toString(),
             style: Constants.blacktextStyle,
           )
         ]),

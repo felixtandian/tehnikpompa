@@ -8,6 +8,7 @@ import 'package:tehnikpompa/app/modules/daftarbarang/bindings/daftarbarang_bindi
 import 'package:tehnikpompa/app/modules/daftarbarang/controllers/daftarbarang_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/home_controller.dart';
@@ -15,6 +16,7 @@ import '../controllers/home_controller.dart';
 class HomeView extends GetView<HomeController> {
   DateTime timeBackPressed = DateTime.now();
   DaftarbarangController barangC = Get.put(DaftarbarangController());
+  DaftarservisController servisC = Get.put(DaftarservisController());
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -144,7 +146,9 @@ class HomeView extends GetView<HomeController> {
                                     image: 'assets/iconProduct.png',
                                     name: 'Daftar Barang'),
                                 onTap: ()  async {
+                                 // await barangC.getData();
                                   await barangC.getDaftarBarang(1, '', '', 1);
+                                  
                                   Get.to(() => DaftarbarangView(),
                                       binding: DaftarbarangBinding());
                                 },
@@ -162,7 +166,8 @@ class HomeView extends GetView<HomeController> {
                                 child: selectedLayanan(
                                     image: 'assets/iconDocuments.png',
                                     name: 'Daftar Service'),
-                                onTap: () {
+                                onTap: () async {
+                                  await servisC.getDaftarServis(1, '', '', 1);
                                   Get.to(() => DaftarservisView(),
                                       binding: DaftarservisBinding());
                                 },

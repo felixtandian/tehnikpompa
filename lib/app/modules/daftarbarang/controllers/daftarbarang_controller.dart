@@ -1,43 +1,47 @@
+import 'dart:convert';
 import 'dart:developer';
-
+import 'dart:io';
+import 'package:http/http.dart' as http;
 import 'package:english_words/english_words.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/daftarBarangModel.dart';
+import 'package:tehnikpompa/app/modules/daftarbarang/models/listKategoriModel.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/modelbarang.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/service/daftarBarangService.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
+import 'package:tehnikpompa/utils/constant.dart';
+import 'package:dio/dio.dart';
 
 class DaftarbarangController extends GetxController {
   //TODO: Implement DaftarbarangController
   List<Model> list = [];
   ScrollController scrollController = ScrollController();
+  
   int listLength = 6;
-
+  final dio = Dio();
   final pairList = <WordPair>[];
   final biggerFont = const TextStyle(fontSize: 18.0);
   final itemFetcher = ItemFetcher();
+  RxInt totalPage = 0.obs;
+  RxInt currentPage = 1.obs;
   RxBool isLoading = true.obs;
   RxBool hasMore = true.obs;
   RxList daftarBarangModel = <DaftarBarangModel?>[].obs;
+  RxList kategoriModel = <KategoriModel?>[].obs;
+  final selectedLokasi = 'Semarang'.obs;
+  RxString selectedCategory = 'ACCESORIES PANEL'.obs ;
 
-
-  List<List<String>> listsData = [
-    ['ELECTRODE MASSA', 'E-MASSA', '201', '0', '0'],
-    ['MCB 20 AMP 1POLE', 'MCB20A', '0', '0', '0'],
-    ['PFR MINILEC', 'PFRMINI', '0', '0', '0'],
-    ['WLC P1 MINILEC', 'WLCP1MINI', '220', '0', '0'],
-    ['STEPPING RELAY + SOCKET', 'STEPPING RELAY', '0', '0', '0'],
-    ['LCP W/ POTENTIOMETER DANFOSS', '0', 'SOLO', '0', '0'],
-    ['CABLE PLUG', 'CP', '0', '0', '0'],
-    ['OVERLOAD CHINT 23-32A', '0', '0', '0', '0'],
-    ['PFR S2VMR', 'PFRS2VMR', '0', '0', '0'],
-    ['MAGNETIC ONTACTOR LC1 D09M7 220V TELEMACANIC', 'MOLDT', '0', '0', '0'],
-  ];
-
+  RxInt lokasi = 1.obs;
   Rx<TextEditingController> searchTextController = TextEditingController().obs;
+  RxList<DropdownMenuItem<String>> get dropdownItems2 {
+    List<DropdownMenuItem<String>> menuItems = [
+      const DropdownMenuItem(child: Text("Semarang"), value: 'Semarang'),
+      const DropdownMenuItem(child: Text("Jogjakarta"), value: "Jogjakarta"),
+    ];
+    return menuItems.obs;
+  }
 
   void loadMore() {
     isLoading.value = true;
@@ -80,6 +84,14 @@ class DaftarbarangController extends GetxController {
     });
   }
 
+  void setSelected(String value) {
+    selectedLokasi.value = value;
+  }
+
+  void setSelectedKategori(String value){
+    selectedCategory.value = value;
+  }
+
   @override
   void onReady() {
     super.onReady();
@@ -89,29 +101,71 @@ class DaftarbarangController extends GetxController {
   void onClose() {}
   void increment() => count.value++;
 
-  
-  Future getDaftarBarang(int lokasi,String key, String jenis,int page) async {
-    
+  Future getDaftarBarang(int lokasi, String key, String jenis, int page) async {
     EasyLoading.show(
         status: "Mencari Barang. . .",
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
-    try{
-      DaftarBarangService().getDaftarBarang(lokasi, key, jenis, page).then((value) async{
+    try {
+      DaftarBarangService()
+          .getDaftarBarang(lokasi, key, jenis, page)
+          .then((value) async {
         log(value.toString());
-        if(value != []){
+        if (value != []) {
           daftarBarangModel.value = value;
           log(daftarBarangModel.toString());
         }
       });
-    }catch(e){
+    } catch (e) {
       errorSnackBar('Gagal', e.toString());
     }
     EasyLoading.dismiss();
   }
 
-    void snackBar(String judul, String msg) {
+  Future getKategori() async {
+    EasyLoading.show(
+        status: "Mencari Kategori. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      DaftarBarangService()
+          .getKategori()
+          .then((value) async {
+        log(value.toString());
+        if (value != []) {
+          kategoriModel.value = value;
+          log(kategoriModel.toString());
+        }
+      });
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+  // Future<List<KategoriModel>> getCategory() async {
+  //   var url = Constants.baseURL + 'listKategoriBarang';
+  //   try {
+  //     final response = await dio
+  //         .get(url);
+  //     final body = json.decode(response) as List;
+
+  //     if (response.statusCode == 200) {
+  //       return body.map((e) {
+  //         final map = e as Map<String, dynamic>;
+  //         return KategoriModel(
+  //             kodeKtgrBarang: map["kodeKtgrBarang"], namaKtgrBarang: map["namaKtgrBarang"]);
+  //       }).toList();
+  //     }
+  //   } on SocketException {
+  //     throw Exception("Network Connectivity Error");
+  //   }
+  //   throw Exception("Fetch Data Error");
+  // }
+
+  void snackBar(String judul, String msg) {
     Get.snackbar(judul, msg,
         colorText: Colors.white,
         backgroundColor: Colors.green[600],
@@ -124,5 +178,4 @@ class DaftarbarangController extends GetxController {
         backgroundColor: Colors.red[600],
         duration: Duration(seconds: 3));
   }
-  
 }
