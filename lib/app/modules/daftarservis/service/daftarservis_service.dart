@@ -28,11 +28,11 @@ class DaftarServisService extends BaseService {
       );
       log(resp.body.toString());
       List<DaftarServisModel> response = [];
-      if (resp.body['message'] == 'Sukses') {
+      if (resp.body['message'] == 'Berhasil') {
         log('awok');
         var rawData = resp.body['data'];
         servisC.totalPage.value = resp.body['total_page'];
-        servisC.currentPage.value = resp.body['current_page'];
+        servisC.currentPage.value = resp.body['page'];
         log('halamane : ' + servisC.totalPage.value.toString() + ' ' + servisC.currentPage.value.toString());
         rawData.forEach((element) {
           response.add(DaftarServisModel.fromJson(element));

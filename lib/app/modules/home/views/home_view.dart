@@ -87,7 +87,7 @@ class HomeView extends GetView<HomeController> {
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color: Colors.blue
+                      color: controller.greetings.value == 'Malam' ? Colors.blueGrey[900] : Colors.blue
                     ),
                     child: ListTile(
                       title: Text('Hello, User', style: Constants.whiteTextStyle,),

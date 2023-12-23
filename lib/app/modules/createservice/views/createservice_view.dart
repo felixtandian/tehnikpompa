@@ -508,8 +508,16 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                               onPressed: () {
                                                                 Navigator.pop(
                                                                     context);
-                                                                Get.offAll(()=>HomeView(), binding: HomeBinding());
-                                                                snackBar('Berhasil', 'Servismu berhasil dibuat');
+                                                                controller.cServiceController(
+                                                                controller.selectedServis.value, 
+                                                                controller.namaServis.text, 
+                                                                controller.nomorTelepon.text,
+                                                                controller.lokasi.text, controller.masalah.text, 
+                                                                controller.jmlPompa.text, controller.umrPompa.text, 
+                                                                controller.cpName.text,controller.cpPhone.text,
+                                                                controller.rekomTeknisi.value.text, '', '',
+                                                                '1'
+                                                                );
                                                                 controller
                                                                     .update();
                                                               },

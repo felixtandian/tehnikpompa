@@ -1,14 +1,19 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:tehnikpompa/app/modules/createservice/services/createServices.dart';
+import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
+import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 
 class CreateserviceController extends GetxController {
   //TODO: Implement CreateserviceController
 
   final globalKey = GlobalKey<FormState>();
-  
+
   late TextEditingController namaServis;
   late TextEditingController nomorTelepon;
   late TextEditingController email;
@@ -24,14 +29,13 @@ class CreateserviceController extends GetxController {
   late Rx<TextEditingController> tglKerja;
   final ImagePicker imgpicker = ImagePicker();
   RxList<XFile>? imagefiles = <XFile>[].obs;
-  
+
   RxInt p = 1.obs;
   RxInt c = 1.obs;
   final count = 0.obs;
   final selectedServis = 'Service'.obs;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
 
-  
   RxList<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
       const DropdownMenuItem(child: Text("Service"), value: "Service"),
@@ -56,7 +60,8 @@ class CreateserviceController extends GetxController {
     jenisServis = TextEditingController().obs;
     jenisServis.value.text = 'Service';
     tglKerja = TextEditingController().obs;
-    tglKerja.value.text = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+    tglKerja.value.text =
+        DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
     super.onInit();
   }
 
@@ -83,8 +88,50 @@ class CreateserviceController extends GetxController {
 
   @override
   void onClose() {}
-  
-   void setSelected(String value){
-     selectedServis.value = value;
-   }
+
+  void setSelected(String value) {
+    selectedServis.value = value;
+  }
+
+  Future cServiceController(String serviceType, String namaService, String noTelp, String lokasi, 
+  String notes, String jmlPompa, 
+  String umurPompa, String namaCp, 
+  String telpCp, String rekomTeknisi, 
+  String teknisi1, String teknisi2, 
+  String userId) async {
+    EasyLoading.show();
+    try {
+      CreateServices().createService(serviceType, namaService, noTelp, lokasi, notes, jmlPompa, umurPompa, namaCp, telpCp, rekomTeknisi, teknisi1, teknisi2, userId).then((value) async {
+        log(value.body.toString());
+        if (value.body['message'] == 'Sukses') {
+          Get.to(()=>HomeView(), binding: HomeBinding());
+          snackBar('Sukses!', 'Service anda berhasil di buat silahkan cek di service anda.');
+        } else if (value.body['message'] == 'Gagal') {
+          if (value.body['data'] == 'Email Tidak Terdaftar !') {
+            errorSnackBar('Email invalid !', value.body['data'].toString());
+          } else if (value.body['data'] ==
+              'Cek kembali email / Password anda !') {
+            errorSnackBar('Password invalid !', value.body['data'].toString());
+          }
+        }
+      });
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+  void snackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.green[600],
+        duration: Duration(seconds: 3));
+  }
+
+  void errorSnackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.red[600],
+        duration: Duration(seconds: 3));
+  }
 }

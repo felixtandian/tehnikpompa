@@ -63,14 +63,14 @@ class DaftarservisView extends GetView<DaftarservisController> {
                       TextFormField(
                         controller: controller.date.value,
                         decoration: InputDecoration(
-                            isDense: true,
+                          isDense: true,
                             suffixIcon: IconButton(
                                 onPressed: () {
                                   controller.date.value.clear();
                                 },
                                 icon: const Icon(Icons.close)),
                             label: Text(
-                              'Input Tanggal Kerja',
+                              'Input Tanggal Proyek',
                               style: Constants.blacktextStyle,
                             ),
                             labelStyle: Constants.blacktextStyle),
@@ -88,6 +88,9 @@ class DaftarservisView extends GetView<DaftarservisController> {
                           controller.date.value.text = format;
                           controller.update();
                         },
+                      ),
+                      SizedBox(
+                        height: 5,
                       ),
                       Obx(
                         () => TextFormField(
