@@ -93,27 +93,51 @@ class CreateserviceController extends GetxController {
     selectedServis.value = value;
   }
 
-  Future cServiceController(String serviceType, String namaService, String noTelp, String lokasi, 
-  String notes, String jmlPompa, 
-  String umurPompa, String namaCp, 
-  String telpCp, String rekomTeknisi, 
-  String teknisi1, String teknisi2, 
-  String userId) async {
+  Future cServiceController(
+      String images,
+      String serviceType,
+      String namaService,
+      String noTelp,
+      String tipePompa,
+      String lokasi,
+      String notes,
+      String jmlPompa,
+      String umurPompa,
+      String namaCp,
+      String telpCp,
+      String rekomTeknisi,
+      String teknisi1,
+      String teknisi2,
+      String userId) async {
     EasyLoading.show();
     try {
-      CreateServices().createService(serviceType, namaService, noTelp, lokasi, notes, jmlPompa, umurPompa, namaCp, telpCp, rekomTeknisi, teknisi1, teknisi2, userId).then((value) async {
+      CreateServices()
+          .createService(
+              images,
+              serviceType,
+              namaService,
+              noTelp,
+              tipePompa,
+              lokasi,
+              notes,
+              jmlPompa,
+              umurPompa,
+              namaCp,
+              telpCp,
+              rekomTeknisi,
+              teknisi1,
+              teknisi2,
+              userId)
+          .then((value) async {
         log(value.body.toString());
-        if (value.body['message'] == 'Sukses') {
-          Get.to(()=>HomeView(), binding: HomeBinding());
-          snackBar('Sukses!', 'Service anda berhasil di buat silahkan cek di service anda.');
-        } else if (value.body['message'] == 'Gagal') {
-          if (value.body['data'] == 'Email Tidak Terdaftar !') {
-            errorSnackBar('Email invalid !', value.body['data'].toString());
-          } else if (value.body['data'] ==
-              'Cek kembali email / Password anda !') {
-            errorSnackBar('Password invalid !', value.body['data'].toString());
-          }
+        if (value.body['message'] == 'Berhasil Submit Service') {
+          Get.to(() => HomeView(), binding: HomeBinding());
+          snackBar('Sukses!',
+              'Service anda berhasil di buat silahkan cek di service anda.');
+        } else if (value.body['message'] != 'Berhasil Submit Service') {
+          errorSnackBar('Gagal!', value.body['message']);
         }
+        
       });
     } catch (e) {
       errorSnackBar('Gagal', e.toString());

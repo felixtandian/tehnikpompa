@@ -59,7 +59,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                 }
                 if (controller.c.value == 0) {
                   controller.clear();
-                  Get.offAll(() => HomeView());
+                  Get.off(() => HomeView(), binding: HomeBinding());
                 }
                 controller.update();
               },
@@ -509,9 +509,11 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                 Navigator.pop(
                                                                     context);
                                                                 controller.cServiceController(
-                                                                controller.selectedServis.value, 
+                                                                '',
+                                                                '1', 
                                                                 controller.namaServis.text, 
                                                                 controller.nomorTelepon.text,
+                                                                controller.tipePompa.text,
                                                                 controller.lokasi.text, controller.masalah.text, 
                                                                 controller.jmlPompa.text, controller.umrPompa.text, 
                                                                 controller.cpName.text,controller.cpPhone.text,

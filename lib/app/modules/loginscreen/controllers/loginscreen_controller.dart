@@ -1,20 +1,22 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
-import 'package:tehnikpompa/app/modules/home/controllers/home_controller.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/models/userModel.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/services/loginservices.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
 
 class LoginscreenController extends GetxController {
   //TODO: Implement LoginscreenController
-
+  final prefController = Get.put(PrefController());
+  LoginServices loginServices = LoginServices();
   final count = 0.obs;
   late Rx<TextEditingController> password = TextEditingController().obs;
   late Rx<TextEditingController> email = TextEditingController().obs;
+  UserModel? userModel;
   RxBool showPassword = true.obs;
   @override
   void onInit() {
@@ -34,23 +36,26 @@ class LoginscreenController extends GetxController {
     showPassword.value = !showPassword.value;
   }
 
-  Future loginController(String email, String password) async {
+  loginController(String email, String password) async {
     EasyLoading.show();
     try {
-      LoginServices().loginService(email, password).then((value) async {
-        log(value.body.toString());
-        if (value.body['message'] == 'Sukses') {
+      var response = await loginServices.loginService(email, password);
+        log(response.body.toString());
+        if (response.body['message'] == 'Sukses') {
+          var data = UserModel.fromJson(response.body['data']);
+          prefController.setIsLogin(true);
+          userModel = data;
           Get.to(HomeView(), binding: HomeBinding());
-        } else if (value.body['message'] == 'Gagal') {
-          if (value.body['data'] == 'Email Tidak Terdaftar !') {
-            errorSnackBar('Email invalid !', value.body['data'].toString());
-          } else if (value.body['data'] ==
+        } else if (response.body['message'] == 'Gagal') {
+          if (response.body['data'] == 'Email Tidak Terdaftar !') {
+            errorSnackBar('Email invalid !', response.body['data'].toString());
+          } else if (response.body['data'] ==
               'Cek kembali email / Password anda !') {
-            errorSnackBar('Password invalid !', value.body['data'].toString());
+            errorSnackBar('Password invalid !', response.body['data'].toString());
           }
         }
-      });
     } catch (e) {
+      log(e.toString());
       errorSnackBar('Gagal', e.toString());
     }
     EasyLoading.dismiss();

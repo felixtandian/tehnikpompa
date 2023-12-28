@@ -57,6 +57,7 @@ dependencies:
   number_paginator: ^0.4.0
   number_pagination: ^0.0.3+2
   dropdown_button2: ^1.4.0
+  get_storage: ^2.1.1
 
 flutter_icons:
   android: "launcher_icon"

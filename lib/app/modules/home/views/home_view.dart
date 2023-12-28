@@ -10,6 +10,7 @@ import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dar
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/home_controller.dart';
 
@@ -17,6 +18,7 @@ class HomeView extends GetView<HomeController> {
   DateTime timeBackPressed = DateTime.now();
   DaftarbarangController barangC = Get.put(DaftarbarangController());
   DaftarservisController servisC = Get.put(DaftarservisController());
+  LoginscreenController loginC = Get.put(LoginscreenController());
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -90,7 +92,7 @@ class HomeView extends GetView<HomeController> {
                       color: controller.greetings.value == 'Malam' ? Colors.blueGrey[900] : Colors.blue
                     ),
                     child: ListTile(
-                      title: Text('Hello, User', style: Constants.whiteTextStyle,),
+                      title: Text('Hello, '  + loginC.userModel!.name, style: Constants.whiteTextStyle,),
                       subtitle: Text('Selamat '+controller.greetings.value, style: Constants.whiteTextStyle,),
                       leading: Icon(Icons.account_circle_rounded, size: 30), 
                       iconColor: Colors.white,
