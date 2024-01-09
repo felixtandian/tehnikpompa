@@ -85,6 +85,13 @@ class Constants {
       fontWeight: FontWeight.normal,
       decoration: TextDecoration.none);
 
+  static TextStyle detailServisText = TextStyle(
+      fontSize: 14,
+      color: Colors.blueAccent[700],
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontWeight: FontWeight.normal,
+      decoration: TextDecoration.none);
+
       
   static TextStyle boldBlackTitle = TextStyle(
       fontSize: 16,

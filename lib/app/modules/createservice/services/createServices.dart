@@ -1,12 +1,15 @@
+import 'dart:io';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/utils/baseService.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 
 class CreateServices extends BaseService {
-
+  LoginscreenController loginC = Get.put(LoginscreenController());
   //kurang multiple images
   Future<Response> createService(
-      String images,
+      List<String> images,
       String serviceType,
       String namaService,
       String noTelp,
@@ -21,8 +24,8 @@ class CreateServices extends BaseService {
       String teknisi1,
       String teknisi2,
       String userId) async {
-    var data = {
-      'images' : images,
+    
+    FormData form = FormData({
       'service_type': serviceType,
       'nama_service': namaService,
       'no_telp': noTelp,
@@ -37,12 +40,16 @@ class CreateServices extends BaseService {
       'teknisi1': teknisi1,
       'teknisi2': teknisi2,
       'userid': 1 //hardcode
-    };
+    });
+
+    for(String path in images){
+      form.files.add(MapEntry("image[]", MultipartFile(File(path), filename: '${DateTime.now().millisecondsSinceEpoch}')));     
+    }
 
     String url = Constants.baseURL + 'insertService';
     String content = 'application/json';
 
-    return post(url, data, contentType: content);
+    return post(url, form, contentType: content);
   }
 
 }

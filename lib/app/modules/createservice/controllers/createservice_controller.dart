@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
@@ -29,17 +30,37 @@ class CreateserviceController extends GetxController {
   late Rx<TextEditingController> tglKerja;
   final ImagePicker imgpicker = ImagePicker();
   RxList<XFile>? imagefiles = <XFile>[].obs;
+  RxList<String> listImagePath = <String>[].obs;
+  var selectedFileCount = 0.obs;
+
+  void openImages() async {
+    try {
+      imagefiles!.value = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (imagefiles! != null) {
+        for (XFile file in imagefiles!) {
+          listImagePath.add(file.path);
+        }
+      } else {
+        Fluttertoast.showToast(msg: "No image is selected.");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "error while picking file.");
+    }
+    selectedFileCount.value = listImagePath.length;
+  }
 
   RxInt p = 1.obs;
   RxInt c = 1.obs;
   final count = 0.obs;
   final selectedServis = 'Service'.obs;
+  RxString selectedServisId = '1'.obs;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
 
   RxList<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Service"), value: "Service"),
-      const DropdownMenuItem(child: Text("Supervision"), value: "Supervision"),
+      const DropdownMenuItem(child: Text("Service"), value: 'Service'),
+      const DropdownMenuItem(child: Text("Supervision"), value: 'Supervision'),
     ];
     return menuItems.obs;
   }
@@ -91,10 +112,15 @@ class CreateserviceController extends GetxController {
 
   void setSelected(String value) {
     selectedServis.value = value;
+    if (value == 'Service') {
+      selectedServisId.value = '1';
+    } else {
+      selectedServisId.value = '2';
+    }
   }
 
-  Future cServiceController(
-      String images,
+  cServiceController(
+      List<String> images,
       String serviceType,
       String namaService,
       String noTelp,
@@ -109,7 +135,11 @@ class CreateserviceController extends GetxController {
       String teknisi1,
       String teknisi2,
       String userId) async {
-    EasyLoading.show();
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
     try {
       CreateServices()
           .createService(
@@ -134,10 +164,10 @@ class CreateserviceController extends GetxController {
           Get.to(() => HomeView(), binding: HomeBinding());
           snackBar('Sukses!',
               'Service anda berhasil di buat silahkan cek di service anda.');
+          EasyLoading.dismiss();
         } else if (value.body['message'] != 'Berhasil Submit Service') {
           errorSnackBar('Gagal!', value.body['message']);
         }
-        
       });
     } catch (e) {
       errorSnackBar('Gagal', e.toString());

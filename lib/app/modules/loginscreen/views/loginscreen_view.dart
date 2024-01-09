@@ -53,7 +53,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
               ),
               Center(
                 child: Text(
-                  'PT. Tehnik Pompa',
+                  'CV. Tehnik Pompa',
                   style: GoogleFonts.montserrat(
                     fontSize: 20,
                   ),

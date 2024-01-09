@@ -37,7 +37,11 @@ class LoginscreenController extends GetxController {
   }
 
   loginController(String email, String password) async {
-    EasyLoading.show();
+       EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
     try {
       var response = await loginServices.loginService(email, password);
         log(response.body.toString());
@@ -45,6 +49,13 @@ class LoginscreenController extends GetxController {
           var data = UserModel.fromJson(response.body['data']);
           prefController.setIsLogin(true);
           userModel = data;
+          if(userModel!.id == 1){
+            prefController.setSuper(true);
+          }else if(userModel!.id == 2){
+            prefController.setSales(true);
+          }else{
+            prefController.setTeknisi(true);
+          }
           Get.to(HomeView(), binding: HomeBinding());
         } else if (response.body['message'] == 'Gagal') {
           if (response.body['data'] == 'Email Tidak Terdaftar !') {

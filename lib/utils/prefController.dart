@@ -17,7 +17,9 @@ class PrefController extends GetxController {
   static final String _isRejected = "flagRejected";
   RxInt enablemenu = 1.obs;
   RxBool isSwitched = false.obs;
-  static final String _isOMI = "isomi";
+  static final String _isTeknisi = "isteknisi";
+  static final String _isSales = "issales";
+  static final String _isSuper = "issuper";
 
   //getter
   String get token => box.read(_token) ?? "empty";
@@ -35,7 +37,9 @@ class PrefController extends GetxController {
   String get verifMsg =>
       box.read(_verifMsg) ?? "Akun Anda sedang dalam proses Verifikasi.";
   bool get flagReject => box.read(_isRejected) ?? false;
-  bool get flagOMI => box.read(_isOMI) ?? false;
+  bool get flagIsTeknisi => box.read(_isTeknisi) ?? false;
+  bool get flagisSales => box.read(_isSales) ?? false;
+  bool get flagisSuper => box.read(_isSuper) ?? false;
 
   //setter
   void setToken(String val) => box.write(_token, val);
@@ -53,7 +57,9 @@ class PrefController extends GetxController {
   void setVerif(bool val) => box.write(_isVerified, val);
   void setVerifMsg(String val) => box.write(_verifMsg, val);
   void setReject(bool val) => box.write(_isRejected, val);
-  void setOMI(bool val) => box.write(_isOMI, val);
+  void setTeknisi(bool val) => box.write(_isTeknisi, val);
+  void setSales(bool val) => box.write(_isSales, val);
+  void setSuper(bool val) => box.write(_isSuper, val);
 
   void removeUserInfo() {
     box.remove(_token);
@@ -67,6 +73,8 @@ class PrefController extends GetxController {
     box.remove(_phone);
     box.remove(_isVerified);
     box.remove(_verifMsg);
-    setOMI(false);
+    setTeknisi(false);
+    setSuper(false);
+    setSales(false);
   }
 }

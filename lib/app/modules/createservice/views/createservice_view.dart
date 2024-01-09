@@ -1,34 +1,25 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tehnikpompa/app/modules/createservice/widgets/utility.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import '../controllers/createservice_controller.dart';
 
 class CreateserviceView extends GetView<CreateserviceController> {
-  openImages() async {
-    try {
-      var pickedfiles = await controller.imgpicker.pickMultiImage();
-      //you can use ImageCourse.camera for Camera capture
-      if (pickedfiles != null) {
-        controller.imagefiles!.value = pickedfiles;
-        controller.update();
-      } else {
-        Fluttertoast.showToast(msg: "No image is selected.");
-      }
-    } catch (e) {
-      Fluttertoast.showToast(msg: "error while picking file.");
-    }
-  }
+  LoginscreenController loginC = Get.put(LoginscreenController());
 
   @override
   Widget build(BuildContext context) {
@@ -141,6 +132,9 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                             color: Colors.black, fontSize: 14),
                                         onChanged: (String? newValue) {
                                           controller.setSelected(newValue!);
+                                          log('selectted Servoce : ' +
+                                              controller
+                                                  .selectedServisId.value);
                                           controller.update();
                                         },
                                         items: controller.dropdownItems,
@@ -259,7 +253,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                       .imagefiles!.isEmpty
                                                   ? GestureDetector(
                                                       onTap: () {
-                                                        openImages();
+                                                        controller.openImages();
                                                       },
                                                       child: Container(
                                                         color: Colors.grey[100],
@@ -273,7 +267,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                     )
                                                   : GestureDetector(
                                                       onTap: () {
-                                                        openImages();
+                                                        controller.openImages();
                                                       },
                                                       child: ClipRRect(
                                                         borderRadius:
@@ -505,23 +499,58 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                 style: Constants
                                                                     .blacktextStyle,
                                                               ),
-                                                              onPressed: () {
+                                                              onPressed: () async{
                                                                 Navigator.pop(
                                                                     context);
+                                                                EasyLoading
+                                                                    .show();
                                                                 controller.cServiceController(
-                                                                '',
-                                                                '1', 
-                                                                controller.namaServis.text, 
-                                                                controller.nomorTelepon.text,
-                                                                controller.tipePompa.text,
-                                                                controller.lokasi.text, controller.masalah.text, 
-                                                                controller.jmlPompa.text, controller.umrPompa.text, 
-                                                                controller.cpName.text,controller.cpPhone.text,
-                                                                controller.rekomTeknisi.value.text, '', '',
-                                                                '1'
-                                                                );
+                                                                    controller
+                                                                        .listImagePath,
+                                                                    controller
+                                                                        .selectedServisId
+                                                                        .value,
+                                                                    controller
+                                                                        .namaServis
+                                                                        .text,
+                                                                    controller
+                                                                        .nomorTelepon
+                                                                        .text,
+                                                                    controller
+                                                                        .tipePompa
+                                                                        .text,
+                                                                    controller
+                                                                        .lokasi
+                                                                        .text,
+                                                                    controller
+                                                                        .masalah
+                                                                        .text,
+                                                                    controller
+                                                                        .jmlPompa
+                                                                        .text,
+                                                                    controller
+                                                                        .umrPompa
+                                                                        .text,
+                                                                    controller
+                                                                        .cpName
+                                                                        .text,
+                                                                    controller
+                                                                        .cpPhone
+                                                                        .text,
+                                                                    controller
+                                                                        .rekomTeknisi
+                                                                        .value
+                                                                        .text,
+                                                                    '',
+                                                                    '',
+                                                                    loginC
+                                                                        .userModel!
+                                                                        .id
+                                                                        .toString());
                                                                 controller
                                                                     .update();
+                                                                EasyLoading
+                                                                    .dismiss();
                                                               },
                                                             )
                                                           ],
@@ -562,9 +591,10 @@ class CreateserviceView extends GetView<CreateserviceController> {
     );
   }
 }
+
 void snackBar(String judul, String msg) {
-    Get.snackbar(judul, msg,
-        colorText: Colors.white,
-        backgroundColor: Colors.green[600],
-        duration: Duration(seconds: 2));
-  }
+  Get.snackbar(judul, msg,
+      colorText: Colors.white,
+      backgroundColor: Colors.green[600],
+      duration: Duration(seconds: 2));
+}

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 
-class DaftarServisWidget extends StatelessWidget {
-  final DaftarServisModel? model;
+class DaftarServisSayaWidget extends StatelessWidget {
+  final DaftarServisSayaModel? model;
   final Function() onTap;
-  const DaftarServisWidget({
+  const DaftarServisSayaWidget({
     Key? key,
     required this.onTap,
     required this.model,

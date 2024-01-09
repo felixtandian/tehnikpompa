@@ -1,4 +1,4 @@
-class DaftarServisModel {
+class DaftarServisSayaModel {
     String id;
     String nama;
     String createdDate;
@@ -6,7 +6,7 @@ class DaftarServisModel {
     String teknisi1;
     String teknisi2;
 
-    DaftarServisModel({
+    DaftarServisSayaModel({
         required this.id,
         required this.nama,
         required this.createdDate,
@@ -15,7 +15,7 @@ class DaftarServisModel {
         required this.teknisi2,
     });
 
-    factory DaftarServisModel.fromJson(Map<String, dynamic> json) => DaftarServisModel(
+    factory DaftarServisSayaModel.fromJson(Map<String, dynamic> json) => DaftarServisSayaModel(
         id: json["id"],
         nama: json["nama"],
         createdDate: json["createdDate"],

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -9,9 +11,11 @@ import 'package:tehnikpompa/app/modules/daftarbarang/controllers/daftarbarang_co
 import 'package:tehnikpompa/app/modules/daftarbarang/views/daftarbarang_view.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/daftarServisSaya.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/utils/constant.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
 import '../controllers/home_controller.dart';
 
 class HomeView extends GetView<HomeController> {
@@ -19,6 +23,7 @@ class HomeView extends GetView<HomeController> {
   DaftarbarangController barangC = Get.put(DaftarbarangController());
   DaftarservisController servisC = Get.put(DaftarservisController());
   LoginscreenController loginC = Get.put(LoginscreenController());
+  PrefController prefC = Get.put(PrefController());
   Widget selectedLayanan({required String image, required String name}) {
     return Container(
       decoration: BoxDecoration(
@@ -65,6 +70,10 @@ class HomeView extends GetView<HomeController> {
           title: Text('HomePage', style: GoogleFonts.montserrat(fontSize: 18)),
           backgroundColor: const Color.fromRGBO(36, 40, 91, 1),
           automaticallyImplyLeading: false,
+          actions: [IconButton(onPressed: () async{
+            prefC.removeUserInfo();
+            Get.offAndToNamed('/loginscreen');
+          }, icon: Icon(Icons.logout))],
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -77,8 +86,8 @@ class HomeView extends GetView<HomeController> {
             height: 800,
             width: Get.width,
             decoration: const BoxDecoration(
-                color: Colors.white,
-               ),
+              color: Colors.white,
+            ),
             child: Container(
               margin: const EdgeInsets.all(5),
               child: ListView(
@@ -88,13 +97,20 @@ class HomeView extends GetView<HomeController> {
                   ),
                   Container(
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: controller.greetings.value == 'Malam' ? Colors.blueGrey[900] : Colors.blue
-                    ),
+                        borderRadius: BorderRadius.circular(20),
+                        color: controller.greetings.value == 'Malam'
+                            ? Colors.blueGrey[900]
+                            : Colors.blue),
                     child: ListTile(
-                      title: Text('Hello, '  + loginC.userModel!.name, style: Constants.whiteTextStyle,),
-                      subtitle: Text('Selamat '+controller.greetings.value, style: Constants.whiteTextStyle,),
-                      leading: Icon(Icons.account_circle_rounded, size: 30), 
+                      title: Text(
+                        'Hello, ' + loginC.userModel!.name,
+                        style: Constants.whiteTextStyle,
+                      ),
+                      subtitle: Text(
+                        'Selamat ' + controller.greetings.value,
+                        style: Constants.whiteTextStyle,
+                      ),
+                      leading: Icon(Icons.account_circle_rounded, size: 30),
                       iconColor: Colors.white,
                       contentPadding: EdgeInsets.all(20),
                       dense: true,
@@ -143,27 +159,32 @@ class HomeView extends GetView<HomeController> {
                             mainAxisSpacing: 8,
                             childAspectRatio: 1.30,
                             children: [
-                              GestureDetector(
-                                child: selectedLayanan(
-                                    image: 'assets/iconProduct.png',
-                                    name: 'Daftar Barang'),
-                                onTap: ()  async {
-                                 // await barangC.getData();
-                                  await barangC.getDaftarBarang(1, '', '', 1);
-                                  
-                                  Get.to(() => DaftarbarangView(),
-                                      binding: DaftarbarangBinding());
-                                },
-                              ),
-                              GestureDetector(
-                                child: selectedLayanan(
-                                    image: 'assets/iconDocument.png',
-                                    name: 'Insert Service'),
-                                onTap: () {
-                                  Get.to(() => CreateserviceView(),
-                                      binding: CreateserviceBinding());
-                                },
-                              ),
+                              prefC.flagIsTeknisi
+                                  ? SizedBox(height: 0)
+                                  : GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconProduct.png',
+                                          name: 'Daftar Barang'),
+                                      onTap: () async {
+                                        // await barangC.getData();
+                                        await barangC.getDaftarBarang(
+                                            1, '', '', 1);
+
+                                        Get.to(() => DaftarbarangView(),
+                                            binding: DaftarbarangBinding());
+                                      },
+                                    ),
+                              prefC.flagIsTeknisi
+                                  ? SizedBox(height: 0)
+                                  : GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconDocument.png',
+                                          name: 'Insert Service'),
+                                      onTap: () {
+                                        Get.to(() => CreateserviceView(),
+                                            binding: CreateserviceBinding());
+                                      },
+                                    ),
                               GestureDetector(
                                 child: selectedLayanan(
                                     image: 'assets/iconDocuments.png',
@@ -178,8 +199,14 @@ class HomeView extends GetView<HomeController> {
                                 child: selectedLayanan(
                                     image: 'assets/iconProduct.png',
                                     name: 'Service Saya'),
-                                onTap: () {
-                                  Get.to(() => DaftarservisView(),
+                                onTap: () async {
+                                  await servisC.getDaftarServisUser(
+                                      loginC.userModel!.roleId,
+                                      loginC.userModel!.id,
+                                      1);
+                                  log('userId' +
+                                      loginC.userModel!.id.toString());
+                                  Get.to(() => DaftarServiceSaya(),
                                       binding: DaftarservisBinding());
                                 },
                               ),
