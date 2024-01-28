@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -52,7 +53,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
               ),
               Center(
                 child: Text(
-                  'PT. Tehnik Pompa',
+                  'CV. Tehnik Pompa',
                   style: GoogleFonts.montserrat(
                     fontSize: 20,
                   ),
@@ -67,6 +68,7 @@ class LoginscreenView extends GetView<LoginscreenController> {
                     children: <Widget>[
                       TextFormField(
                         style: GoogleFonts.montserrat(fontSize: 14),
+                        controller: controller.email.value,
                         keyboardType: TextInputType.emailAddress,
                         decoration: const InputDecoration(
                             labelText: 'Masukkan Email Anda',
@@ -80,6 +82,9 @@ class LoginscreenView extends GetView<LoginscreenController> {
                           } else if (!value.isEmail) {
                             return 'Email Anda Salah !';
                           }
+                        },
+                        onSaved: (value){
+                          controller.email.value.text = value!;
                         },
                       ),
                       const SizedBox(
@@ -113,6 +118,9 @@ class LoginscreenView extends GetView<LoginscreenController> {
                               return 'Password Wajib Diisi !';
                             }
                           },
+                          onSaved: (value){
+                            controller.password.value.text = value!;
+                          },
                         ),
                       ),
                       const SizedBox(
@@ -124,12 +132,14 @@ class LoginscreenView extends GetView<LoginscreenController> {
                             primary: const Color.fromRGBO(36, 40, 91, 1),
                             shadowColor: Colors.black,
                           ),
-                          onPressed: () {
+                          onPressed: () async {
                             if (!loginKey.currentState!.validate()) {
                               return;
                             } else {
                               //goto
-                              Get.offAll(()=>HomeView(), binding: HomeBinding());
+                              EasyLoading.show();
+                              await controller.loginController(controller.email.value.text, controller.password.value.text);
+                              EasyLoading.dismiss();
                             }
                           },
                           child: Text(

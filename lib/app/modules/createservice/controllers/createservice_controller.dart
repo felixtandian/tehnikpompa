@@ -1,14 +1,20 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:tehnikpompa/app/modules/createservice/services/createServices.dart';
+import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
+import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 
 class CreateserviceController extends GetxController {
   //TODO: Implement CreateserviceController
 
   final globalKey = GlobalKey<FormState>();
-  
+
   late TextEditingController namaServis;
   late TextEditingController nomorTelepon;
   late TextEditingController email;
@@ -24,19 +30,37 @@ class CreateserviceController extends GetxController {
   late Rx<TextEditingController> tglKerja;
   final ImagePicker imgpicker = ImagePicker();
   RxList<XFile>? imagefiles = <XFile>[].obs;
-  
+  RxList<String> listImagePath = <String>[].obs;
+  var selectedFileCount = 0.obs;
+
+  void openImages() async {
+    try {
+      imagefiles!.value = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (imagefiles! != null) {
+        for (XFile file in imagefiles!) {
+          listImagePath.add(file.path);
+        }
+      } else {
+        Fluttertoast.showToast(msg: "No image is selected.");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "error while picking file.");
+    }
+    selectedFileCount.value = listImagePath.length;
+  }
+
   RxInt p = 1.obs;
   RxInt c = 1.obs;
   final count = 0.obs;
   final selectedServis = 'Service'.obs;
+  RxString selectedServisId = '1'.obs;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
 
-  List<String> servis = ['Service', 'Suprvision'];
-  
   RxList<DropdownMenuItem<String>> get dropdownItems {
     List<DropdownMenuItem<String>> menuItems = [
-      const DropdownMenuItem(child: Text("Service"), value: "Service"),
-      const DropdownMenuItem(child: Text("Supervision"), value: "Supervision"),
+      const DropdownMenuItem(child: Text("Service"), value: 'Service'),
+      const DropdownMenuItem(child: Text("Supervision"), value: 'Supervision'),
     ];
     return menuItems.obs;
   }
@@ -57,7 +81,8 @@ class CreateserviceController extends GetxController {
     jenisServis = TextEditingController().obs;
     jenisServis.value.text = 'Service';
     tglKerja = TextEditingController().obs;
-    tglKerja.value.text = DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
+    tglKerja.value.text =
+        DateFormat('yyyy-MM-dd').format(DateTime.now()).toString();
     super.onInit();
   }
 
@@ -84,8 +109,83 @@ class CreateserviceController extends GetxController {
 
   @override
   void onClose() {}
-  
-   void setSelected(String value){
-     selectedServis.value = value;
-   }
+
+  void setSelected(String value) {
+    selectedServis.value = value;
+    if (value == 'Service') {
+      selectedServisId.value = '1';
+    } else {
+      selectedServisId.value = '2';
+    }
+  }
+
+  cServiceController(
+      List<String> images,
+      String serviceType,
+      String namaService,
+      String noTelp,
+      String tipePompa,
+      String lokasi,
+      String notes,
+      String jmlPompa,
+      String umurPompa,
+      String namaCp,
+      String telpCp,
+      String rekomTeknisi,
+      String teknisi1,
+      String teknisi2,
+      String userId) async {
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      CreateServices()
+          .createService(
+              images,
+              serviceType,
+              namaService,
+              noTelp,
+              tipePompa,
+              lokasi,
+              notes,
+              jmlPompa,
+              umurPompa,
+              namaCp,
+              telpCp,
+              rekomTeknisi,
+              teknisi1,
+              teknisi2,
+              userId)
+          .then((value) async {
+        log(value.body.toString());
+        if (value.body['message'] == 'Berhasil Submit Service') {
+          Get.to(() => HomeView(), binding: HomeBinding());
+          snackBar('Sukses!',
+              'Service anda berhasil di buat silahkan cek di service anda.');
+          EasyLoading.dismiss();
+        } else if (value.body['message'] != 'Berhasil Submit Service') {
+          errorSnackBar('Gagal!', value.body['message']);
+        }
+      });
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+  void snackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.green[600],
+        duration: Duration(seconds: 3));
+  }
+
+  void errorSnackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.red[600],
+        duration: Duration(seconds: 3));
+  }
 }

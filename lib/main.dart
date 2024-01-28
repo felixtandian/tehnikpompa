@@ -3,6 +3,9 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/app/routes/app_pages.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
+
+PrefController prefC = Get.put(PrefController());
 
 void main() {
   
@@ -10,8 +13,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  
   const MyApp({Key? key}) : super(key: key);
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       getPages: AppPages.routes,
-      initialRoute: "/",
+      initialRoute: prefC.isLogin? "/homepage" : "/",
       builder: EasyLoading.init(),
     );
   }

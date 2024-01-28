@@ -7,6 +7,11 @@ class Constants {
   /// 1 : PRODUCTION
   /// 2 : STAGING
 
+  static const int appEnv = 0;
+  static const String baseURL = appEnv == 0
+      ? 'https://api.tehnikpompa.net/api/'
+      : 'https://api.tehnikpompa.net/api/';
+
   static const primaryColor = Color.fromRGBO(36, 40, 91, 1);
   static const darkBlue = Color(0xFF24285B);
   static const MaterialColor PrimaryColorDark = MaterialColor(
@@ -78,6 +83,21 @@ class Constants {
       color: Colors.black,
       fontFamily: GoogleFonts.montserrat().fontFamily,
       fontWeight: FontWeight.normal,
+      decoration: TextDecoration.none);
+
+  static TextStyle detailServisText = TextStyle(
+      fontSize: 14,
+      color: Colors.blueAccent[700],
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontWeight: FontWeight.normal,
+      decoration: TextDecoration.none);
+
+      
+  static TextStyle boldBlackTitle = TextStyle(
+      fontSize: 16,
+      color: Colors.black,
+      fontFamily: GoogleFonts.montserrat().fontFamily,
+      fontWeight: FontWeight.bold,
       decoration: TextDecoration.none);
 
   static TextStyle defaultTextStyle2 = TextStyle(
