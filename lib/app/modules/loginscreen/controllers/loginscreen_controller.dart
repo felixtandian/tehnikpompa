@@ -49,9 +49,9 @@ class LoginscreenController extends GetxController {
           var data = UserModel.fromJson(response.body['data']);
           prefController.setIsLogin(true);
           userModel = data;
-          if(userModel!.id == 1){
+          if(userModel!.roleId == 1){
             prefController.setSuper(true);
-          }else if(userModel!.id == 2){
+          }else if(userModel!.roleId == 2){
             prefController.setSales(true);
           }else{
             prefController.setTeknisi(true);
