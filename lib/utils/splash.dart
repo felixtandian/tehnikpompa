@@ -1,9 +1,10 @@
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:tehnikpompa/app/modules/loginscreen/views/loginscreen_view.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
 
 class Splash extends StatelessWidget {
+  PrefController prefController = Get.put(PrefController());
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -25,7 +26,7 @@ class Splash extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
             showLoader: true,
-            navigator: '/loginscreen',
+            navigator: prefController.isLogin ? '/homepage' : '/loginscreen',
             durationInSeconds: 2,
           );
         });
