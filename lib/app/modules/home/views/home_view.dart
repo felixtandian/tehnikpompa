@@ -103,7 +103,7 @@ class HomeView extends GetView<HomeController> {
                             : Colors.blue),
                     child: ListTile(
                       title: Text(
-                        'Hello, ' + loginC.userModel!.name,
+                        'Hello, ' + prefC.memberName,
                         style: Constants.whiteTextStyle,
                       ),
                       subtitle: Text(
@@ -201,11 +201,9 @@ class HomeView extends GetView<HomeController> {
                                     name: 'Service Saya'),
                                 onTap: () async {
                                   await servisC.getDaftarServisUser(
-                                      loginC.userModel!.roleId,
-                                      loginC.userModel!.id,
+                                      prefC.memberRoleId as int,
+                                      prefC.memberId as int,
                                       1);
-                                  log('userId' +
-                                      loginC.userModel!.id.toString());
                                   Get.to(() => DaftarServiceSaya(),
                                       binding: DaftarservisBinding());
                                 },

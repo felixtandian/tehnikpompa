@@ -15,11 +15,14 @@ import 'package:tehnikpompa/app/modules/createservice/widgets/utility.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
+import 'package:tehnikpompa/main.dart';
 import 'package:tehnikpompa/utils/constant.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
 import '../controllers/createservice_controller.dart';
 
 class CreateserviceView extends GetView<CreateserviceController> {
   LoginscreenController loginC = Get.put(LoginscreenController());
+  PrefController prefC = Get.put(PrefController());
 
   @override
   Widget build(BuildContext context) {
@@ -543,10 +546,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                         .text,
                                                                     '',
                                                                     '',
-                                                                    loginC
-                                                                        .userModel!
-                                                                        .id
-                                                                        .toString());
+                                                                    prefC.memberId);
                                                                 controller
                                                                     .update();
                                                                 EasyLoading

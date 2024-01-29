@@ -8,7 +8,8 @@ class PrefController extends GetxController {
   static final String _name = 'memberName';
   static final String _email = 'memberEmail';
   static final String _phone = 'memberPhone';
-  static final String _code = 'memberCode';
+  static final String _id = 'memberId';
+  static final String _roleId = 'memberRoleId';
   static final String _isLogin = 'isLogin';
   static final String _storeName = 'storeName';
   static final String _fcm_token = 'fcmToken';
@@ -26,7 +27,8 @@ class PrefController extends GetxController {
   String get refreshToken => box.read(_refresh_token) ?? "empty";
   String get memberName => box.read(_name) ?? "empty";
   String get memberPhone => box.read(_phone) ?? "empty";
-  String get memberCode => box.read(_code) ?? "empty";
+  String get memberId => box.read(_id) ?? "empty";
+  String get memberRoleId => box.read(_roleId) ?? "empty";
   bool get isLogin => box.read(_isLogin) ?? false;
   String get storeName => box.read(_storeName) ?? "empty";
   String get fcmToken => box.read(_fcm_token) ?? "0";
@@ -46,7 +48,8 @@ class PrefController extends GetxController {
   void setRefreshToken(String val) => box.write(_refresh_token, val);
   void setName(String val) => box.write(_name, val);
   void setIsLogin(bool val) => box.write(_isLogin, val);
-  void setMemberCode(String val) => box.write(_code, val);
+  void setMemberId(String val) => box.write(_id, val);
+  void setMemberRoleId(String val) => box.write(_roleId, val);
   void setStoreName(String val) => box.write(_storeName, val);
   void setFCMToken(String val) => box.write(_fcm_token, val);
   void setPhoneNumber(String val) => box.write(_phone, val);
@@ -67,11 +70,12 @@ class PrefController extends GetxController {
     box.remove(_isLogin);
     box.remove(_phone);
     box.remove(_email);
-    box.remove(_code);
+    box.remove(_id);
     box.remove(_name);
     box.remove(_storeName);
     box.remove(_phone);
     box.remove(_isVerified);
+    box.remove(_roleId);
     box.remove(_verifMsg);
     setTeknisi(false);
     setSuper(false);

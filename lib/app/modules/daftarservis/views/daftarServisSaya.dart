@@ -11,13 +11,16 @@ import 'package:tehnikpompa/app/modules/daftarservis/views/detailServis.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/daftarServisSayaWidget.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/dafterServisWidget.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
+import 'package:tehnikpompa/main.dart';
 import 'package:tehnikpompa/utils/constant.dart';
+import 'package:tehnikpompa/utils/prefController.dart';
 
 final NumberPaginatorController _controller = NumberPaginatorController();
 
 class DaftarServiceSaya extends GetView<DaftarservisController> {
   DaftarServiceSaya({Key? key}) : super(key: key);
   LoginscreenController loginC = Get.put(LoginscreenController());
+  PrefController prefC = Get.put(PrefController());
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,8 +77,8 @@ class DaftarServiceSaya extends GetView<DaftarservisController> {
                             onPageChanged: (int pageNumber) async {
                               EasyLoading.show();
                               await controller.getDaftarServisUser(
-                                  loginC.userModel!.roleId,
-                                  loginC.userModel!.id,
+                                  prefC.memberRoleId as int,
+                                  prefC.memberId as int,
                                   pageNumber);
                               EasyLoading.dismiss();
                             },

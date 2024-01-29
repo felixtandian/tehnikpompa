@@ -47,8 +47,13 @@ class LoginscreenController extends GetxController {
         log(response.body.toString());
         if (response.body['message'] == 'Sukses') {
           var data = UserModel.fromJson(response.body['data']);
-          prefController.setIsLogin(true);
           userModel = data;
+          prefController.setIsLogin(true);
+          prefController.setName(userModel!.shortName);
+          prefController.setMemberId(userModel!.id.toString());
+          prefController.setMemberRoleId(userModel!.roleId.toString());
+          prefController.setEmail(userModel!.email);
+          prefController.setPhoneNumber(userModel!.noHp);
           if(userModel!.roleId == 1){
             prefController.setSuper(true);
           }else if(userModel!.roleId == 2){
