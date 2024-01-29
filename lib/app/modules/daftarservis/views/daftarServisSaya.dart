@@ -77,8 +77,8 @@ class DaftarServiceSaya extends GetView<DaftarservisController> {
                             onPageChanged: (int pageNumber) async {
                               EasyLoading.show();
                               await controller.getDaftarServisUser(
-                                  prefC.memberRoleId as int,
-                                  prefC.memberId as int,
+                                 prefC.memberRoleId,
+                                 prefC.memberId,
                                   pageNumber);
                               EasyLoading.dismiss();
                             },

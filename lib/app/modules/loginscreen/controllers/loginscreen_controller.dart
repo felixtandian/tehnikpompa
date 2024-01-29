@@ -53,7 +53,7 @@ class LoginscreenController extends GetxController {
           prefController.setMemberId(userModel!.id.toString());
           prefController.setMemberRoleId(userModel!.roleId.toString());
           prefController.setEmail(userModel!.email);
-          prefController.setPhoneNumber(userModel!.noHp);
+          prefController.setPhoneNumber(userModel!.noHp);   
           if(userModel!.roleId == 1){
             prefController.setSuper(true);
           }else if(userModel!.roleId == 2){

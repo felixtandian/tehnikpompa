@@ -1,7 +1,7 @@
 class UserModel {
-    int id;
+    String id;
     dynamic password;
-    int roleId;
+    String roleId;
     String name;
     String shortName;
     String email;

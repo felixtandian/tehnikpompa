@@ -201,9 +201,10 @@ class HomeView extends GetView<HomeController> {
                                     name: 'Service Saya'),
                                 onTap: () async {
                                   await servisC.getDaftarServisUser(
-                                      prefC.memberRoleId as int,
-                                      prefC.memberId as int,
+                                     prefC.memberRoleId,
+                                     prefC.memberId,
                                       1);
+                                      log(prefC.memberId);
                                   Get.to(() => DaftarServiceSaya(),
                                       binding: DaftarservisBinding());
                                 },

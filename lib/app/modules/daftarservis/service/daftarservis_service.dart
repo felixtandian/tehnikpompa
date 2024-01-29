@@ -106,7 +106,7 @@ class DaftarServisService extends BaseService {
   }
 
   Future<List<DaftarServisSayaModel>> getDaftarServisUser(
-      int roleId, int userId, int page) async {
+      String roleId, String userId, int page) async {
     try {
       String uri = Constants.baseURL + 'userServices';
       Map<String, dynamic> body = {

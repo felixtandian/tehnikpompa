@@ -157,7 +157,7 @@ class DaftarservisController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  getDaftarServisUser(int roleId, int userId, int page) async {
+  getDaftarServisUser(String roleId, String userId, int page) async {
     EasyLoading.show(
         status: "Mencari Proyek. . .",
         dismissOnTap: false,
