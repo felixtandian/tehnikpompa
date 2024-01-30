@@ -84,6 +84,7 @@ class HomeView extends GetView<HomeController> {
                         ),
                         actions: [
                           TextButton(
+                            child:
                                 Text("BATAL", style: Constants.blacktextStyle),
                             onPressed: () {
                               Navigator.pop(context);
