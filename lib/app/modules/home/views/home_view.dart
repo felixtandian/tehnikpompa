@@ -71,10 +71,42 @@ class HomeView extends GetView<HomeController> {
           title: Text('HomePage', style: GoogleFonts.montserrat(fontSize: 18)),
           backgroundColor: const Color.fromRGBO(36, 40, 91, 1),
           automaticallyImplyLeading: false,
-          actions: [IconButton(onPressed: () async{
-            prefC.removeUserInfo();
-            Get.offAndToNamed('/loginscreen');
-          }, icon: Icon(Icons.logout))],
+          actions: [
+            IconButton(
+                onPressed: () async {
+                  showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          'Apakah anda yakin ingin logout?',
+                          style: Constants.blacktextStyle,
+                        ),
+                        actions: [
+                          TextButton(
+                                Text("BATAL", style: Constants.blacktextStyle),
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              "YA",
+                              style: Constants.blacktextStyle,
+                            ),
+                            onPressed: () {
+                              prefC.removeUserInfo();
+                              Get.offAndToNamed('/loginscreen');
+                              Navigator.pop(context);
+                            },
+                          )
+                        ],
+                      );
+                    },
+                  );
+                },
+                icon: Icon(Icons.logout))
+          ],
         ),
         body: Container(
           decoration: const BoxDecoration(
@@ -202,10 +234,8 @@ class HomeView extends GetView<HomeController> {
                                     name: 'Service Saya'),
                                 onTap: () async {
                                   await servisC.getDaftarServisUser(
-                                     prefC.memberRoleId,
-                                     prefC.memberId,
-                                      1);
-                                      log(prefC.memberId);
+                                      prefC.memberRoleId, prefC.memberId, 1);
+                                  log(prefC.memberId);
                                   Get.to(() => DaftarServiceSaya(),
                                       binding: DaftarservisBinding());
                                 },
