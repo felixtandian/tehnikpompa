@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -62,7 +63,7 @@ class HomeView extends GetView<HomeController> {
           return false;
         } else {
           Fluttertoast.cancel();
-          return true;
+          exit(0);
         }
       },
       child: Scaffold(

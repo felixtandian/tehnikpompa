@@ -1,15 +1,22 @@
+import 'dart:developer';
+
 import 'package:easy_splash_screen/easy_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/views/loginscreen_view.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
 
 class Splash extends StatelessWidget {
   PrefController prefC = Get.put(PrefController());
+  
   @override
   Widget build(BuildContext context) {
+    GetStorage.init();
+    log(prefC.isLogin.toString());
     return FutureBuilder(
         builder: (context, snapshot) {
+          
           String version = "";
           if (snapshot.hasData) {
             version = snapshot.data.toString();
@@ -27,7 +34,7 @@ class Splash extends StatelessWidget {
             ),
             backgroundColor: Colors.white,
             showLoader: true,
-            navigator: prefC.isLogin ? '/homeview' :'/loginscreen',
+            navigator: prefC.isLogin ? '/homepage' :'/loginscreen',
             durationInSeconds: 2,
           );
         });

@@ -54,6 +54,7 @@ class LoginscreenController extends GetxController {
           prefController.setMemberRoleId(userModel!.roleId.toString());
           prefController.setEmail(userModel!.email);
           prefController.setPhoneNumber(userModel!.noHp);   
+          log(prefController.isLogin.toString());
           if(userModel!.roleId == 1){
             prefController.setSuper(true);
           }else if(userModel!.roleId == 2){
@@ -61,7 +62,7 @@ class LoginscreenController extends GetxController {
           }else{
             prefController.setTeknisi(true);
           }
-          Get.to(HomeView(), binding: HomeBinding());
+          Get.to(()=>HomeView(), binding: HomeBinding());
         } else if (response.body['message'] == 'Gagal') {
           if (response.body['data'] == 'Email Tidak Terdaftar !') {
             errorSnackBar('Email invalid !', response.body['data'].toString());

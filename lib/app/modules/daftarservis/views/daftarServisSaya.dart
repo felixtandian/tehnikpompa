@@ -79,7 +79,7 @@ class DaftarServiceSaya extends GetView<DaftarservisController> {
                               await controller.getDaftarServisUser(
                                  prefC.memberRoleId,
                                  prefC.memberId,
-                                  pageNumber);
+                                pageNumber);
                               EasyLoading.dismiss();
                             },
                             threshold: 3,

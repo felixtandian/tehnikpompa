@@ -1,14 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
 import 'package:tehnikpompa/app/routes/app_pages.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
 
 PrefController prefC = Get.put(PrefController());
 
-void main() {
-  
+void main() async{
+  await GetStorage.init();
+  log(prefC.isLogin.toString());
   runApp(const MyApp());
 }
 
@@ -25,7 +29,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.blue,
       ),
       getPages: AppPages.routes,
-      initialRoute: prefC.isLogin? "/homepage" : "/",
+      initialRoute: "/",
       builder: EasyLoading.init(),
     );
   }
