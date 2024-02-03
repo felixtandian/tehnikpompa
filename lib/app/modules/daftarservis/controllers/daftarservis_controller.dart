@@ -1,14 +1,18 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/detailServiceModel.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/model/responHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/teknisiAllModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/service/daftarservis_service.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/detailServis.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/responDetail.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import 'package:tehnikpompa/utils/messageUtils.dart';
@@ -36,6 +40,35 @@ class DaftarservisController extends GetxController {
   TextEditingController key1 = TextEditingController();
   TextEditingController key2 = TextEditingController();
 
+  TextEditingController tglKerjaTeknisi = TextEditingController();
+  TextEditingController jmlPompaTeknisi = TextEditingController();
+  TextEditingController ketPompaTeknisi = TextEditingController();
+
+  TextEditingController tipePompa = TextEditingController();
+  TextEditingController partNumber = TextEditingController();
+  TextEditingController ketPompa = TextEditingController();
+  TextEditingController isolasi1 = TextEditingController();
+  TextEditingController isolasi2 = TextEditingController();
+  TextEditingController isolasi3 = TextEditingController();
+  TextEditingController voltstby1 = TextEditingController();
+  TextEditingController voltstby2 = TextEditingController();
+  TextEditingController voltstby3 = TextEditingController();
+  TextEditingController voltstby4 = TextEditingController();
+  TextEditingController voltsr1 = TextEditingController();
+  TextEditingController voltsr2 = TextEditingController();
+  TextEditingController voltsr3 = TextEditingController();
+  TextEditingController voltsr4 = TextEditingController();
+  TextEditingController amp1 = TextEditingController();
+  TextEditingController amp2 = TextEditingController();
+  TextEditingController amp3 = TextEditingController();
+  TextEditingController kthn1 = TextEditingController();
+  TextEditingController kthn2 = TextEditingController();
+  TextEditingController kthn3 = TextEditingController();
+  TextEditingController power = TextEditingController();
+  TextEditingController konfklien = TextEditingController();
+  RxList<XFile>? imagefiles = <XFile>[].obs;
+  var p = 1.obs;
+
   Rx<TextEditingController> searchTextController = TextEditingController().obs;
   ScrollController scrollController = ScrollController();
   RxInt totalPage = 0.obs;
@@ -43,6 +76,8 @@ class DaftarservisController extends GetxController {
   var daftarServisModel = <DaftarServisModel?>[].obs;
   var daftarServisSayaModel = <DaftarServisSayaModel?>[].obs;
   DetailServisModel? detailServisModel;
+  ResponHeaderModel? responHeaderModel;
+  var responId = '';
   final selectedStatus = 1.obs;
   late Rx<TextEditingController> date;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
@@ -51,6 +86,9 @@ class DaftarservisController extends GetxController {
   var listTeknisi2Search = <DaftarTeknisiModel?>[].obs;
   var listTeknisi1 = <DaftarTeknisiModel?>[].obs;
   var listTeknisi2 = <DaftarTeknisiModel?>[].obs;
+  final ImagePicker imgpicker = ImagePicker();
+  RxList<String> listImagePath = <String>[].obs;
+  var selectedFileCount = 0.obs;
 
   RxList<DropdownMenuItem<int>> get dropdownItems2 {
     List<DropdownMenuItem<int>> menuItems = [
@@ -62,6 +100,23 @@ class DaftarservisController extends GetxController {
       const DropdownMenuItem(child: Text("Deleted"), value: 6),
     ];
     return menuItems.obs;
+  }
+
+  void openImages() async {
+    try {
+      imagefiles!.value = await imgpicker.pickMultiImage();
+      //you can use ImageCourse.camera for Camera capture
+      if (imagefiles! != null) {
+        for (XFile file in imagefiles!) {
+          listImagePath.add(file.path);
+        }
+      } else {
+        Fluttertoast.showToast(msg: "No image is selected.");
+      }
+    } catch (e) {
+      Fluttertoast.showToast(msg: "error while picking file.");
+    }
+    selectedFileCount.value = listImagePath.length;
   }
 
   void setSelected(int value) {
@@ -112,6 +167,97 @@ class DaftarservisController extends GetxController {
           log('berhasil');
           detailServisModel = DetailServisModel.fromJson(response.body['data']);
           Get.to(() => DetailServis(), binding: DaftarservisBinding());
+          EasyLoading.dismiss();
+        } else {
+          MessageUtils.general(text: 'Terjadi Kesalahan');
+          EasyLoading.dismiss();
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+      MessageUtils.general(text: 'Terjadi Kesalahan Pada Server');
+      EasyLoading.dismiss();
+    }
+    EasyLoading.dismiss();
+  }
+
+  insertDetailRespon(
+      String userId, String responId, List<String> images) async {
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      var response = await DaftarServisService().insertResponDetail(
+          userId,
+          responId,
+          tipePompa.text,
+          partNumber.text,
+          ketPompa.text,
+          konfklien.text,
+          power.text,
+          isolasi1.text + ';' + isolasi2.text + ';' + isolasi3.text,
+          voltstby1.text +
+              ';' +
+              voltstby2.text +
+              ';' +
+              voltstby3.text +
+              ';' +
+              voltstby4.text,
+          voltstby1.text +
+              ';' +
+              voltstby2.text +
+              ';' +
+              voltstby3.text +
+              ';' +
+              voltstby4.text,
+          amp1.text + ';' + amp2.text + ';' + amp3.text,
+          kthn1.text + ';' + kthn2.text + ';' + kthn3.text,
+          images);
+      log(response.body.toString());
+
+      if (response.body != null) {
+        if (response.body['success'] == 1) {
+          log('berhasil');
+          MessageUtils.general(text: 'Berhasil Submit Detail Respon Pompa');
+          EasyLoading.dismiss();
+          if(p.value >= int.parse(jmlPompaTeknisi.text)){
+            Get.to(()=>HomeView(), binding: HomeBinding());
+          }
+        } else {
+          MessageUtils.general(text: 'Terjadi Kesalahan');
+          EasyLoading.dismiss();
+        }
+      }
+    } catch (e) {
+      log(e.toString());
+      MessageUtils.general(text: 'Terjadi Kesalahan Pada Server');
+      EasyLoading.dismiss();
+    }
+    EasyLoading.dismiss();
+  }
+
+  insertResponHeader(String projectId, String userId) async {
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      var response = await DaftarServisService().insertResponHeader(
+          projectId,
+          userId,
+          jmlPompaTeknisi.text,
+          tglKerjaTeknisi.text,
+          ketPompaTeknisi.text);
+      log(response.body.toString());
+
+      if (response.body != null) {
+        if (response.body['success'] == 1) {
+          log('berhasil');
+          responId = response.body['data'];
+          Get.to(() => ResponDetail(), binding: DaftarservisBinding());
           EasyLoading.dismiss();
         } else {
           MessageUtils.general(text: 'Terjadi Kesalahan');

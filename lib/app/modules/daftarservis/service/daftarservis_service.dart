@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaModel.dart';
@@ -105,6 +106,50 @@ class DaftarServisService extends BaseService {
     return post(url, data, contentType: content);
   }
 
+  Future<Response> insertResponHeader(String projectId, String userId, String jmlPompa, String tglKerja, String ket) async {
+    var data = {
+      'projectID': projectId,
+      'userID' : userId,
+      'jmlPompa' : jmlPompa,
+      'tglTindakan' : tglKerja,
+      'keterangan' : ket
+    };
+
+    String url = Constants.baseURL + 'insertRespHdr';
+    String content = 'application/json';
+
+    return post(url, data, contentType: content);
+  }
+
+  Future<Response> insertResponDetail
+  (String userId, String responId, String tipePompa, String partNumber, String ketPompa, String konfKlien, String power,
+  String isolasi, String voltStandby, String voltRunning, String ampere, String ketahanan, List<String> images) async {
+    FormData data = FormData({
+      'userID' : userId,
+      'responID' : responId,
+      'tipePompa' : tipePompa,
+      'partNumber' : partNumber,
+      'ketPomoa' : ketPompa,
+      'konfKlien' : konfKlien,
+      'power' : power,
+      'isolasi' : isolasi,
+      'voltStandby' : voltStandby,
+      'voltRunning' : voltRunning,
+      'ampere' : ampere,
+      'ketahanan' : ketahanan 
+    });
+
+    
+    for(String path in images){
+      data.files.add(MapEntry("image[]", MultipartFile(File(path), filename: '${DateTime.now().millisecondsSinceEpoch}')));     
+    }
+
+    String url = Constants.baseURL + 'insertRespDtl';
+    String content = 'application/json';
+
+    return post(url, data, contentType: content);
+  }
+
   Future<List<DaftarServisSayaModel>> getDaftarServisUser(
       String roleId, String userId, int page) async {
     try {
@@ -136,7 +181,6 @@ class DaftarServisService extends BaseService {
           response.add(DaftarServisSayaModel.fromJson(element));
         });
       }
-
       return response;
     } catch (e) {
       throw (e);

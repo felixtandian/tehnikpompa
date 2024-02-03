@@ -97,7 +97,7 @@ class HomeView extends GetView<HomeController> {
                             ),
                             onPressed: () {
                               prefC.removeUserInfo();
-                              Get.offAndToNamed('/loginscreen');
+                              Get.toNamed('/loginscreen');
                               Navigator.pop(context);
                             },
                           )

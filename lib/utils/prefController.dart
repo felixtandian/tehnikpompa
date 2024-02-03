@@ -77,6 +77,7 @@ class PrefController extends GetxController {
     box.remove(_isVerified);
     box.remove(_roleId);
     box.remove(_verifMsg);
+    setIsLogin(false);
     setTeknisi(false);
     setSuper(false);
     setSales(false);

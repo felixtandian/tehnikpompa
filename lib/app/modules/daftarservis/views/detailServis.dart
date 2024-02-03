@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
@@ -87,8 +88,6 @@ class DetailServis extends GetView<DaftarservisController> {
                     const SizedBox(
                       height: 5,
                     ),
-                   
-                   
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -388,14 +387,14 @@ class DetailServis extends GetView<DaftarservisController> {
               //             ),
               //           ]),
               //         ))
-              prefC.flagisSuper
+              prefC.flagIsTeknisi
                   ? Container(
                       padding: const EdgeInsets.all(10),
                       width: double.infinity,
                       color: Colors.grey.shade200,
                       child: Row(
                         children: [
-                          Text('Update Service',
+                          Text('Respon Service',
                               style: TextStyle(
                                   fontSize: 16,
                                   color: Colors.grey.shade500,
@@ -403,7 +402,71 @@ class DetailServis extends GetView<DaftarservisController> {
                         ],
                       ),
                     )
-                  : SizedBox(),
+                  : prefC.flagisSuper
+                      ? Container(
+                          padding: const EdgeInsets.all(10),
+                          width: double.infinity,
+                          color: Colors.grey.shade200,
+                          child: Row(
+                            children: [
+                              Text('Update Service',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.grey.shade500,
+                                      fontWeight: FontWeight.bold)),
+                            ],
+                          ),
+                        )
+                      : SizedBox(),
+              prefC.flagIsTeknisi ? Container(
+                padding: EdgeInsets.all(10),
+                width: double.infinity,
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                            width: Get.width,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Constants.darkBlue,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () {
+                                
+                              },
+                              child: Text(
+                                'Selesaikan Service',
+                                style: Constants.whiteTextStyle,
+                              ),
+                            ),
+                          ),
+                    SizedBox(
+                      height: 5,
+                    ),
+                    Container(
+                            width: Get.width,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                primary: Constants.darkBlue,
+                                onPrimary: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                              ),
+                              onPressed: () {
+                                Get.to(()=>ResponDetailHeader());
+                              },
+                              child: Text(
+                                'Update Respon Service',
+                                style: Constants.whiteTextStyle,
+                              ),
+                            ),
+                          ),
+                  ],
+                ),
+              ) :
               prefC.flagisSuper
                   ? Container(
                       padding: EdgeInsets.all(10),
