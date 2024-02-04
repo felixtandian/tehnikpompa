@@ -16,7 +16,7 @@ class DaftarBarangService extends BaseService {
       Map<String, dynamic> body = {
         'lokasi': lokasi,
         'key': key,
-        'jenis': jenis,
+        'kategori': jenis,
         'page': page,
       };
 
