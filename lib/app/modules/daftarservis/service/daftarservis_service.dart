@@ -126,9 +126,9 @@ class DaftarServisService extends BaseService {
   String isolasi, String voltStandby, String voltRunning, String ampere, String ketahanan, List<String> images) async {
     FormData data = FormData({
       'userID' : userId,
-      'responID' : responId,
+      'reportID' : responId,
+      'partnumber' : partNumber,
       'tipePompa' : tipePompa,
-      'partNumber' : partNumber,
       'ketPomoa' : ketPompa,
       'konfKlien' : konfKlien,
       'power' : power,

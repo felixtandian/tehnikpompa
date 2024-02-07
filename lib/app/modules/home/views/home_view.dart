@@ -98,6 +98,7 @@ class HomeView extends GetView<HomeController> {
                             onPressed: () {
                               prefC.removeUserInfo();
                               Get.toNamed('/loginscreen');
+                              //Fluttertoast.cancel();
                               Navigator.pop(context);
                             },
                           )
@@ -186,7 +187,7 @@ class HomeView extends GetView<HomeController> {
                           height: 20,
                         ),
                         Container(
-                          height: 280,
+                          height: 300,
                           child: GridView.count(
                             crossAxisCount: 2,
                             crossAxisSpacing: 12,
@@ -194,7 +195,17 @@ class HomeView extends GetView<HomeController> {
                             childAspectRatio: 1.30,
                             children: [
                               prefC.flagIsTeknisi
-                                  ? SizedBox(height: 0)
+                                  ? GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconDocuments.png',
+                                          name: 'Daftar Service'),
+                                      onTap: () async {
+                                        await servisC.getDaftarServis(
+                                            1, '', '', 1);
+                                        Get.to(() => DaftarservisView(),
+                                            binding: DaftarservisBinding());
+                                      },
+                                    )
                                   : GestureDetector(
                                       child: selectedLayanan(
                                           image: 'assets/iconProduct.png',
@@ -209,7 +220,20 @@ class HomeView extends GetView<HomeController> {
                                       },
                                     ),
                               prefC.flagIsTeknisi
-                                  ? SizedBox(height: 0)
+                                  ? GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconProduct.png',
+                                          name: 'Pekerjaan Saya'),
+                                      onTap: () async {
+                                        await servisC.getDaftarServisUser(
+                                            prefC.memberRoleId,
+                                            prefC.memberId,
+                                            1);
+                                        log(prefC.memberId);
+                                        Get.to(() => DaftarServiceSaya(),
+                                            binding: DaftarservisBinding());
+                                      },
+                                    )
                                   : GestureDetector(
                                       child: selectedLayanan(
                                           image: 'assets/iconDocument.png',
@@ -219,28 +243,35 @@ class HomeView extends GetView<HomeController> {
                                             binding: CreateserviceBinding());
                                       },
                                     ),
-                              GestureDetector(
-                                child: selectedLayanan(
-                                    image: 'assets/iconDocuments.png',
-                                    name: 'Daftar Service'),
-                                onTap: () async {
-                                  await servisC.getDaftarServis(1, '', '', 1);
-                                  Get.to(() => DaftarservisView(),
-                                      binding: DaftarservisBinding());
-                                },
-                              ),
-                              GestureDetector(
-                                child: selectedLayanan(
-                                    image: 'assets/iconProduct.png',
-                                    name: 'Service Saya'),
-                                onTap: () async {
-                                  await servisC.getDaftarServisUser(
-                                      prefC.memberRoleId, prefC.memberId, 1);
-                                  log(prefC.memberId);
-                                  Get.to(() => DaftarServiceSaya(),
-                                      binding: DaftarservisBinding());
-                                },
-                              ),
+                              prefC.flagIsTeknisi
+                                  ? Container()
+                                  : GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconDocuments.png',
+                                          name: 'Daftar Service'),
+                                      onTap: () async {
+                                        await servisC.getDaftarServis(
+                                            1, '', '', 1);
+                                        Get.to(() => DaftarservisView(),
+                                            binding: DaftarservisBinding());
+                                      },
+                                    ),
+                              prefC.flagIsTeknisi
+                                  ? Container()
+                                  : GestureDetector(
+                                      child: selectedLayanan(
+                                          image: 'assets/iconProduct.png',
+                                          name: 'My Service'),
+                                      onTap: () async {
+                                        await servisC.getDaftarServisUser(
+                                            prefC.memberRoleId,
+                                            prefC.memberId,
+                                            1);
+                                        log(prefC.memberId);
+                                        Get.to(() => DaftarServiceSaya(),
+                                            binding: DaftarservisBinding());
+                                      },
+                                    ),
                             ],
                           ),
                         ),

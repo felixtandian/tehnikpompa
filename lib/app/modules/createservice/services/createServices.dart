@@ -39,7 +39,7 @@ class CreateServices extends BaseService {
       'rekomendasi_teknisi': rekomTeknisi,
       'teknisi1': teknisi1,
       'teknisi2': teknisi2,
-      'userid': 1 //hardcode
+      'userid': userId,
     });
 
     for(String path in images){

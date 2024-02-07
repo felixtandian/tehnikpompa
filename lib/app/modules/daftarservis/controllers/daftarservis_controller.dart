@@ -77,7 +77,7 @@ class DaftarservisController extends GetxController {
   var daftarServisSayaModel = <DaftarServisSayaModel?>[].obs;
   DetailServisModel? detailServisModel;
   ResponHeaderModel? responHeaderModel;
-  var responId = '';
+  var responId = ''.obs;
   final selectedStatus = 1.obs;
   late Rx<TextEditingController> date;
   final Rx<DateTime>? selectedDate = DateTime.now().obs;
@@ -152,6 +152,35 @@ class DaftarservisController extends GetxController {
     searchTextController.value.clear();
   }
 
+  void detailReponClear() {
+    tipePompa.clear();
+    partNumber.clear();
+    ketPompa.clear();
+    konfklien.clear();
+    power.clear();
+    isolasi1.clear();
+    isolasi2.clear();
+    isolasi3.clear();
+    voltsr1.clear();
+    voltsr2.clear();
+    voltsr3.clear();
+    voltsr4.clear();
+    voltstby1.clear();
+    voltstby2.clear();
+    voltstby3.clear();
+    voltstby4.clear();
+    amp1.clear();
+    amp2.clear();
+    amp3.clear();
+    kthn1.clear();
+    kthn2.clear();
+    kthn3.clear();
+    listImagePath.clear();
+    imagefiles!.clear();
+    tglKerjaTeknisi.clear();
+    ketPompaTeknisi.clear();
+  }
+
   ServisDetail(String serviceId) async {
     EasyLoading.show(
         status: "Mohon Tunggu. . .",
@@ -182,54 +211,151 @@ class DaftarservisController extends GetxController {
   }
 
   insertDetailRespon(
-      String userId, String responId, List<String> images) async {
-    EasyLoading.show(
-        status: "Mohon Tunggu. . .",
-        dismissOnTap: false,
-        maskType: EasyLoadingMaskType.black,
-        indicator: CircularProgressIndicator());
-    try {
-      var response = await DaftarServisService().insertResponDetail(
-          userId,
-          responId,
-          tipePompa.text,
-          partNumber.text,
-          ketPompa.text,
-          konfklien.text,
-          power.text,
-          isolasi1.text + ';' + isolasi2.text + ';' + isolasi3.text,
-          voltstby1.text +
-              ';' +
-              voltstby2.text +
-              ';' +
-              voltstby3.text +
-              ';' +
-              voltstby4.text,
-          voltstby1.text +
-              ';' +
-              voltstby2.text +
-              ';' +
-              voltstby3.text +
-              ';' +
-              voltstby4.text,
-          amp1.text + ';' + amp2.text + ';' + amp3.text,
-          kthn1.text + ';' + kthn2.text + ';' + kthn3.text,
-          images);
-      log(response.body.toString());
+      String userId, String responIdt, List<String> images) async {
+    // EasyLoading.show(
+    //     status: "Mohon Tunggu. . .",
+    //     dismissOnTap: false,
+    //     maskType: EasyLoadingMaskType.black,
+    //     indicator: CircularProgressIndicator());
 
-      if (response.body != null) {
-        if (response.body['success'] == 1) {
-          log('berhasil');
-          MessageUtils.general(text: 'Berhasil Submit Detail Respon Pompa');
-          EasyLoading.dismiss();
-          if(p.value >= int.parse(jmlPompaTeknisi.text)){
-            Get.to(()=>HomeView(), binding: HomeBinding());
+    if (tipePompa.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (partNumber.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (ketPompa.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (power.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (isolasi1.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (isolasi2.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (isolasi3.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (amp1.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (amp2.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (amp3.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (kthn1.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (kthn2.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (kthn3.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltsr1.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltsr2.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltsr3.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltsr4.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltstby1.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltstby2.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltstby3.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (voltstby4.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+    if (konfklien.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+
+    try {
+      DaftarServisService()
+          .insertResponDetail(
+              userId,
+              responIdt,
+              tipePompa.text,
+              partNumber.text,
+              ketPompa.text,
+              konfklien.text,
+              power.text,
+              isolasi1.text + ';' + isolasi2.text + ';' + isolasi3.text,
+              voltstby1.text +
+                  ';' +
+                  voltstby2.text +
+                  ';' +
+                  voltstby3.text +
+                  ';' +
+                  voltstby4.text,
+              voltsr1.text +
+                  ';' +
+                  voltsr2.text +
+                  ';' +
+                  voltsr3.text +
+                  ';' +
+                  voltsr4.text,
+              amp1.text + ';' + amp2.text + ';' + amp3.text,
+              kthn1.text + ';' + kthn2.text + ';' + kthn3.text,
+              images)
+          .then((value) async {
+        log(value.body.toString());
+        if (value.body['success'] == 1) {
+          MessageUtils.general(text: "Berhasil Insert Respon Detail");
+          if (p.value < int.parse(jmlPompaTeknisi.text)) {
+            Get.to(() => ResponDetail(), preventDuplicates: true);
+            detailReponClear();
+            p.value++;
+            update();
+          } else {
+            Get.to(() => HomeView(), binding: HomeBinding());
+            detailReponClear();
+            jmlPompaTeknisi.clear();
+            p.value = 1;
+            update();
           }
         } else {
-          MessageUtils.general(text: 'Terjadi Kesalahan');
-          EasyLoading.dismiss();
+          MessageUtils.failed(
+              text: 'Gagal Insert Respon Detail, coba beberapa saat lagi');
         }
-      }
+      });
     } catch (e) {
       log(e.toString());
       MessageUtils.general(text: 'Terjadi Kesalahan Pada Server');
@@ -244,6 +370,21 @@ class DaftarservisController extends GetxController {
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
+
+    if (jmlPompaTeknisi.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+
+    if (tglKerjaTeknisi.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
+
+    if (ketPompaTeknisi.text.isEmpty) {
+      MessageUtils.failed(text: 'field tidak boleh kosong');
+      return;
+    }
     try {
       var response = await DaftarServisService().insertResponHeader(
           projectId,
@@ -256,7 +397,9 @@ class DaftarservisController extends GetxController {
       if (response.body != null) {
         if (response.body['success'] == 1) {
           log('berhasil');
-          responId = response.body['data'];
+          responId.value = response.body['data'];
+          log(responId.value);
+          update();
           Get.to(() => ResponDetail(), binding: DaftarservisBinding());
           EasyLoading.dismiss();
         } else {
