@@ -8,6 +8,7 @@ import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_co
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
 import 'package:tehnikpompa/utils/constant.dart';
+import 'package:tehnikpompa/utils/messageUtils.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
 
 class DetailServis extends GetView<DaftarservisController> {
@@ -333,83 +334,34 @@ class DetailServis extends GetView<DaftarservisController> {
               const SizedBox(
                 height: 10,
               ),
-              // Container(
-              //         width: Get.width,
-              //         padding: const EdgeInsets.all(5.0),
-              //         alignment: Alignment.topLeft,
-              //         decoration: BoxDecoration(
-              //             border: Border.all(width: 1.5, color: Colors.black),
-              //             borderRadius:
-              //                 const BorderRadius.all(const Radius.circular(5))),
-              //         child: Container(
-              //           padding: const EdgeInsets.all(8),
-              //           child: Column(children: <Widget>[
-              //             Obx(
-              //               () => DropdownButton(
-              //                 isExpanded: true,
-              //                 value: controller.selectedStatus.value,
-              //                 style: GoogleFonts.montserrat(
-              //                     color: Colors.black, fontSize: 14),
-              //                 onChanged: (int? newValue) {
-              //                   controller.setSelected(newValue!);
-              //                   controller.update();
-              //                 },
-              //                 items: controller.dropdownItems2,
-              //               ),
-              //             ),
-              //             const SizedBox(
-              //               height: 5,
-              //             ), CustomTextField(
-              //               controller: controller.teknisi1,
-              //               keyboardType: TextInputType.text,
-              //               label: 'Teknisi 1',
-              //               readOnly: true,
-              //               onTap: () async {
-              //                 EasyLoading.show();
-              //                 await controller.getTeknisi(false, '1');
-              //                 EasyLoading.dismiss();
-              //                 bottomSheetStation(context, '1');
-              //               },
-              //             ),
-              //             const SizedBox(
-              //               height: 5,
-              //             ),CustomTextField(
-              //               controller: controller.teknisi1,
-              //               keyboardType: TextInputType.text,
-              //               label: 'Teknisi 1',
-              //               readOnly: true,
-              //               onTap: () async {
-              //                 EasyLoading.show();
-              //                 await controller.getTeknisi(false, '2');
-              //                 EasyLoading.dismiss();
-              //                 bottomSheetStation(context, '2');
-              //               },
-              //             ),
-              //           ]),
-              //         ))
-              prefC.flagIsTeknisi
+              controller.detailServisModel!.statusId == 4
                   ? Container(
-                      padding: const EdgeInsets.all(10),
-                      width: double.infinity,
-                      color: Colors.grey.shade200,
-                      child: Row(
-                        children: [
-                          Text('Respon Service',
-                              style: TextStyle(
-                                  fontSize: 16,
-                                  color: Colors.grey.shade500,
-                                  fontWeight: FontWeight.bold)),
-                        ],
+                      width: Get.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Constants.darkBlue,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                        ),
+                        onPressed: () {
+                          Get.to(() => ResponDetailHeader());
+                        },
+                        child: Text(
+                          'Lihat Respon Detail',
+                          style: Constants.whiteTextStyle,
+                        ),
                       ),
                     )
-                  : prefC.flagisSuper
+                  : prefC.flagIsTeknisi
                       ? Container(
                           padding: const EdgeInsets.all(10),
                           width: double.infinity,
                           color: Colors.grey.shade200,
                           child: Row(
                             children: [
-                              Text('Update Service',
+                              Text('Respon Service',
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: Colors.grey.shade500,
@@ -417,117 +369,53 @@ class DetailServis extends GetView<DaftarservisController> {
                             ],
                           ),
                         )
-                      : SizedBox(),
-              prefC.flagIsTeknisi
-                  ? Container(
-                      padding: EdgeInsets.all(10),
-                      width: double.infinity,
-                      child: Column(
-                        children: <Widget>[
-                          Container(
-                            width: Get.width,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Constants.darkBlue,
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
+                      : prefC.flagisSuper
+                          ? Container(
+                              padding: const EdgeInsets.all(10),
+                              width: double.infinity,
+                              color: Colors.grey.shade200,
+                              child: Row(
+                                children: [
+                                  Text('Update Service',
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.grey.shade500,
+                                          fontWeight: FontWeight.bold)),
+                                ],
                               ),
-                              onPressed: () {
-                                controller.updateStatus(
-                                    controller.detailServisModel!.id,
-                                    4.toString());
-                              },
-                              child: Text(
-                                'Selesaikan Service',
-                                style: Constants.whiteTextStyle,
-                              ),
-                            ),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: Get.width,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Constants.darkBlue,
-                                onPrimary: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                              ),
-                              onPressed: () {
-                                Get.to(() => ResponDetailHeader());
-                              },
-                              child: Text(
-                                'Update Respon Service',
-                                style: Constants.whiteTextStyle,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    )
-                  : prefC.flagisSuper
+                            )
+                          : SizedBox(),
+              controller.detailServisModel!.statusId == 4
+                  ? Container()
+                  : prefC.flagIsTeknisi
                       ? Container(
                           padding: EdgeInsets.all(10),
                           width: double.infinity,
                           child: Column(
                             children: <Widget>[
-                              Obx(
-                                () => DropdownButton(
-                                  isExpanded: true,
-                                  value: controller.selectedStatus.value,
-                                  style: GoogleFonts.montserrat(
-                                      color: Colors.black, fontSize: 14),
-                                  onChanged: (int? newValue) {
-                                    controller.setSelected(newValue!);
-                                    controller.update();
+                              Container(
+                                width: Get.width,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    primary: Constants.darkBlue,
+                                    onPrimary: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(5),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    controller.updateStatus(
+                                        controller.detailServisModel!.id,
+                                        4.toString());
                                   },
-                                  items: controller.dropdownItems2,
+                                  child: Text(
+                                    'Selesaikan Service',
+                                    style: Constants.whiteTextStyle,
+                                  ),
                                 ),
                               ),
                               SizedBox(
-                                height: 10,
-                              ),
-                              CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.teknisi1.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
-                                controller: controller.teknisi1,
-                                keyboardType: TextInputType.text,
-                                label: 'Teknisi 1',
-                                readOnly: true,
-                                onTap: () async {
-                                  EasyLoading.show();
-                                  await controller.getTeknisi(false, '1');
-                                  EasyLoading.dismiss();
-                                  bottomSheetStation(context, '1');
-                                },
-                              ),
-                              const SizedBox(
                                 height: 5,
-                              ),
-                              CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.teknisi2.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
-                                controller: controller.teknisi2,
-                                keyboardType: TextInputType.text,
-                                label: 'Teknisi 2',
-                                readOnly: true,
-                                onTap: () async {
-                                  EasyLoading.show();
-                                  await controller.getTeknisi(false, '2');
-                                  EasyLoading.dismiss();
-                                  bottomSheetStation(context, '2');
-                                },
                               ),
                               Container(
                                 width: Get.width,
@@ -540,69 +428,10 @@ class DetailServis extends GetView<DaftarservisController> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          title: Text(
-                                            'Apakah anda yakin semuanya sudah benar?',
-                                            style: Constants.blacktextStyle,
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              child: Text("BATAL",
-                                                  style:
-                                                      Constants.blacktextStyle),
-                                              onPressed: () {
-                                                Navigator.pop(context);
-                                              },
-                                            ),
-                                            TextButton(
-                                              child: Text(
-                                                "YA",
-                                                style: Constants.blacktextStyle,
-                                              ),
-                                              onPressed: () {
-                                                if (controller.teknisi1.text !=
-                                                        "" ||
-                                                    controller.teknisi2.text !=
-                                                        "") {
-                                                  controller.updateTeknisi(
-                                                      controller
-                                                          .detailServisModel!
-                                                          .id,
-                                                      controller
-                                                          .teknisi1Id.text,
-                                                      controller
-                                                          .teknisi2Id.text);
-                                                  controller.updateStatus(
-                                                      controller
-                                                          .detailServisModel!
-                                                          .id,
-                                                      controller
-                                                          .selectedStatus.value
-                                                          .toString());
-                                                } else {
-                                                  //update status
-                                                  controller.updateStatus(
-                                                      controller
-                                                          .detailServisModel!
-                                                          .id,
-                                                      controller
-                                                          .selectedStatus.value
-                                                          .toString());
-                                                }
-                                                controller.update();
-                                                Navigator.pop(context);
-                                              },
-                                            )
-                                          ],
-                                        );
-                                      },
-                                    );
+                                    Get.to(() => ResponDetailHeader());
                                   },
                                   child: Text(
-                                    'Simpan',
+                                    'Update Respon Service',
                                     style: Constants.whiteTextStyle,
                                   ),
                                 ),
@@ -610,7 +439,350 @@ class DetailServis extends GetView<DaftarservisController> {
                             ],
                           ),
                         )
-                      : SizedBox()
+                      : prefC.flagisSuper
+                          ? Container(
+                              padding: EdgeInsets.all(10),
+                              width: double.infinity,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  CustomTextField(
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          controller.teknisi1.clear();
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    controller: controller.teknisi1,
+                                    keyboardType: TextInputType.text,
+                                    label: 'Teknisi 1',
+                                    readOnly: true,
+                                    onTap: () async {
+                                      EasyLoading.show();
+                                      await controller.getTeknisi(false, '1');
+                                      EasyLoading.dismiss();
+                                      bottomSheetStation(context, '1');
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  CustomTextField(
+                                    suffixIcon: IconButton(
+                                        onPressed: () {
+                                          controller.teknisi2.clear();
+                                        },
+                                        icon: const Icon(Icons.close)),
+                                    controller: controller.teknisi2,
+                                    keyboardType: TextInputType.text,
+                                    label: 'Teknisi 2',
+                                    readOnly: true,
+                                    onTap: () async {
+                                      EasyLoading.show();
+                                      await controller.getTeknisi(false, '2');
+                                      EasyLoading.dismiss();
+                                      bottomSheetStation(context, '2');
+                                    },
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Constants.darkBlue,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Apakah anda yakin semuanya sudah benar?',
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("BATAL",
+                                                      style: Constants
+                                                          .blacktextStyle),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "YA",
+                                                    style: Constants
+                                                        .blacktextStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    if (controller.teknisi1
+                                                                .text !=
+                                                            "" ||
+                                                        controller.teknisi2
+                                                                .text !=
+                                                            "") {
+                                                      controller.updateTeknisi(
+                                                          controller
+                                                              .detailServisModel!
+                                                              .id,
+                                                          controller
+                                                              .teknisi1Id.text,
+                                                          controller
+                                                              .teknisi2Id.text);
+                                                      controller.updateStatus(
+                                                          controller
+                                                              .detailServisModel!
+                                                              .id,
+                                                          '2');
+                                                    } else {
+                                                      //update status
+                                                      MessageUtils.failed(
+                                                          text:
+                                                              'Teknisi tidak boleh kosong ! (minimal 1)');
+                                                    }
+                                                    controller.update();
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        'Submit',
+                                        style: Constants.whiteTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Constants.darkBlue,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Apakah anda yakin ingin mengubah servis?',
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("BATAL",
+                                                      style: Constants
+                                                          .blacktextStyle),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "YA",
+                                                    style: Constants
+                                                        .blacktextStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    // controller.updateStatus(
+                                                    //     controller
+                                                    //         .detailServisModel!.id,
+                                                    //     6.toString());
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        'Ubah Service',
+                                        style: Constants.whiteTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Constants.darkBlue,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Apakah anda yakin ingin menghapus servis?',
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("BATAL",
+                                                      style: Constants
+                                                          .blacktextStyle),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "YA",
+                                                    style: Constants
+                                                        .blacktextStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        'Hapus Service',
+                                        style: Constants.whiteTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(
+                              padding: EdgeInsets.all(10),
+                              width: double.infinity,
+                              child: Column(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Constants.darkBlue,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Apakah anda yakin ingin mengubah servis?',
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("BATAL",
+                                                      style: Constants
+                                                          .blacktextStyle),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "YA",
+                                                    style: Constants
+                                                        .blacktextStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    // controller.updateStatus(
+                                                    //     controller
+                                                    //         .detailServisModel!.id,
+                                                    //     6.toString());
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        'Ubah Service',
+                                        style: Constants.whiteTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    width: Get.width,
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        primary: Constants.darkBlue,
+                                        onPrimary: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(5),
+                                        ),
+                                      ),
+                                      onPressed: () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (BuildContext context) {
+                                            return AlertDialog(
+                                              title: Text(
+                                                'Apakah anda yakin ingin menghapus servis?',
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  child: Text("BATAL",
+                                                      style: Constants
+                                                          .blacktextStyle),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                ),
+                                                TextButton(
+                                                  child: Text(
+                                                    "YA",
+                                                    style: Constants
+                                                        .blacktextStyle,
+                                                  ),
+                                                  onPressed: () {
+                                                    Navigator.pop(context);
+                                                  },
+                                                )
+                                              ],
+                                            );
+                                          },
+                                        );
+                                      },
+                                      child: Text(
+                                        'Hapus Service',
+                                        style: Constants.whiteTextStyle,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
             ],
           ),
         ),

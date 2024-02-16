@@ -8,7 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/daftarBarangModel.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/listKategoriModel.dart';
-import 'package:tehnikpompa/app/modules/daftarbarang/models/modelbarang.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/service/daftarBarangService.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
 import 'package:tehnikpompa/utils/constant.dart';
@@ -16,7 +15,6 @@ import 'package:dio/dio.dart';
 
 class DaftarbarangController extends GetxController {
   //TODO: Implement DaftarbarangController
-  List<Model> list = [];
   ScrollController scrollController = ScrollController();
 
   int listLength = 6;
@@ -68,28 +66,21 @@ class DaftarbarangController extends GetxController {
   void onInit() {
     isLoading.value = true;
     hasMore.value = true;
-    generateList();
-    addItems();
     super.onInit();
   }
 
-  generateList() {
-    list = List.generate(
-        listLength, (index) => Model(name: (index + 1).toString()));
+
+   void scrollToTop() {
+    try {
+      log('scrolldek');
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    } catch (e) {
+      print(e);
+    }
   }
 
-  addItems() async {
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        for (int i = 0; i < 2; i++) {
-          listLength++;
-          list.add(Model(name: (listLength).toString()));
-          update(); //update GetBuilder each time
-        }
-      }
-    });
-  }
+
 
   void setSelected(String value) {
     selectedLokasi.value = value;
@@ -112,6 +103,7 @@ class DaftarbarangController extends GetxController {
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
+        
     try {
       DaftarBarangService()
           .getDaftarBarang(lokasi, key, jenis, page)

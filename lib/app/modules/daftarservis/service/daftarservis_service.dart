@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/model/responViewDetail.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/teknisiAllModel.dart';
 import 'package:tehnikpompa/utils/baseService.dart';
 import 'package:tehnikpompa/utils/constant.dart';
@@ -51,6 +52,62 @@ class DaftarServisService extends BaseService {
     }
   }
 
+  Future<List<ResponViewDetailModel>> getResponViewDetail(
+       String projectID) async {
+    try {
+      String uri = Constants.baseURL + 'responDetail';
+      Map<String, dynamic> body = {
+        'projectID': projectID,
+      };
+      var hasil = json.encode(body);
+      log(body.toString());
+      Response? resp = await post(
+        uri,
+        hasil,
+      );
+      log(resp.body.toString());
+      List<ResponViewDetailModel> response = [];
+      if (resp.body['message'] == 'Berhasil') {
+        log('awok');
+        var rawData = resp.body['data'];
+        rawData.forEach((element) {
+          response.add(ResponViewDetailModel.fromJson(element));
+        });
+      }
+      return response;
+    } catch (e) {
+      throw (e);
+    }
+  }
+
+  Future<List<ImageResponViewDetail>> getResponViewDetailImages(
+       String projectID) async {
+    try {
+      String uri = Constants.baseURL + 'responDetail';
+      Map<String, dynamic> body = {
+        'projectID': projectID,
+      };
+      var hasil = json.encode(body);
+      log(body.toString());
+      Response? resp = await post(
+        uri,
+        hasil,
+      );
+      log(resp.body.toString());
+      List<ImageResponViewDetail> response = [];
+      if (resp.body['message'] == 'Berhasil') {
+        log('awok');
+        var rawData = resp.body['data'];
+        rawData.forEach((element) {
+          response.add(ImageResponViewDetail.fromJson(element));
+        });
+      }
+      return response;
+    } catch (e) {
+      throw (e);
+    }
+  }
+
   Future<List<DaftarTeknisiModel?>?> getListTeknisi() async {
     try {
       String uri = Constants.baseURL + 'listTeknisi';
@@ -59,7 +116,7 @@ class DaftarServisService extends BaseService {
       log('awokakakak' + json.toString());
       List<DaftarTeknisiModel?>? response = [];
       if (respon.body['message'] == 'Berhasil') {
-        var rawData = respon.body['data'];
+        var rawData = respon.body['images'];
         rawData.forEach((element) {
           response.add(DaftarTeknisiModel.fromJson(element));
         });
@@ -71,6 +128,8 @@ class DaftarServisService extends BaseService {
       throw (e);
     }
   }
+
+  
 
   Future<Response> updateStatusService(String serviceId, String status) async{
     var data = {
@@ -150,11 +209,14 @@ class DaftarServisService extends BaseService {
     return post(url, data, contentType: content);
   }
 
-  Future<List<DaftarServisSayaModel>> getDaftarServisUser(
+  Future<List<DaftarServisSayaModel>> getDaftarServisUser(int status, String namaProject, String date,
       String roleId, String userId, int page) async {
     try {
       String uri = Constants.baseURL + 'userServices';
       Map<String, dynamic> body = {
+        'status': status,
+        'nama_project': namaProject,
+        'date': date,
         'role': roleId,
         'userID': userId,
         'page': page

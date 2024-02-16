@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -97,8 +96,9 @@ class HomeView extends GetView<HomeController> {
                             ),
                             onPressed: () {
                               prefC.removeUserInfo();
+                              Get.reset();
                               Get.toNamed('/loginscreen');
-                              //Fluttertoast.cancel();
+                              Fluttertoast.cancel();
                               Navigator.pop(context);
                             },
                           )
@@ -226,6 +226,9 @@ class HomeView extends GetView<HomeController> {
                                           name: 'Pekerjaan Saya'),
                                       onTap: () async {
                                         await servisC.getDaftarServisUser(
+                                            1,
+                                            '',
+                                            '',
                                             prefC.memberRoleId,
                                             prefC.memberId,
                                             1);
@@ -264,6 +267,9 @@ class HomeView extends GetView<HomeController> {
                                           name: 'My Service'),
                                       onTap: () async {
                                         await servisC.getDaftarServisUser(
+                                            1,
+                                            '',
+                                            '',
                                             prefC.memberRoleId,
                                             prefC.memberId,
                                             1);

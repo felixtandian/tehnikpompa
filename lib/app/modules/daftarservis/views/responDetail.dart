@@ -1,13 +1,13 @@
 import 'dart:developer';
 import 'dart:ffi';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextFieldTeknisi.dart';
 import 'package:tehnikpompa/main.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import 'package:tehnikpompa/utils/messageUtils.dart';
@@ -115,7 +115,7 @@ class ResponDetail extends GetView<DaftarservisController> {
 
                       Row(
                         children: [
-                          Expanded(child: Text('Isolasi')),
+                          Expanded(child: Text('Isolasi (mΩ)')),
                           SizedBox(
                             width: 3,
                           ),
@@ -179,7 +179,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                         height: 5,
                       ),
                       Row(children: [
-                        Expanded(child: Text('Ampere')),
+                        Expanded(child: Text('Ampere (A)')),
                         Expanded(
                           child: Container(
                             child: CustomTextField(
@@ -235,7 +235,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                       ),
                       Row(
                         children: [
-                          Expanded(child: Text('Ketahanan')),
+                          Expanded(child: Text('Ketahanan (Ω)')),
                           Expanded(
                             child: Container(
                               child: CustomTextField(
@@ -287,15 +287,10 @@ class ResponDetail extends GetView<DaftarservisController> {
                         ],
                       ),
                       Row(children: [
-                        Expanded(child: Text('Voltase (Standby)')),
+                        Expanded(child: Text('Voltase Standby (V)')),
                         Expanded(
                           child: Container(
-                            child: CustomTextField(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.voltstby1.clear();
-                                  },
-                                  icon: const Icon(Icons.close)),
+                            child: CustomTextFieldTeknisi(
                               label: 'R-S',
                               controller: controller.voltstby1,
                               keyboardType: TextInputType.number,
@@ -307,12 +302,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                         ),
                         Expanded(
                           child: Container(
-                            child: CustomTextField(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.voltstby2.clear();
-                                  },
-                                  icon: const Icon(Icons.close)),
+                            child: CustomTextFieldTeknisi(
                               label: 'R-T',
                               controller: controller.voltstby2,
                               keyboardType: TextInputType.number,
@@ -324,12 +314,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                         ),
                         Expanded(
                           child: Container(
-                            child: CustomTextField(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.voltstby3.clear();
-                                  },
-                                  icon: const Icon(Icons.close)),
+                            child: CustomTextFieldTeknisi(
                               label: 'S-T',
                               controller: controller.voltstby3,
                               keyboardType: TextInputType.number,
@@ -341,12 +326,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                         ),
                         Expanded(
                           child: Container(
-                            child: CustomTextField(
-                              suffixIcon: IconButton(
-                                  onPressed: () {
-                                    controller.voltstby4.clear();
-                                  },
-                                  icon: const Icon(Icons.close)),
+                            child: CustomTextFieldTeknisi(
                               label: 'L-N',
                               controller: controller.voltstby4,
                               keyboardType: TextInputType.number,
@@ -360,15 +340,10 @@ class ResponDetail extends GetView<DaftarservisController> {
                       //3
                       Row(
                         children: [
-                          Expanded(child: Text('Voltase (Running)')),
+                          Expanded(child: Text('Voltase Running (V)')),
                           Expanded(
                             child: Container(
-                              child: CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.voltsr1.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
+                              child: CustomTextFieldTeknisi(
                                 label: 'R-S',
                                 controller: controller.voltsr1,
                                 keyboardType: TextInputType.number,
@@ -380,12 +355,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                           ),
                           Expanded(
                             child: Container(
-                              child: CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.voltsr2.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
+                              child: CustomTextFieldTeknisi(
                                 label: 'R-T',
                                 controller: controller.voltsr2,
                                 keyboardType: TextInputType.number,
@@ -397,12 +367,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                           ),
                           Expanded(
                             child: Container(
-                              child: CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.voltsr3.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
+                              child: CustomTextFieldTeknisi(
                                 label: 'S-T',
                                 controller: controller.voltsr3,
                                 keyboardType: TextInputType.number,
@@ -414,12 +379,7 @@ class ResponDetail extends GetView<DaftarservisController> {
                           ),
                           Expanded(
                             child: Container(
-                              child: CustomTextField(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      controller.voltsr4.clear();
-                                    },
-                                    icon: const Icon(Icons.close)),
+                              child: CustomTextFieldTeknisi(
                                 label: 'L-T',
                                 controller: controller.voltsr4,
                                 keyboardType: TextInputType.number,

@@ -9,6 +9,7 @@ import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaMode
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/detailServiceModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/responHeader.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/model/responViewDetail.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/teknisiAllModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/service/daftarservis_service.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/detailServis.dart';
@@ -75,6 +76,8 @@ class DaftarservisController extends GetxController {
   RxInt currentPage = 1.obs;
   var daftarServisModel = <DaftarServisModel?>[].obs;
   var daftarServisSayaModel = <DaftarServisSayaModel?>[].obs;
+  var responViewDetailModel = <ResponViewDetailModel?>[].obs;
+  var responViewDetailModelImages = <ImageResponViewDetail?>[].obs;
   DetailServisModel? detailServisModel;
   ResponHeaderModel? responHeaderModel;
   var responId = ''.obs;
@@ -179,6 +182,16 @@ class DaftarservisController extends GetxController {
     imagefiles!.clear();
     tglKerjaTeknisi.clear();
     ketPompaTeknisi.clear();
+  }
+
+  void scrollToTop() {
+    try {
+      log('scrolldek');
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    } catch (e) {
+      print(e);
+    }
   }
 
   ServisDetail(String serviceId) async {
@@ -415,6 +428,45 @@ class DaftarservisController extends GetxController {
     EasyLoading.dismiss();
   }
 
+  
+  getResponServisView(String projectId) async {
+    EasyLoading.show(
+        status: "Mencari Proyek. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      var response = await DaftarServisService()
+          .getResponViewDetail(projectId);
+      log('awok' + response.toString());
+      if (response != []) {
+        responViewDetailModel.value = response;
+      }
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+  getImages(String projectId) async {
+    EasyLoading.show(
+        status: "Mencari Proyek. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      var response = await DaftarServisService()
+          .getResponViewDetailImages(projectId);
+      log('awok' + response.toString());
+      if (response != []) {
+        responViewDetailModelImages.value = response;
+      }
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
   getDaftarServis(int status, String namaProject, String date, int page) async {
     EasyLoading.show(
         status: "Mencari Proyek. . .",
@@ -445,15 +497,16 @@ class DaftarservisController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  getDaftarServisUser(String roleId, String userId, int page) async {
+  getDaftarServisUser(int status, String namaProject, String date,
+      String roleId, String userId, int page) async {
     EasyLoading.show(
         status: "Mencari Proyek. . .",
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
     try {
-      var response =
-          await DaftarServisService().getDaftarServisUser(roleId, userId, page);
+      var response = await DaftarServisService()
+          .getDaftarServisUser(status, namaProject, date, roleId, userId, page);
       log('awok' + response.toString());
       if (response != []) {
         daftarServisSayaModel.value = response;
