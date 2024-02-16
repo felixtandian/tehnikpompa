@@ -40,15 +40,15 @@ class ResponViewDetailModel {
         jmlPompa: json["jmlPompa"],
         tipePompa: json["tipePompa"],
         partNumber: json["partNumber"],
-        ketPompa: json["ketPompa"],
-        power: json["power"],
-        isolation: json["isolation"],
-        voltageStandby: json["voltageStandby"],
+        ketPompa: json["ketPompa"].toString(),
+        power: json["power"].toString(),
+        isolation: json["isolation"].toString(),
+        voltageStandby: json["voltageStandby"].toString(),
         voltageRunning: json["voltageRunning"],
         ampere: json["ampere"],
         ketahanan: json["ketahanan"],
         konfirmasiKlien: json["konfirmasiKlien"],
-        dicekOleh: json["dicek_oleh"],
+        dicekOleh: json["dicek_oleh"].toString(),
     );
 
     Map<String, dynamic> toJson() => {
@@ -84,10 +84,10 @@ class ImageResponViewDetail {
     });
 
     factory ImageResponViewDetail.fromJson(Map<String, dynamic> json) => ImageResponViewDetail(
-        id: json["id"],
-        projectId: json["projectID"],
-        title: json["title"],
-        flagDelete: json["flagDelete"],
+        id: json["id"].toString(),
+        projectId: json["projectID"].toString(),
+        title: json["title"].toString(),
+        flagDelete: json["flagDelete"].toString(),
     );
 
     Map<String, dynamic> toJson() => {

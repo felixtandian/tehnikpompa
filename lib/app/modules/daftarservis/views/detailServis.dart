@@ -5,6 +5,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/detailResponServis.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
 import 'package:tehnikpompa/utils/constant.dart';
@@ -163,11 +164,11 @@ class DetailServis extends GetView<DaftarservisController> {
                         Text('Umur Pompa', style: Constants.blacktextStyle),
                         Spacer(),
                         Expanded(
-                          flex: 0,
+                          flex: 1,
                           child: Text(controller.detailServisModel!.umurPompa,
-                              overflow: TextOverflow.fade,
-                              maxLines: 1,
-                              style: Constants.detailServisText),
+                              overflow: TextOverflow.ellipsis,
+                              maxLines: 3,
+                              style: Constants.detailServisText,)
                         ),
                       ],
                     ),
@@ -334,8 +335,9 @@ class DetailServis extends GetView<DaftarservisController> {
               const SizedBox(
                 height: 10,
               ),
-              controller.detailServisModel!.statusId == 4
+              controller.detailServisModel!.statusId == 'Finished'
                   ? Container(
+                      padding: EdgeInsets.all(10),
                       width: Get.width,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
@@ -345,8 +347,17 @@ class DetailServis extends GetView<DaftarservisController> {
                             borderRadius: BorderRadius.circular(5),
                           ),
                         ),
-                        onPressed: () {
-                          Get.to(() => ResponDetailHeader());
+                        onPressed: () async {
+                          await controller.getResponServisView(
+                              controller.detailServisModel!.id);
+                          await controller
+                              .getImages(controller.detailServisModel!.id);
+                          if (controller.responViewDetailModel.isEmpty) {
+                            MessageUtils.general(
+                                text: 'Tidak ada detail respon');
+                          } else {
+                            Get.to(() => DetailResponServisView());
+                          }
                         },
                         child: Text(
                           'Lihat Respon Detail',
@@ -385,7 +396,7 @@ class DetailServis extends GetView<DaftarservisController> {
                               ),
                             )
                           : SizedBox(),
-              controller.detailServisModel!.statusId == 4
+              controller.detailServisModel!.statusId == 'Finished'
                   ? Container()
                   : prefC.flagIsTeknisi
                       ? Container(

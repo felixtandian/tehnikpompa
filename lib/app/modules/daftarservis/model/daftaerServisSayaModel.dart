@@ -20,7 +20,7 @@ class DaftarServisSayaModel {
         nama: json["nama"],
         createdDate: json["createdDate"],
         status: json["status"],
-        teknisi1: json["teknisi1"],
+        teknisi1: json["teknisi1"].toString(),
         teknisi2: json["teknisi2"].toString(),
     );
 

@@ -92,6 +92,7 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
                                   suffixIcon: IconButton(
                                       onPressed: () {
                                         controller.kategori1.clear();
+                                        controller.kategori1Id.clear();
                                       },
                                       icon: const Icon(Icons.close)),
                                   controller: controller.kategori1,
@@ -151,6 +152,7 @@ class DaftarbarangView extends GetView<DaftarbarangController> {
                                               .searchTextController.value.text,
                                           controller.kategori1Id.text,
                                           1);
+                                          
                                       EasyLoading.dismiss();
                                     },
                                     child: Text(

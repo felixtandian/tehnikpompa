@@ -67,7 +67,7 @@ class DaftarServisService extends BaseService {
       );
       log(resp.body.toString());
       List<ResponViewDetailModel> response = [];
-      if (resp.body['message'] == 'Berhasil') {
+      if (resp.body['Message'] == 'Berhasil') {
         log('awok');
         var rawData = resp.body['data'];
         rawData.forEach((element) {
@@ -95,7 +95,7 @@ class DaftarServisService extends BaseService {
       );
       log(resp.body.toString());
       List<ImageResponViewDetail> response = [];
-      if (resp.body['message'] == 'Berhasil') {
+      if (resp.body['Message'] == 'Berhasil') {
         log('awok');
         var rawData = resp.body['data'];
         rawData.forEach((element) {

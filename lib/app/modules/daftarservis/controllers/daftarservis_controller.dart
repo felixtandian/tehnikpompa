@@ -208,6 +208,7 @@ class DaftarservisController extends GetxController {
         if (response.body['message'] == 'Berhasil') {
           log('berhasil');
           detailServisModel = DetailServisModel.fromJson(response.body['data']);
+          log('kontol' + detailServisModel!.statusId.toString());
           Get.to(() => DetailServis(), binding: DaftarservisBinding());
           EasyLoading.dismiss();
         } else {
@@ -441,6 +442,7 @@ class DaftarservisController extends GetxController {
       log('awok' + response.toString());
       if (response != []) {
         responViewDetailModel.value = response;
+        log(responViewDetailModel.value.toString());
       }
     } catch (e) {
       errorSnackBar('Gagal', e.toString());
