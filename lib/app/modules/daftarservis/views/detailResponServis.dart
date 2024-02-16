@@ -5,11 +5,13 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/mobile.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import 'package:tehnikpompa/utils/messageUtils.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 
 class DetailResponServisView extends GetView<DaftarservisController> {
   PrefController prefC = Get.put(PrefController());
@@ -104,7 +106,6 @@ class DetailResponServisView extends GetView<DaftarservisController> {
                     const SizedBox(
                       height: 5,
                     ),
-                    
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -345,6 +346,26 @@ class DetailResponServisView extends GetView<DaftarservisController> {
                           ),
                         ),
                       ),
+              ),
+              SizedBox(height: 10),
+              Container(
+                width: Get.width,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Constants.darkBlue,
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                  ),
+                  onPressed: () {
+                    controller.generatePDF();
+                  },
+                  child: Text(
+                    'Download PDF',
+                    style: Constants.whiteTextStyle,
+                  ),
+                ),
               ),
             ],
           ),

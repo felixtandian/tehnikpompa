@@ -180,6 +180,8 @@ class DaftarServiceSaya extends GetView<DaftarservisController> {
                                   onTap: () async {
                                     await controller.ServisDetail(controller
                                         .daftarServisSayaModel[index]!.id);
+                                    controller.namaFile = controller
+                                        .daftarServisSayaModel[index]!.id;
                                   },
                                   model:
                                       controller.daftarServisSayaModel[index],

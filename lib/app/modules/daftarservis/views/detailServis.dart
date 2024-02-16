@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tehnikpompa/app/modules/createservice/bindings/createservice_binding.dart';
+import 'package:tehnikpompa/app/modules/createservice/controllers/createservice_controller.dart';
+import 'package:tehnikpompa/app/modules/createservice/views/createservice_view.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/detailResponServis.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
@@ -608,10 +611,7 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
-                                                    // controller.updateStatus(
-                                                    //     controller
-                                                    //         .detailServisModel!.id,
-                                                    //     6.toString());
+                                                    Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
                                                     Navigator.pop(context);
                                                   },
                                                 )
@@ -662,6 +662,10 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
+                                                    controller.updateStatus(
+                                                        controller
+                                                            .detailServisModel!.id,
+                                                        6.toString());
                                                     Navigator.pop(context);
                                                   },
                                                 )
@@ -777,6 +781,7 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
+                                                    controller.updateStatus(controller.detailServisModel!.id, '6');
                                                     Navigator.pop(context);
                                                   },
                                                 )

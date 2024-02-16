@@ -53,7 +53,7 @@ class DaftarServisService extends BaseService {
   }
 
   Future<List<ResponViewDetailModel>> getResponViewDetail(
-       String projectID) async {
+      String projectID) async {
     try {
       String uri = Constants.baseURL + 'responDetail';
       Map<String, dynamic> body = {
@@ -81,7 +81,7 @@ class DaftarServisService extends BaseService {
   }
 
   Future<List<ImageResponViewDetail>> getResponViewDetailImages(
-       String projectID) async {
+      String projectID) async {
     try {
       String uri = Constants.baseURL + 'responDetail';
       Map<String, dynamic> body = {
@@ -97,7 +97,7 @@ class DaftarServisService extends BaseService {
       List<ImageResponViewDetail> response = [];
       if (resp.body['Message'] == 'Berhasil') {
         log('awok');
-        var rawData = resp.body['data'];
+        var rawData = resp.body['images'];
         rawData.forEach((element) {
           response.add(ImageResponViewDetail.fromJson(element));
         });
@@ -129,31 +129,73 @@ class DaftarServisService extends BaseService {
     }
   }
 
-  
-
-  Future<Response> updateStatusService(String serviceId, String status) async{
-    var data = {
-      "projectID" : serviceId,
-      "status" : status
-    };
+  Future<Response> updateStatusService(String serviceId, String status) async {
+    var data = {"projectID": serviceId, "status": status};
 
     String url = Constants.baseURL + 'updateStatus';
     String content = 'application/json';
 
-    return post(url, data, contentType: content);    
+    return post(url, data, contentType: content);
   }
 
-  Future<Response> updateTeknisiService(String serviceId, String teknisi1, String teknisi2) async{
+  Future<Response> updateService(
+      List<String> images,
+      String serviceType,
+      String namaService,
+      String noTelp,
+      String tipePompa,
+      String lokasi,
+      String notes,
+      String jmlPompa,
+      String umurPompa,
+      String namaCp,
+      String telpCp,
+      String rekomTeknisi,
+      String teknisi1,
+      String teknisi2,
+      String userId,
+      String projectId) async {
+    
+    FormData form = FormData({
+      'service_type': serviceType,
+      'nama_service': namaService,
+      'no_telp': noTelp,
+      'lokasi': lokasi,
+      'tipe_pompa' : tipePompa,
+      'notes': notes,
+      'jml_pompa': jmlPompa,
+      'umur_pompa': umurPompa,
+      'nama_cp': namaCp,
+      'tlp_cp': telpCp,
+      'rekomendasi_teknisi': rekomTeknisi,
+      'teknisi1': teknisi1,
+      'teknisi2': teknisi2,
+      'userid': userId,
+      'projectID': projectId
+    });
+
+    for(String path in images){
+      form.files.add(MapEntry("image[]", MultipartFile(File(path), filename: '${DateTime.now().millisecondsSinceEpoch}')));     
+    }
+
+    String url = Constants.baseURL + 'insertService';
+    String content = 'application/json';
+
+    return post(url, form, contentType: content);
+  }
+
+  Future<Response> updateTeknisiService(
+      String serviceId, String teknisi1, String teknisi2) async {
     var data = {
-      "projectID" : serviceId,
-      "teknisi1" : teknisi1,
-      "teknisi2" : teknisi2
+      "projectID": serviceId,
+      "teknisi1": teknisi1,
+      "teknisi2": teknisi2
     };
 
     String url = Constants.baseURL + 'updateTeknisi';
     String content = 'application/json';
 
-    return post(url, data, contentType: content);    
+    return post(url, data, contentType: content);
   }
 
   Future<Response> detailService(String serviceId) async {
@@ -165,13 +207,14 @@ class DaftarServisService extends BaseService {
     return post(url, data, contentType: content);
   }
 
-  Future<Response> insertResponHeader(String projectId, String userId, String jmlPompa, String tglKerja, String ket) async {
+  Future<Response> insertResponHeader(String projectId, String userId,
+      String jmlPompa, String tglKerja, String ket) async {
     var data = {
       'projectID': projectId,
-      'userID' : userId,
-      'jmlPompa' : jmlPompa,
-      'tglTindakan' : tglKerja,
-      'keterangan' : ket
+      'userID': userId,
+      'jmlPompa': jmlPompa,
+      'tglTindakan': tglKerja,
+      'keterangan': ket
     };
 
     String url = Constants.baseURL + 'insertRespHdr';
@@ -180,27 +223,40 @@ class DaftarServisService extends BaseService {
     return post(url, data, contentType: content);
   }
 
-  Future<Response> insertResponDetail
-  (String userId, String responId, String tipePompa, String partNumber, String ketPompa, String konfKlien, String power,
-  String isolasi, String voltStandby, String voltRunning, String ampere, String ketahanan, List<String> images) async {
+  Future<Response> insertResponDetail(
+      String userId,
+      String responId,
+      String tipePompa,
+      String partNumber,
+      String ketPompa,
+      String konfKlien,
+      String power,
+      String isolasi,
+      String voltStandby,
+      String voltRunning,
+      String ampere,
+      String ketahanan,
+      List<String> images) async {
     FormData data = FormData({
-      'userID' : userId,
-      'reportID' : responId,
-      'partnumber' : partNumber,
-      'tipePompa' : tipePompa,
-      'ketPomoa' : ketPompa,
-      'konfKlien' : konfKlien,
-      'power' : power,
-      'isolasi' : isolasi,
-      'voltStandby' : voltStandby,
-      'voltRunning' : voltRunning,
-      'ampere' : ampere,
-      'ketahanan' : ketahanan 
+      'userID': userId,
+      'reportID': responId,
+      'partnumber': partNumber,
+      'tipePompa': tipePompa,
+      'ketPomoa': ketPompa,
+      'konfKlien': konfKlien,
+      'power': power,
+      'isolasi': isolasi,
+      'voltStandby': voltStandby,
+      'voltRunning': voltRunning,
+      'ampere': ampere,
+      'ketahanan': ketahanan
     });
 
-    
-    for(String path in images){
-      data.files.add(MapEntry("image[]", MultipartFile(File(path), filename: '${DateTime.now().millisecondsSinceEpoch}')));     
+    for (String path in images) {
+      data.files.add(MapEntry(
+          "image[]",
+          MultipartFile(File(path),
+              filename: '${DateTime.now().millisecondsSinceEpoch}')));
     }
 
     String url = Constants.baseURL + 'insertRespDtl';
@@ -209,8 +265,13 @@ class DaftarServisService extends BaseService {
     return post(url, data, contentType: content);
   }
 
-  Future<List<DaftarServisSayaModel>> getDaftarServisUser(int status, String namaProject, String date,
-      String roleId, String userId, int page) async {
+  Future<List<DaftarServisSayaModel>> getDaftarServisUser(
+      int status,
+      String namaProject,
+      String date,
+      String roleId,
+      String userId,
+      int page) async {
     try {
       String uri = Constants.baseURL + 'userServices';
       Map<String, dynamic> body = {

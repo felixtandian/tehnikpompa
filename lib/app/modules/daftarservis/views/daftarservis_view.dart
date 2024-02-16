@@ -202,6 +202,9 @@ class DaftarservisView extends GetView<DaftarservisController> {
                                               controller
                                                   .daftarServisModel[index]!
                                                   .id);
+                                          controller.namaFile = controller
+                                                  .daftarServisModel[index]!
+                                                  .id;
                                         },
                                         model:
                                             controller.daftarServisModel[index],

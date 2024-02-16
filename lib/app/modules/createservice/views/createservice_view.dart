@@ -12,6 +12,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:tehnikpompa/app/modules/createservice/widgets/utility.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
@@ -23,7 +24,8 @@ import '../controllers/createservice_controller.dart';
 class CreateserviceView extends GetView<CreateserviceController> {
   LoginscreenController loginC = Get.put(LoginscreenController());
   PrefController prefC = Get.put(PrefController());
-
+  DaftarservisController daftarservisController =
+      Get.put(DaftarservisController());
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -502,51 +504,103 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                 style: Constants
                                                                     .blacktextStyle,
                                                               ),
-                                                              onPressed: () async{
+                                                              onPressed:
+                                                                  () async {
                                                                 Navigator.pop(
                                                                     context);
                                                                 EasyLoading
                                                                     .show();
-                                                                controller.cServiceController(
-                                                                    controller
-                                                                        .listImagePath,
-                                                                    controller
-                                                                        .selectedServisId
-                                                                        .value,
-                                                                    controller
-                                                                        .namaServis
-                                                                        .text,
-                                                                    controller
-                                                                        .nomorTelepon
-                                                                        .text,
-                                                                    controller
-                                                                        .tipePompa
-                                                                        .text,
-                                                                    controller
-                                                                        .lokasi
-                                                                        .text,
-                                                                    controller
-                                                                        .masalah
-                                                                        .text,
-                                                                    controller
-                                                                        .jmlPompa
-                                                                        .text,
-                                                                    controller
-                                                                        .umrPompa
-                                                                        .text,
-                                                                    controller
-                                                                        .cpName
-                                                                        .text,
-                                                                    controller
-                                                                        .cpPhone
-                                                                        .text,
-                                                                    controller
-                                                                        .rekomTeknisi
-                                                                        .value
-                                                                        .text,
-                                                                    '',
-                                                                    '',
-                                                                    prefC.memberId);
+                                                                if (daftarservisController
+                                                                    .detailServisModel!
+                                                                    .id
+                                                                    .isNotEmpty) {
+                                                                  controller.updateService(
+                                                                      controller
+                                                                          .listImagePath,
+                                                                      controller
+                                                                          .selectedServisId
+                                                                          .value,
+                                                                      controller
+                                                                          .namaServis
+                                                                          .text,
+                                                                      controller
+                                                                          .nomorTelepon
+                                                                          .text,
+                                                                      controller
+                                                                          .tipePompa
+                                                                          .text,
+                                                                      controller
+                                                                          .lokasi
+                                                                          .text,
+                                                                      controller
+                                                                          .masalah
+                                                                          .text,
+                                                                      controller
+                                                                          .jmlPompa
+                                                                          .text,
+                                                                      controller
+                                                                          .umrPompa
+                                                                          .text,
+                                                                      controller
+                                                                          .cpName
+                                                                          .text,
+                                                                      controller
+                                                                          .cpPhone
+                                                                          .text,
+                                                                      controller
+                                                                          .rekomTeknisi
+                                                                          .value
+                                                                          .text,
+                                                                      '',
+                                                                      '',
+                                                                      prefC
+                                                                          .memberId,
+                                                                      daftarservisController
+                                                                          .detailServisModel!
+                                                                          .id);
+                                                                } else {
+                                                                  controller.cServiceController(
+                                                                      controller
+                                                                          .listImagePath,
+                                                                      controller
+                                                                          .selectedServisId
+                                                                          .value,
+                                                                      controller
+                                                                          .namaServis
+                                                                          .text,
+                                                                      controller
+                                                                          .nomorTelepon
+                                                                          .text,
+                                                                      controller
+                                                                          .tipePompa
+                                                                          .text,
+                                                                      controller
+                                                                          .lokasi
+                                                                          .text,
+                                                                      controller
+                                                                          .masalah
+                                                                          .text,
+                                                                      controller
+                                                                          .jmlPompa
+                                                                          .text,
+                                                                      controller
+                                                                          .umrPompa
+                                                                          .text,
+                                                                      controller
+                                                                          .cpName
+                                                                          .text,
+                                                                      controller
+                                                                          .cpPhone
+                                                                          .text,
+                                                                      controller
+                                                                          .rekomTeknisi
+                                                                          .value
+                                                                          .text,
+                                                                      '',
+                                                                      '',
+                                                                      prefC
+                                                                          .memberId);
+                                                                }
                                                                 controller
                                                                     .update();
                                                                 EasyLoading

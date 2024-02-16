@@ -1,9 +1,13 @@
 import 'dart:developer';
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftaerServisSayaModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/model/daftarServisModel.dart';
@@ -13,6 +17,7 @@ import 'package:tehnikpompa/app/modules/daftarservis/model/responViewDetail.dart
 import 'package:tehnikpompa/app/modules/daftarservis/model/teknisiAllModel.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/service/daftarservis_service.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/detailServis.dart';
+import 'package:tehnikpompa/app/modules/daftarservis/views/mobile.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetail.dart';
 import 'package:tehnikpompa/app/modules/home/bindings/home_binding.dart';
 import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
@@ -80,6 +85,7 @@ class DaftarservisController extends GetxController {
   var responViewDetailModelImages = <ImageResponViewDetail?>[].obs;
   DetailServisModel? detailServisModel;
   ResponHeaderModel? responHeaderModel;
+  late List<int> bytes;
   var responId = ''.obs;
   final selectedStatus = 1.obs;
   late Rx<TextEditingController> date;
@@ -92,6 +98,7 @@ class DaftarservisController extends GetxController {
   final ImagePicker imgpicker = ImagePicker();
   RxList<String> listImagePath = <String>[].obs;
   var selectedFileCount = 0.obs;
+  var namaFile;
 
   RxList<DropdownMenuItem<int>> get dropdownItems2 {
     List<DropdownMenuItem<int>> menuItems = [
@@ -208,7 +215,6 @@ class DaftarservisController extends GetxController {
         if (response.body['message'] == 'Berhasil') {
           log('berhasil');
           detailServisModel = DetailServisModel.fromJson(response.body['data']);
-          log('kontol' + detailServisModel!.statusId.toString());
           Get.to(() => DetailServis(), binding: DaftarservisBinding());
           EasyLoading.dismiss();
         } else {
@@ -429,7 +435,209 @@ class DaftarservisController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  
+  Future<void> generatePDF() async {
+    PdfDocument document = PdfDocument();
+    final page = document.pages.add();
+
+    Rect bounds = Rect.fromLTWH(0, 160, page.graphics.clientSize.width, 30);
+
+    page.graphics.drawImage(
+        PdfBitmap(await readImage('kopteknikpompa.png')),
+        Rect.fromLTWH(0, 0, 500, 75));
+
+
+    
+
+    PdfGrid grid = PdfGrid();
+    grid.style = PdfGridStyle(
+        font: PdfStandardFont(PdfFontFamily.helvetica, 14),
+        cellPadding: PdfPaddings(left: 5, bottom: 2, top: 2, right: 2));
+
+    
+    grid.columns.add(count: 2);
+
+    grid.headers.add(5);
+
+    PdfGridRow header1 = grid.headers[0];
+    header1.cells[0].value = '';
+    header1.cells[0].style.borders.all = PdfPens.transparent;
+    header1.cells[1].style.borders.all = PdfPens.transparent;
+
+    PdfGridRow header2 = grid.headers[1];
+    header2.cells[0].value = '';
+    header2.cells[0].style.borders.all = PdfPens.transparent;
+    header2.cells[1].style.borders.all = PdfPens.transparent;
+
+    PdfGridRow header3 = grid.headers[2];
+    header3.cells[0].value = '';
+    header3.cells[0].style.borders.all = PdfPens.transparent;
+    header3.cells[1].style.borders.all = PdfPens.transparent;
+
+    PdfGridRow headers = grid.headers[3];
+    headers.cells[0].value = 'BERITA ACARA SUPERVISI';
+    headers.cells[0].style.borders.all = PdfPens.transparent;
+    headers.cells[1].style.borders.all = PdfPens.transparent;
+
+    PdfGridRow header = grid.headers[4];
+    header.cells[0].value = responViewDetailModel[0]!.idRespon;
+    header.cells[0].style.borders.all = PdfPens.transparent;
+    header.cells[1].style.borders.all = PdfPens.transparent;
+
+    PdfGridRow row;
+
+    row = grid.rows.add();
+    row.cells[0].value = '';
+    row.cells[1].value = '';
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = '';
+    row.cells[1].value = '';
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Tanggal';
+    row.cells[1].value = responViewDetailModel[0]!.tglTindakan.toString();
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Nama Project';
+    row.cells[1].value = detailServisModel!.nama;
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Lokasi';
+    row.cells[1].value = detailServisModel!.lokasi;
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Jumlah Pompa';
+    row.cells[1].value = detailServisModel!.jmlPompa.toString();
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Nama Teknisi';
+    row.cells[1].value = detailServisModel!.teknisi1;
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Keterangan';
+    row.cells[1].value = detailServisModel!.keterangan;
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Konf. Klien';
+    row.cells[1].value = responViewDetailModel[0]!.konfirmasiKlien.toString();
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = 'Keterangan';
+    row.cells[1].value = responViewDetailModel[0]!.keterangan.toString();
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = '';
+    row.cells[1].value = '';
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    row = grid.rows.add();
+    row.cells[0].value = '';
+    row.cells[1].value = '';
+    row.cells[0].style.borders.all = PdfPens.transparent;
+    row.cells[1].style.borders.all = PdfPens.transparent;
+
+    for (var i = 0; i < responViewDetailModel.length; i++) {
+      row = grid.rows.add();
+      row.cells[0].value = 'Pompa ' + (i + 1).toString();
+      row.cells[1].value = '';
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Tipe Pompa';
+      row.cells[1].value = responViewDetailModel[i]!.tipePompa.toString();
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Part Number';
+      row.cells[1].value = responViewDetailModel[i]!.partNumber.toString();
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Power';
+      row.cells[1].value = responViewDetailModel[i]!.power.toString() + ' kW';
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Isolasi ';
+      row.cells[1].value = responViewDetailModel[i]!.isolation;
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Voltase running (V)';
+      row.cells[1].value = responViewDetailModel[i]!.voltageRunning.toString();
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Voltase Standby (V)';
+      row.cells[1].value = responViewDetailModel[i]!.voltageStandby.toString();
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Ampere (A)';
+      row.cells[1].value = responViewDetailModel[i]!.ampere.toString();
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = 'Ketahanan ';
+      row.cells[1].value = responViewDetailModel[i]!.ketahanan;
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = '';
+      row.cells[1].value = '';
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+      row = grid.rows.add();
+      row.cells[0].value = '';
+      row.cells[1].value = '';
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+    }
+
+    grid.draw(page: page, bounds: const Rect.fromLTWH(0, 100, 0, 0));
+
+    bytes = await document.save();
+    document.dispose();
+
+    saveAndLaunchedFile(bytes, namaFile + '.pdf');
+  }
+
+  Future<Uint8List> readImage(String name) async {
+    final data = await rootBundle.load('assets/$name');
+    return data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+  }
+
   getResponServisView(String projectId) async {
     EasyLoading.show(
         status: "Mencari Proyek. . .",
@@ -437,11 +645,11 @@ class DaftarservisController extends GetxController {
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
     try {
-      var response = await DaftarServisService()
-          .getResponViewDetail(projectId);
+      var response = await DaftarServisService().getResponViewDetail(projectId);
       log('awok' + response.toString());
       if (response != []) {
         responViewDetailModel.value = response;
+
         log(responViewDetailModel.value.toString());
       }
     } catch (e) {
@@ -457,8 +665,8 @@ class DaftarservisController extends GetxController {
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
     try {
-      var response = await DaftarServisService()
-          .getResponViewDetailImages(projectId);
+      var response =
+          await DaftarServisService().getResponViewDetailImages(projectId);
       log('awok' + response.toString());
       if (response != []) {
         responViewDetailModelImages.value = response;
