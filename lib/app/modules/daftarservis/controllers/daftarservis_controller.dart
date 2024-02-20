@@ -74,7 +74,7 @@ class DaftarservisController extends GetxController {
   TextEditingController konfklien = TextEditingController();
   RxList<XFile>? imagefiles = <XFile>[].obs;
   var p = 1.obs;
-
+  var ubahService = false;
   Rx<TextEditingController> searchTextController = TextEditingController().obs;
   ScrollController scrollController = ScrollController();
   RxInt totalPage = 0.obs;
@@ -818,6 +818,13 @@ class DaftarservisController extends GetxController {
     Get.snackbar(judul, msg,
         colorText: Colors.white,
         backgroundColor: Colors.red[600],
+        duration: Duration(seconds: 3));
+  }
+
+  void pendingSnackBar(String judul, String msg) {
+    Get.snackbar(judul, msg,
+        colorText: Colors.white,
+        backgroundColor: Colors.orange[600],
         duration: Duration(seconds: 3));
   }
 }

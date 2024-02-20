@@ -218,12 +218,13 @@ class CreateserviceController extends GetxController {
               projectId)
           .then((value) async {
         log(value.body.toString());
-        if (value.body['message'] == 'Berhasil Update Service') {
+        if (value.body['message'] == 'Berhasil') {
           Get.to(() => HomeView(), binding: HomeBinding());
           snackBar('Sukses!',
-              'Service anda berhasil di buat silahkan cek di service anda.');
+              'Service anda berhasil di ubah silahkan cek di service anda.');
           EasyLoading.dismiss();
-        } else if (value.body['message'] != 'Berhasil Submit Service') {
+          Get.offAll(()=>HomeView(), binding: HomeBinding());
+        } else {
           errorSnackBar('Gagal!', value.body['message']);
         }
       });

@@ -11,6 +11,7 @@ import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_co
 import 'package:tehnikpompa/app/modules/daftarservis/views/detailResponServis.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/responDetailHeader.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/widgets/customTextField.dart';
+import 'package:tehnikpompa/app/modules/home/views/home_view.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import 'package:tehnikpompa/utils/messageUtils.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
@@ -167,12 +168,13 @@ class DetailServis extends GetView<DaftarservisController> {
                         Text('Umur Pompa', style: Constants.blacktextStyle),
                         Spacer(),
                         Expanded(
-                          flex: 1,
-                          child: Text(controller.detailServisModel!.umurPompa,
+                            flex: 1,
+                            child: Text(
+                              controller.detailServisModel!.umurPompa,
                               overflow: TextOverflow.ellipsis,
                               maxLines: 3,
-                              style: Constants.detailServisText,)
-                        ),
+                              style: Constants.detailServisText,
+                            )),
                       ],
                     ),
                     const SizedBox(
@@ -611,8 +613,11 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
-                                                    Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
-                                                    Navigator.pop(context);
+                                                    //  controller.ubahService = true;
+                                                    //  Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
+                                                    controller.pendingSnackBar(
+                                                        'Whoooppss',
+                                                        'fitur ini masi dalam perbaikan');
                                                   },
                                                 )
                                               ],
@@ -664,7 +669,8 @@ class DetailServis extends GetView<DaftarservisController> {
                                                   onPressed: () {
                                                     controller.updateStatus(
                                                         controller
-                                                            .detailServisModel!.id,
+                                                            .detailServisModel!
+                                                            .id,
                                                         6.toString());
                                                     Navigator.pop(context);
                                                   },
@@ -727,11 +733,11 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
-                                                    // controller.updateStatus(
-                                                    //     controller
-                                                    //         .detailServisModel!.id,
-                                                    //     6.toString());
-                                                    Navigator.pop(context);
+                                                    //  controller.ubahService = true;
+                                                    //  Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
+                                                    controller.pendingSnackBar(
+                                                        'Whoooppss',
+                                                        'fitur ini masi dalam perbaikan');
                                                   },
                                                 )
                                               ],
@@ -781,7 +787,11 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
-                                                    controller.updateStatus(controller.detailServisModel!.id, '6');
+                                                    controller.updateStatus(
+                                                        controller
+                                                            .detailServisModel!
+                                                            .id,
+                                                        '6');
                                                     Navigator.pop(context);
                                                   },
                                                 )

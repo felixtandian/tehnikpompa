@@ -13,7 +13,9 @@ import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_bindi
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarServisSaya.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/views/daftarservis_view.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/bindings/loginscreen_binding.dart';
 import 'package:tehnikpompa/app/modules/loginscreen/controllers/loginscreen_controller.dart';
+import 'package:tehnikpompa/app/modules/loginscreen/views/loginscreen_view.dart';
 import 'package:tehnikpompa/utils/constant.dart';
 import 'package:tehnikpompa/utils/prefController.dart';
 import '../controllers/home_controller.dart';
@@ -97,9 +99,7 @@ class HomeView extends GetView<HomeController> {
                             onPressed: () {
                               prefC.removeUserInfo();
                               Get.reset();
-                              Get.toNamed('/loginscreen');
-                              Fluttertoast.cancel();
-                              Navigator.pop(context);
+                              Get.offAll(()=>LoginscreenView(), binding: LoginscreenBinding());
                             },
                           )
                         ],

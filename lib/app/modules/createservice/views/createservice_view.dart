@@ -511,9 +511,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                 EasyLoading
                                                                     .show();
                                                                 if (daftarservisController
-                                                                    .detailServisModel!
-                                                                    .id
-                                                                    .isNotEmpty) {
+                                                                    .ubahService == true) {
                                                                   controller.updateService(
                                                                       controller
                                                                           .listImagePath,
