@@ -512,7 +512,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                     .show();
                                                                 if (daftarservisController
                                                                     .ubahService == true) {
-                                                                  controller.updateService(
+                                                                await controller.updateService(
                                                                       controller
                                                                           .listImagePath,
                                                                       controller
@@ -553,6 +553,7 @@ class CreateserviceView extends GetView<CreateserviceController> {
                                                                       '',
                                                                       prefC
                                                                           .memberId,
+                                                                          1.toString(),
                                                                       daftarservisController
                                                                           .detailServisModel!
                                                                           .id);

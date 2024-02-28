@@ -578,59 +578,64 @@ class DetailServis extends GetView<DaftarservisController> {
                                     ),
                                   ),
                                   Container(
-                                    width: Get.width,
-                                    child: ElevatedButton(
-                                      style: ElevatedButton.styleFrom(
-                                        primary: Constants.darkBlue,
-                                        onPrimary: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(5),
+                                      width: Get.width,
+                                      child: ElevatedButton(
+                                        style: ElevatedButton.styleFrom(
+                                          primary: Constants.darkBlue,
+                                          onPrimary: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(5),
+                                          ),
                                         ),
-                                      ),
-                                      onPressed: () {
-                                        showDialog(
-                                          context: context,
-                                          builder: (BuildContext context) {
-                                            return AlertDialog(
-                                              title: Text(
-                                                'Apakah anda yakin ingin mengubah servis?',
-                                                style: Constants.blacktextStyle,
-                                              ),
-                                              actions: [
-                                                TextButton(
-                                                  child: Text("BATAL",
-                                                      style: Constants
-                                                          .blacktextStyle),
-                                                  onPressed: () {
-                                                    Navigator.pop(context);
-                                                  },
+                                        onPressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (BuildContext context) {
+                                              return AlertDialog(
+                                                title: Text(
+                                                  'Apakah anda yakin ingin mengubah servis?',
+                                                  style:
+                                                      Constants.blacktextStyle,
                                                 ),
-                                                TextButton(
-                                                  child: Text(
-                                                    "YA",
-                                                    style: Constants
-                                                        .blacktextStyle,
+                                                actions: [
+                                                  TextButton(
+                                                    child: Text("BATAL",
+                                                        style: Constants
+                                                            .blacktextStyle),
+                                                    onPressed: () {
+                                                      Navigator.pop(context);
+                                                    },
                                                   ),
-                                                  onPressed: () {
-                                                    //  controller.ubahService = true;
-                                                    //  Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
-                                                    controller.pendingSnackBar(
-                                                        'Whoooppss',
-                                                        'fitur ini masi dalam perbaikan');
-                                                  },
-                                                )
-                                              ],
-                                            );
-                                          },
-                                        );
-                                      },
-                                      child: Text(
-                                        'Ubah Service',
-                                        style: Constants.whiteTextStyle,
-                                      ),
-                                    ),
-                                  ),
+                                                  TextButton(
+                                                    child: Text(
+                                                      "YA",
+                                                      style: Constants
+                                                          .blacktextStyle,
+                                                    ),
+                                                    onPressed: () {
+                                                      controller.ubahService =
+                                                          true;
+                                                      Get.to(
+                                                          () =>
+                                                              CreateserviceView(),
+                                                          binding:
+                                                              CreateserviceBinding());
+                                                      // controller.pendingSnackBar(
+                                                      //     'Whoooppss',
+                                                      //     'fitur ini masi dalam perbaikan');
+                                                    },
+                                                  )
+                                                ],
+                                              );
+                                            },
+                                          );
+                                        },
+                                        child: Text(
+                                          'Ubah Service',
+                                          style: Constants.whiteTextStyle,
+                                        ),
+                                      )),
                                   Container(
                                     width: Get.width,
                                     child: ElevatedButton(
@@ -733,11 +738,16 @@ class DetailServis extends GetView<DaftarservisController> {
                                                         .blacktextStyle,
                                                   ),
                                                   onPressed: () {
-                                                    //  controller.ubahService = true;
-                                                    //  Get.to(()=>CreateserviceView(), binding: CreateserviceBinding());
-                                                    controller.pendingSnackBar(
-                                                        'Whoooppss',
-                                                        'fitur ini masi dalam perbaikan');
+                                                    controller.ubahService =
+                                                        true;
+                                                    Get.to(
+                                                        () =>
+                                                            CreateserviceView(),
+                                                        binding:
+                                                            CreateserviceBinding());
+                                                    // controller.pendingSnackBar(
+                                                    //     'Whoooppss',
+                                                    //     'fitur ini masi dalam perbaikan');
                                                   },
                                                 )
                                               ],

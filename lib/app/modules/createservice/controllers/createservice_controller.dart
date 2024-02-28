@@ -191,6 +191,7 @@ class CreateserviceController extends GetxController {
       String teknisi1,
       String teknisi2,
       String userId,
+      String status,
       String projectId) async {
     EasyLoading.show(
         status: "Mohon Tunggu. . .",
@@ -215,6 +216,7 @@ class CreateserviceController extends GetxController {
               teknisi1,
               teknisi2,
               userId,
+              status,
               projectId)
           .then((value) async {
         log(value.body.toString());

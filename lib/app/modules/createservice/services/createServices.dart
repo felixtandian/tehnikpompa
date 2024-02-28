@@ -68,6 +68,7 @@ class CreateServices extends BaseService {
       String teknisi1,
       String teknisi2,
       String userId,
+      String status,
       String projectId) async {
     
     FormData form = FormData({
@@ -85,6 +86,7 @@ class CreateServices extends BaseService {
       'teknisi1': teknisi1,
       'teknisi2': teknisi2,
       'userid': userId,
+      'status': '1',
       'projectID': projectId
     });
 
