@@ -4,6 +4,7 @@ class DaftarBarangModel {
     int stokBarang;
     int totalBooking;
     int stokIndent;
+    String noteBooking;
 
     DaftarBarangModel({
         required this.namaBarang,
@@ -11,6 +12,7 @@ class DaftarBarangModel {
         required this.stokBarang,
         required this.totalBooking,
         required this.stokIndent,
+        required this.noteBooking
     });
 
     factory DaftarBarangModel.fromJson(Map<String, dynamic> json) => DaftarBarangModel(
@@ -19,6 +21,7 @@ class DaftarBarangModel {
         stokBarang: json["stokBarang"],
         totalBooking: json["totalBooking"],
         stokIndent: json["stokIndent"],
+        noteBooking: json["noteBooking"],
     );
 
     Map<String, dynamic> toJson() => {
@@ -27,5 +30,6 @@ class DaftarBarangModel {
         "stokBarang": stokBarang,
         "totalBooking": totalBooking,
         "stokIndent": stokIndent,
+        "noteBooking": noteBooking,
     };
 }

@@ -175,6 +175,68 @@ class CreateserviceController extends GetxController {
     EasyLoading.dismiss();
   }
 
+   updateService(
+      List<String> images,
+      String serviceType,
+      String namaService,
+      String noTelp,
+      String tipePompa,
+      String lokasi,
+      String notes,
+      String jmlPompa,
+      String umurPompa,
+      String namaCp,
+      String telpCp,
+      String rekomTeknisi,
+      String teknisi1,
+      String teknisi2,
+      String userId,
+      String status,
+      String projectId) async {
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
+    try {
+      CreateServices()
+          .updateService(
+              images,
+              serviceType,
+              namaService,
+              noTelp,
+              tipePompa,
+              lokasi,
+              notes,
+              jmlPompa,
+              umurPompa,
+              namaCp,
+              telpCp,
+              rekomTeknisi,
+              teknisi1,
+              teknisi2,
+              userId,
+              status,
+              projectId)
+          .then((value) async {
+        log(value.body.toString());
+        if (value.body['message'] == 'Berhasil') {
+          Get.to(() => HomeView(), binding: HomeBinding());
+          snackBar('Sukses!',
+              'Service anda berhasil di ubah silahkan cek di service anda.');
+          EasyLoading.dismiss();
+          Get.offAll(()=>HomeView(), binding: HomeBinding());
+        } else {
+          errorSnackBar('Gagal!', value.body['message']);
+        }
+      });
+    } catch (e) {
+      errorSnackBar('Gagal', e.toString());
+    }
+    EasyLoading.dismiss();
+  }
+
+
   void snackBar(String judul, String msg) {
     Get.snackbar(judul, msg,
         colorText: Colors.white,

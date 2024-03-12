@@ -7,10 +7,10 @@ class Constants {
   /// 1 : PRODUCTION
   /// 2 : STAGING
 
-  static const int appEnv = 0;
-  static const String baseURL = appEnv == 0
+  static const int appEnv = 1;
+  static const String baseURL = appEnv == 1
       ? 'https://api.tehnikpompa.net/api/'
-      : 'https://api.tehnikpompa.net/api/';
+      : 'https://api-dev.tehnikpompa.net/api/';
 
   static const primaryColor = Color.fromRGBO(36, 40, 91, 1);
   static const darkBlue = Color(0xFF24285B);

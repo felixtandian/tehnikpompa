@@ -39,7 +39,7 @@ class CreateServices extends BaseService {
       'rekomendasi_teknisi': rekomTeknisi,
       'teknisi1': teknisi1,
       'teknisi2': teknisi2,
-      'userid': 1 //hardcode
+      'userid': userId,
     });
 
     for(String path in images){
@@ -51,5 +51,54 @@ class CreateServices extends BaseService {
 
     return post(url, form, contentType: content);
   }
+
+    Future<Response> updateService(
+      List<String> images,
+      String serviceType,
+      String namaService,
+      String noTelp,
+      String tipePompa,
+      String lokasi,
+      String notes,
+      String jmlPompa,
+      String umurPompa,
+      String namaCp,
+      String telpCp,
+      String rekomTeknisi,
+      String teknisi1,
+      String teknisi2,
+      String userId,
+      String status,
+      String projectId) async {
+    
+    FormData form = FormData({
+      'service_type': serviceType,
+      'nama_service': namaService,
+      'no_telp': noTelp,
+      'lokasi': lokasi,
+      'tipe_pompa' : tipePompa,
+      'notes': notes,
+      'jml_pompa': jmlPompa,
+      'umur_pompa': umurPompa,
+      'nama_cp': namaCp,
+      'tlp_cp': telpCp,
+      'rekomendasi_teknisi': rekomTeknisi,
+      'teknisi1': teknisi1,
+      'teknisi2': teknisi2,
+      'userid': userId,
+      'status': '1',
+      'projectID': projectId
+    });
+
+    for(String path in images){
+      form.files.add(MapEntry("image[]", MultipartFile(File(path), filename: '${DateTime.now().millisecondsSinceEpoch}')));     
+    }
+
+    String url = Constants.baseURL + 'updateStatus';
+    String content = 'application/json';
+
+    return post(url, form, contentType: content);
+  }
+
 
 }

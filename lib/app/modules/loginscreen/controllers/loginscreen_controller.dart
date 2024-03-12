@@ -47,13 +47,14 @@ class LoginscreenController extends GetxController {
         log(response.body.toString());
         if (response.body['message'] == 'Sukses') {
           var data = UserModel.fromJson(response.body['data']);
-          prefController.setIsLogin(true);
-          prefController.setMemberRoleId(userModel!.roleId.toString());
-          prefController.setMemberId(userModel!.id.toString());
-          prefController.setEmail(userModel!.email);
-          prefController.setName(userModel!.shortName);
-          prefController.setPhoneNumber(userModel!.noHp);
           userModel = data;
+          prefController.setIsLogin(true);
+          prefController.setName(userModel!.shortName);
+          prefController.setMemberId(userModel!.id.toString());
+          prefController.setMemberRoleId(userModel!.roleId.toString());
+          prefController.setEmail(userModel!.email);
+          prefController.setPhoneNumber(userModel!.noHp);   
+          log(prefController.isLogin.toString());
           if(userModel!.roleId == 1){
             prefController.setSuper(true);
           }else if(userModel!.roleId == 2){
@@ -61,7 +62,7 @@ class LoginscreenController extends GetxController {
           }else{
             prefController.setTeknisi(true);
           }
-          Get.to(HomeView(), binding: HomeBinding());
+          Get.to(()=>HomeView(), binding: HomeBinding());
         } else if (response.body['message'] == 'Gagal') {
           if (response.body['data'] == 'Email Tidak Terdaftar !') {
             errorSnackBar('Email invalid !', response.body['data'].toString());

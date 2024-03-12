@@ -8,7 +8,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/daftarBarangModel.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/models/listKategoriModel.dart';
-import 'package:tehnikpompa/app/modules/daftarbarang/models/modelbarang.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/service/daftarBarangService.dart';
 import 'package:tehnikpompa/app/modules/daftarbarang/widgets/itemfetcher.dart';
 import 'package:tehnikpompa/utils/constant.dart';
@@ -16,9 +15,8 @@ import 'package:dio/dio.dart';
 
 class DaftarbarangController extends GetxController {
   //TODO: Implement DaftarbarangController
-  List<Model> list = [];
   ScrollController scrollController = ScrollController();
-  
+
   int listLength = 6;
   final dio = Dio();
   final pairList = <WordPair>[];
@@ -31,7 +29,14 @@ class DaftarbarangController extends GetxController {
   RxList daftarBarangModel = <DaftarBarangModel?>[].obs;
   RxList kategoriModel = <KategoriModel?>[].obs;
   final selectedLokasi = 'Semarang'.obs;
-  RxString selectedCategory = 'ACCESORIES PANEL'.obs ;
+  var listkategori1 = <KategoriModel>[].obs;
+  var listkategoriSearch = <KategoriModel>[].obs;
+  TextEditingController kategori1Id = TextEditingController();
+  TextEditingController kategori1 = TextEditingController();
+  TextEditingController key1 = TextEditingController();
+  TextEditingController key2 = TextEditingController();
+
+
 
   RxInt lokasi = 1.obs;
   Rx<TextEditingController> searchTextController = TextEditingController().obs;
@@ -61,36 +66,27 @@ class DaftarbarangController extends GetxController {
   void onInit() {
     isLoading.value = true;
     hasMore.value = true;
-    generateList();
-    addItems();
     super.onInit();
   }
 
-  generateList() {
-    list = List.generate(
-        listLength, (index) => Model(name: (index + 1).toString()));
+
+   void scrollToTop() {
+    try {
+      log('scrolldek');
+      scrollController.animateTo(0,
+          duration: Duration(milliseconds: 500), curve: Curves.ease);
+    } catch (e) {
+      print(e);
+    }
   }
 
-  addItems() async {
-    scrollController.addListener(() {
-      if (scrollController.position.maxScrollExtent ==
-          scrollController.position.pixels) {
-        for (int i = 0; i < 2; i++) {
-          listLength++;
-          list.add(Model(name: (listLength).toString()));
-          update(); //update GetBuilder each time
-        }
-      }
-    });
-  }
+
 
   void setSelected(String value) {
     selectedLokasi.value = value;
   }
 
-  void setSelectedKategori(String value){
-    selectedCategory.value = value;
-  }
+  
 
   @override
   void onReady() {
@@ -107,6 +103,7 @@ class DaftarbarangController extends GetxController {
         dismissOnTap: false,
         maskType: EasyLoadingMaskType.black,
         indicator: CircularProgressIndicator());
+        
     try {
       DaftarBarangService()
           .getDaftarBarang(lokasi, key, jenis, page)
@@ -123,26 +120,19 @@ class DaftarbarangController extends GetxController {
     EasyLoading.dismiss();
   }
 
-  Future getKategori() async {
-    EasyLoading.show(
-        status: "Mencari Kategori. . .",
-        dismissOnTap: false,
-        maskType: EasyLoadingMaskType.black,
-        indicator: CircularProgressIndicator());
+  Future getKategori(bool isLoad) async {
     try {
-      DaftarBarangService()
-          .getKategori()
-          .then((value) async {
-        log(value.toString());
-        if (value != []) {
-          kategoriModel.value = value;
-          log(kategoriModel.toString());
+      if (isLoad) isLoading.value = true;
+      await DaftarBarangService().getKategori().then((value) async {
+        log('masuk2');
+        if (value.isNotEmpty) {
+          listkategori1.value = value;
+          listkategoriSearch.value = value;
         }
+        isLoading.value = false;
+        update();
       });
-    } catch (e) {
-      errorSnackBar('Gagal', e.toString());
-    }
-    EasyLoading.dismiss();
+    } catch (e) {}
   }
 
   // Future<List<KategoriModel>> getCategory() async {

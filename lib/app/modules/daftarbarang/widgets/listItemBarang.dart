@@ -48,6 +48,11 @@ class ListItemBarang extends StatelessWidget {
           Text(
             'Total Booking : ' + model!.totalBooking.toString(),
             style: Constants.blacktextStyle,
+          ),
+          SizedBox(height: 10),
+          Text(
+            'Keterangan Booking : ' + model!.noteBooking.toString(),
+            style: Constants.blacktextStyle,
           )
         ]),
       ),
