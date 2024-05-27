@@ -232,11 +232,11 @@ class DaftarservisController extends GetxController {
 
   insertDetailRespon(
       String userId, String responIdt, List<String> images) async {
-    // EasyLoading.show(
-    //     status: "Mohon Tunggu. . .",
-    //     dismissOnTap: false,
-    //     maskType: EasyLoadingMaskType.black,
-    //     indicator: CircularProgressIndicator());
+    EasyLoading.show(
+        status: "Mohon Tunggu. . .",
+        dismissOnTap: false,
+        maskType: EasyLoadingMaskType.black,
+        indicator: CircularProgressIndicator());
 
     if (tipePompa.text.isEmpty) {
       MessageUtils.failed(text: 'field tidak boleh kosong');
@@ -326,7 +326,7 @@ class DaftarservisController extends GetxController {
       MessageUtils.failed(text: 'field tidak boleh kosong');
       return;
     }
-
+    EasyLoading.show(dismissOnTap: false);
     try {
       DaftarServisService()
           .insertResponDetail(
@@ -375,6 +375,7 @@ class DaftarservisController extends GetxController {
           MessageUtils.failed(
               text: 'Gagal Insert Respon Detail, coba beberapa saat lagi');
         }
+      EasyLoading.dismiss();
       });
     } catch (e) {
       log(e.toString());

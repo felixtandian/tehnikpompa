@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/controllers/daftarservis_controller.dart';
@@ -461,12 +462,14 @@ class ResponDetail extends GetView<DaftarservisController> {
                             ),
                           ),
                           onPressed: () async {
+                            EasyLoading.show();
                             log(controller.listImagePath.toString());
                             log(controller.responId.value);
-                            controller.insertDetailRespon(
+                            await controller.insertDetailRespon(
                                 prefC.memberId,
                                 controller.responId.value,
                                 controller.listImagePath);
+                            EasyLoading.dismiss();
                           },
                           child: Text(
                             'Submit',
