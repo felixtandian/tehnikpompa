@@ -7,7 +7,7 @@ class Constants {
   /// 1 : PRODUCTION
   /// 2 : STAGING
 
-  static const int appEnv = 0;
+  static const int appEnv = 1;
   static const String baseURL = appEnv == 1
       ? 'https://api.tehnikpompa.net/api/'
       : 'https://api-dev.tehnikpompa.net/api/';

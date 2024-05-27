@@ -24,6 +24,7 @@ import '../controllers/createservice_controller.dart';
 class CreateserviceView extends GetView<CreateserviceController> {
   LoginscreenController loginC = Get.put(LoginscreenController());
   PrefController prefC = Get.put(PrefController());
+  DaftarservisController daftarservisController = Get.put(DaftarservisController());
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
