@@ -93,7 +93,7 @@ class DaftarServisService extends BaseService {
         uri,
         hasil,
       );
-      log(resp.body.toString());
+      log('kontol' + resp.body.toString());
       List<ImageResponViewDetail> response = [];
       if (resp.body['Message'] == 'Berhasil') {
         log('awok');
@@ -102,6 +102,7 @@ class DaftarServisService extends BaseService {
           response.add(ImageResponViewDetail.fromJson(element));
         });
       }
+
       return response;
     } catch (e) {
       throw (e);

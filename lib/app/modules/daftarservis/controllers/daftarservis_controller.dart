@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http/http.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:syncfusion_flutter_pdf/pdf.dart';
 import 'package:tehnikpompa/app/modules/daftarservis/bindings/daftarservis_binding.dart';
@@ -375,7 +376,7 @@ class DaftarservisController extends GetxController {
           MessageUtils.failed(
               text: 'Gagal Insert Respon Detail, coba beberapa saat lagi');
         }
-      EasyLoading.dismiss();
+        EasyLoading.dismiss();
       });
     } catch (e) {
       log(e.toString());
@@ -442,19 +443,14 @@ class DaftarservisController extends GetxController {
 
     Rect bounds = Rect.fromLTWH(0, 160, page.graphics.clientSize.width, 30);
 
-    page.graphics.drawImage(
-        PdfBitmap(await readImage('kopteknikpompa.png')),
+    page.graphics.drawImage(PdfBitmap(await readImage('koptehnikpompa.png')),
         Rect.fromLTWH(0, 0, 500, 75));
-
-
-    
 
     PdfGrid grid = PdfGrid();
     grid.style = PdfGridStyle(
         font: PdfStandardFont(PdfFontFamily.helvetica, 14),
         cellPadding: PdfPaddings(left: 5, bottom: 2, top: 2, right: 2));
 
-    
     grid.columns.add(count: 2);
 
     grid.headers.add(5);
@@ -628,6 +624,37 @@ class DaftarservisController extends GetxController {
 
     grid.draw(page: page, bounds: const Rect.fromLTWH(0, 100, 0, 0));
 
+    if (responViewDetailModelImages.isNotEmpty) {
+      row = grid.rows.add();
+      row.cells[0].value = 'Daftar Gambar';
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+    }
+
+    for (var i = 0; i < responViewDetailModelImages.length; i++) {
+      var url = responViewDetailModelImages[i]!.title.toString();
+      var response = await get(Uri.parse(url));
+      var data = response.bodyBytes;
+      //Load image data into PDF bitmap object
+      PdfBitmap image = PdfBitmap(data);
+      //Draw image in page graphics
+
+      row = grid.rows.add();
+
+      row.height = 300;
+
+      row.cells[0].value = 'Gambar ' + (i+1).toString();
+
+      row.cells[1].style.backgroundImage = image;
+
+      row.cells[0].style.borders.all = PdfPens.transparent;
+      row.cells[1].style.borders.all = PdfPens.transparent;
+
+//Draw the grid
+
+    }
+    grid.draw(page: page, bounds: const Rect.fromLTWH(0, 100, 0, 0));
+
     bytes = await document.save();
     document.dispose();
 
@@ -671,6 +698,7 @@ class DaftarservisController extends GetxController {
       log('awok' + response.toString());
       if (response != []) {
         responViewDetailModelImages.value = response;
+        log('kontolodon' + responViewDetailModelImages[1]!.title.toString());
       }
     } catch (e) {
       errorSnackBar('Gagal', e.toString());

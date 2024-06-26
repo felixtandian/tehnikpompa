@@ -420,9 +420,39 @@ class DetailServis extends GetView<DaftarservisController> {
                                     ),
                                   ),
                                   onPressed: () {
-                                    controller.updateStatus(
-                                        controller.detailServisModel!.id,
-                                        4.toString());
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          title: Text(
+                                            'Pastikan anda sudah UPDATE Respon Service sebelum menyelesaikan pekerjaan anda. klik YA untuk menyelesaikan pekerjaan anda',
+                                            style: Constants.blacktextStyle,
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              child: Text("BATAL",
+                                                  style:
+                                                      Constants.blacktextStyle),
+                                              onPressed: () {
+                                                Navigator.pop(context);
+                                              },
+                                            ),
+                                            TextButton(
+                                              child: Text(
+                                                "YA",
+                                                style: Constants.blacktextStyle,
+                                              ),
+                                              onPressed: () {
+                                                controller.updateStatus(
+                                                    controller
+                                                        .detailServisModel!.id,
+                                                    4.toString());
+                                              },
+                                            )
+                                          ],
+                                        );
+                                      },
+                                    );
                                   },
                                   child: Text(
                                     'Selesaikan Service',

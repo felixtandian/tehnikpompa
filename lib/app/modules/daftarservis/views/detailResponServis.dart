@@ -298,7 +298,7 @@ class DetailResponServisView extends GetView<DaftarservisController> {
               Container(
                 padding: EdgeInsets.all(10),
                 width: double.infinity,
-                child: controller.responViewDetailModelImages.length < 0
+                child: controller.responViewDetailModelImages.isNotEmpty
                     ? GridView.builder(
                         physics: NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
