@@ -4,7 +4,7 @@ class DaftarBarangModel {
     int stokBarang;
     int totalBooking;
     int stokIndent;
-    String noteBooking;
+    String? noteBooking;
 
     DaftarBarangModel({
         required this.namaBarang,
